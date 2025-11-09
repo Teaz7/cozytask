@@ -78,6 +78,7 @@ class _IndexState extends State<Index> {
           width: 300,
           height: 70,
           child: TextField(
+            obscureText: true,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -107,6 +108,48 @@ class _IndexState extends State<Index> {
               fontWeight: FontWeight.bold
             ),
           ),
+        ),
+
+        ElevatedButton(
+          onPressed: () {
+
+          },
+          style: ElevatedButton.styleFrom(
+            minimumSize: Size(200, 45),
+            backgroundColor: Color(0XFF68A3BC),
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5)
+            )
+          ),
+          child: const Text(
+            'LOGIN',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20
+              ),
+            ),
+        ),
+
+        ElevatedButton(
+          onPressed: () {
+
+          },
+          style: ElevatedButton.styleFrom(
+            minimumSize: Size(200, 45),
+            backgroundColor: Color(0XFF68A3BC),
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5)
+            )
+          ),
+          child: const Text(
+            'ACCOUNTS',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20
+              ),
+            ),
         ),
       ],
     );
