@@ -32,6 +32,82 @@ class _IndexState extends State<Index> {
             height: 80,
           ),
         ),
+
+        Container(
+          padding: EdgeInsets.all(0),
+          width: 280,
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Username or Email Address'
+          ),
+        ),
+
+        Container(
+          padding: EdgeInsets.all(5),
+          width: 300,
+          height: 70,
+          child: TextField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                  width: 0,
+                  style: BorderStyle.none
+                )
+              ),
+              filled: true,
+              fillColor: Color(0XFFD8E8F4)
+            ),
+            style: TextStyle(
+              fontSize: 13
+            ),
+          ),
+        ),
+
+        Container(
+          padding: EdgeInsets.all(0),
+          width: 280,
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Password'
+          ),
+        ),
+
+        Container(
+          padding: EdgeInsets.all(5),
+          width: 300,
+          height: 70,
+          child: TextField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                  width: 0,
+                  style: BorderStyle.none
+                )
+              ),
+              filled: true,
+              fillColor: Color(0XFFD8E8F4)
+            ),
+            style: TextStyle(
+              fontSize: 13,
+            ),  
+          ),
+        ),
+        
+        Container(
+          padding: EdgeInsets.all(0),
+          width: 280,
+          alignment: Alignment.centerRight,
+          child: Text(
+            'Forgot Password?',
+            style: TextStyle(
+              decoration: TextDecoration.underline,
+              color: Color(0XFF898989),
+              fontWeight: FontWeight.bold
+            ),
+          ),
+        ),
       ],
     );
   }
