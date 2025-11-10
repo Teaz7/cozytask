@@ -1,5 +1,31 @@
 import 'package:flutter/material.dart';
 
+void main() {
+  runApp(const ChooseAccPage());
+}
+
+class ChooseAccPage extends StatelessWidget {
+  const ChooseAccPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        primarySwatch: Colors.blue,
+        fontFamily: 'GillSansMT'
+      ),
+      home: Scaffold(
+        body: Center(
+          child: const ChooseAccount(),
+        ),
+      ),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
 class ChooseAccount extends StatefulWidget {
   const ChooseAccount({super.key});
 

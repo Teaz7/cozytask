@@ -1,4 +1,32 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:cozytask/main.dart';
+
+void main() {
+  runApp(const SignUpPage());
+}
+
+class SignUpPage extends StatelessWidget {
+  const SignUpPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        primarySwatch: Colors.blue,
+        fontFamily: 'GillSansMT'
+      ),
+      home: Scaffold(
+        body: Center(
+          child: const SignUp(),
+        ),
+      ),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -123,14 +151,23 @@ class _SignUpState extends State<SignUp> {
                   fontSize: 12
                 ),
               ),
-              
-              Text(
-                'Log In.',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold
+
+              RichText(
+                text: TextSpan(
+                  text: 'Log In.',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black
+                  ),
+                  recognizer: TapGestureRecognizer()..onTap = () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MainPage())
+                    );
+                  }
                 ),
-              )
+              ),
             ],
           ),
         )
