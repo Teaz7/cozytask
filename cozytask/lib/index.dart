@@ -14,7 +14,7 @@ class _IndexState extends State<Index> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.all(40),
+          padding: EdgeInsets.all(60),
         ),
         
         Container(
@@ -28,28 +28,35 @@ class _IndexState extends State<Index> {
         Container(
           alignment: Alignment.center,
           child: Image.asset(
-            'assets/COZY_TASK_TEXT_BLUE_LOGO.png',
-            height: 80,
+            'assets/COZY_TASK_TEXT_BLUE_LOGO.png',  
+            height: 75,
           ),
+        ),
+
+        Padding(
+          padding: EdgeInsets.all(35),
         ),
 
         Container(
           padding: EdgeInsets.all(0),
-          width: 280,
+          width: 300,
           alignment: Alignment.centerLeft,
           child: Text(
-            'Username or Email Address'
+            'Username or Email Address:',
+            style: TextStyle(
+              fontSize: 13
+            ),
           ),
         ),
 
         Container(
-          padding: EdgeInsets.all(5),
+          padding: EdgeInsets.symmetric(vertical: 5),
           width: 300,
-          height: 70,
+          height: 50,
           child: TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(
                   width: 0,
                   style: BorderStyle.none
@@ -64,24 +71,31 @@ class _IndexState extends State<Index> {
           ),
         ),
 
+        Padding(
+          padding: EdgeInsets.all(5),
+        ),
+
         Container(
           padding: EdgeInsets.all(0),
-          width: 280,
+          width: 300,
           alignment: Alignment.centerLeft,
           child: Text(
-            'Password'
+            'Password:',
+            style: TextStyle(
+              fontSize: 13
+            ),
           ),
         ),
 
         Container(
-          padding: EdgeInsets.all(5),
+          padding: EdgeInsets.symmetric(vertical: 5),
           width: 300,
-          height: 70,
+          height: 50,
           child: TextField(
             obscureText: true,
             decoration: InputDecoration(
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(
                   width: 0,
                   style: BorderStyle.none
@@ -97,8 +111,8 @@ class _IndexState extends State<Index> {
         ),
         
         Container(
-          padding: EdgeInsets.all(0),
-          width: 280,
+          padding: EdgeInsets.symmetric(vertical: 5),
+          width: 300,
           alignment: Alignment.centerRight,
           child: Text(
             'Forgot Password?',
@@ -110,12 +124,16 @@ class _IndexState extends State<Index> {
           ),
         ),
 
+        Padding(
+          padding: EdgeInsets.all(15),
+        ),
+
         ElevatedButton(
           onPressed: () {
 
           },
           style: ElevatedButton.styleFrom(
-            minimumSize: Size(200, 45),
+            minimumSize: Size(220, 40),
             backgroundColor: Color(0XFF68A3BC),
             foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
@@ -126,9 +144,13 @@ class _IndexState extends State<Index> {
             'LOGIN',
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 20
+              fontSize: 21
               ),
             ),
+        ),
+        
+        Padding(
+          padding: EdgeInsets.all(5),
         ),
 
         ElevatedButton(
@@ -136,7 +158,7 @@ class _IndexState extends State<Index> {
 
           },
           style: ElevatedButton.styleFrom(
-            minimumSize: Size(200, 45),
+            minimumSize: Size(220, 40),
             backgroundColor: Color(0XFF68A3BC),
             foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
@@ -147,10 +169,34 @@ class _IndexState extends State<Index> {
             'ACCOUNTS',
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 20
+              fontSize: 21
               ),
             ),
         ),
+
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          width: 300,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                "Don't have an account yet? ",
+                style: TextStyle(
+                  fontSize: 12
+                ),
+              ),
+              
+              Text(
+                'Sign Up.',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold
+                ),
+              )
+            ],
+          ),
+        )
       ],
     );
   }
