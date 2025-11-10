@@ -20,7 +20,7 @@ class _LoginState extends State<Login> {
         Container(
           alignment: Alignment.center,
           child: Image.asset(
-            'assets/COZY_TASK_LOGO.png',
+            'assets/img/COZY_TASK_LOGO.png',
             height: 150,
           ),
         ),
@@ -28,7 +28,7 @@ class _LoginState extends State<Login> {
         Container(
           alignment: Alignment.center,
           child: Image.asset(
-            'assets/COZY_TASK_TEXT_BLUE_LOGO.png',  
+            'assets/img/COZY_TASK_TEXT_BLUE_LOGO.png',  
             height: 75,
           ),
         ),
@@ -44,7 +44,7 @@ class _LoginState extends State<Login> {
           child: Text(
             'Username or Email Address:',
             style: TextStyle(
-              fontSize: 13
+              fontSize: 14
             ),
           ),
         ),
@@ -66,7 +66,7 @@ class _LoginState extends State<Login> {
               fillColor: Color(0XFFD8E8F4)
             ),
             style: TextStyle(
-              fontSize: 13
+              fontSize: 14
             ),
           ),
         ),
@@ -82,7 +82,7 @@ class _LoginState extends State<Login> {
           child: Text(
             'Password:',
             style: TextStyle(
-              fontSize: 13
+              fontSize: 14
             ),
           ),
         ),
@@ -105,7 +105,7 @@ class _LoginState extends State<Login> {
               fillColor: Color(0XFFD8E8F4)
             ),
             style: TextStyle(
-              fontSize: 13,
+              fontSize: 14,
             ),  
           ),
         ),
@@ -119,6 +119,7 @@ class _LoginState extends State<Login> {
             style: TextStyle(
               decoration: TextDecoration.underline,
               color: Color(0XFF898989),
+              decorationColor: Color(0XFF898989),
               fontWeight: FontWeight.bold
             ),
           ),

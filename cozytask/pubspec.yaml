@@ -59,8 +59,11 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/COZY_TASK_LOGO.png
-    - assets/COZY_TASK_TEXT_BLUE_LOGO.png
+    - assets/img/COZY_TASK_LOGO.png
+    - assets/img/COZY_TASK_TEXT_BLUE_LOGO.png
+
+    - assets/icon/Filter.png
+    - assets/icon/Remove.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -73,7 +76,13 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
+  fonts:
+  - family: GillSansMT
+    fonts:
+      - asset: assets/font/gillsansmt.ttf
+        weight: 500
+      - asset: assets/font/gillsansmt-bold.ttf
+        weight: 700
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

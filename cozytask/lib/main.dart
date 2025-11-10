@@ -1,5 +1,6 @@
 import 'package:cozytask/login.dart';
-// import 'package:cozytask/signup.dart';
+import 'package:cozytask/chooseaccount.dart';
+import 'package:cozytask/signup.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,11 +16,12 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
-        primarySwatch: Colors.blue
+        primarySwatch: Colors.blue,
+        fontFamily: 'GillSansMT'
       ),
       home: Scaffold(
         body: Center(
-          child: const Login(),
+          child: const ChooseAccount(),
         ),
       ),
       debugShowCheckedModeBanner: false,
