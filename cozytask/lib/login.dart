@@ -1,3 +1,5 @@
+import 'package:cozytask/signup.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -187,6 +189,24 @@ class _LoginState extends State<Login> {
                   fontSize: 12
                 ),
               ),
+
+              //to be fixed!
+              // RichText(
+              //   text: TextSpan(
+              //     text: 'Sign Up.',
+              //     style: TextStyle(
+              //       fontSize: 12,
+              //       fontWeight: FontWeight.bold,
+              //       color: Colors.blue
+              //     ),
+              //     recognizer: TapGestureRecognizer()..onTap = () {
+              //       Navigator.push(
+              //         context,
+              //         MaterialPageRoute(builder: (context) => SignUp())
+              //       );
+              //     }
+              //   ),
+              // ),
               
               Text(
                 'Sign Up.',

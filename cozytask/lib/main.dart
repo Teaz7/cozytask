@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         body: Center(
-          child: const ChooseAccount(),
+          child: const Login(),
         ),
       ),
       debugShowCheckedModeBanner: false,
