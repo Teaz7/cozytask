@@ -1,4 +1,5 @@
-import 'package:cozytask/index.dart';
+import 'package:cozytask/login.dart';
+// import 'package:cozytask/signup.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         body: Center(
-          child: const Index(),
+          child: const Login(),
         ),
       ),
       debugShowCheckedModeBanner: false,

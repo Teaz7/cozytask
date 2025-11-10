@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Index extends StatefulWidget {
-  const Index({super.key});
+class Login extends StatefulWidget {
+  const Login({super.key});
 
   @override
-  State<Index> createState() => _IndexState();
+  State<Login> createState() => _LoginState();
 }
 
-class _IndexState extends State<Index> {
+class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Column(
