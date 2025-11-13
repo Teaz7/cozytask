@@ -15,7 +15,7 @@ class DashBoardApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GillSansMT',
       ),
-      home: Scaffold(body: Center(child: const Login())),
+      home: const Scaffold(body: Center(child: Login())),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -23,123 +23,101 @@ class DashBoardApp extends StatelessWidget {
 
 class Login extends StatefulWidget {
   const Login({super.key});
-
   @override
   State<Login> createState() => _dashBoardState();
 }
 
+/* -------------------------------------------------
+   NEW CODE : slide-up drawer helpers
+   ------------------------------------------------- */
 class _dashBoardState extends State<Login> {
+  /* ---- open the blue sheet ---- */
+  void _openDrawer() => showModalBottomSheet(
+    context: context,
+    backgroundColor: Colors.transparent,
+    isScrollControlled: true,
+    builder: (_) => _drawerSheet(),
+  );
+
+  /* ---- blue drawer content ---- */
+  Widget _drawerSheet() => Container(
+    height: 320,
+    decoration: const BoxDecoration(
+      color: Colors.blue,
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    child: Column(
+      children: [
+        const SizedBox(height: 12),
+        Container(
+          width: 40,
+          height: 4,
+          decoration: BoxDecoration(
+            color: Colors.white54,
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+        const SizedBox(height: 20),
+        /* row 1 */
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _tile(Icons.home, 'Home'),
+            _tile(Icons.store, 'Store'),
+            _tile(Icons.calendar_today, 'Calendar'),
+          ],
+        ),
+        const SizedBox(height: 10),
+        /* row 2 */
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _tile(Icons.settings, 'Settings'),
+            _tile(Icons.person, 'Profile'),
+            _tile(Icons.logout_outlined, 'Logout'),
+          ],
+        ),
+      ],
+    ),
+  );
+
+  /* ---- single icon + label ---- */
+  Widget _tile(IconData icon, String label) => Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 70, color: Colors.white),
+        const SizedBox(height: 4),
+        Text(label, style: const TextStyle(color: Colors.white, fontSize: 14)),
+      ],
+    ),
+  );
+
+  /* ---- visible handle only ---- */
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 45),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Container(
-            width: 200.0,
-            height: 6.0,
-            decoration: BoxDecoration(
-              color: Colors.blueGrey,
-              borderRadius: BorderRadius.circular(3.0),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(left: 15, right: 15, top: 10),
-                    child: Icon(Icons.home, size: 75, color: Colors.blueAccent),
-                  ),
-                  Text('Home', style: TextStyle(fontSize: 16)),
-                ],
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: GestureDetector(
+        onTap: _openDrawer,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 45),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 200,
+                height: 6,
+                decoration: BoxDecoration(
+                  color: Colors.blueGrey,
+                  borderRadius: BorderRadius.circular(3),
+                ),
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(left: 15, right: 15, top: 10),
-                    child: Icon(
-                      Icons.store,
-                      size: 75,
-                      color: Colors.blueAccent,
-                    ),
-                  ),
-                  Text('Store', style: TextStyle(fontSize: 16)),
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(left: 15, right: 15, top: 10),
-                    child: Icon(
-                      Icons.calendar_today,
-                      size: 75,
-                      color: Colors.blueAccent,
-                    ),
-                  ),
-                  Text(
-                    'Calendar',
-                    style: TextStyle(fontSize: 16),
-                  ), // added label
-                ],
-              ),
+              const SizedBox(height: 20),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(left: 15, right: 15, top: 15),
-                    child: Icon(
-                      Icons.settings,
-                      size: 75,
-                      color: Colors.blueAccent,
-                    ),
-                  ),
-                  Text('Settings', style: TextStyle(fontSize: 16)),
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(left: 15, right: 15, top: 15),
-                    child: Icon(
-                      Icons.person,
-                      size: 75,
-                      color: Colors.blueAccent,
-                    ),
-                  ),
-                  Text('Profile', style: TextStyle(fontSize: 16)),
-                ],
-              ),
-
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(left: 15, right: 15, top: 15),
-                    child: Icon(
-                      Icons.logout_outlined,
-                      size: 75,
-                      color: Colors.blueAccent,
-                    ),
-                  ),
-                  Text('Logout', style: TextStyle(fontSize: 16)),
-                ],
-              ),
-            ],
-          ),
-        ], // 2. closing bracket added
+        ),
       ),
     );
   }
