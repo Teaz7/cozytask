@@ -61,9 +61,16 @@ flutter:
   assets:
     - assets/img/COZY_TASK_LOGO.png
     - assets/img/COZY_TASK_TEXT_BLUE_LOGO.png
+    - assets/img/COZY_TASK_FULL_LOGO.png
 
     - assets/icon/Filter.png
     - assets/icon/Remove.png
+    - assets/icon/Percentage.png
+    - assets/icon/Search.png
+
+    - assets/icon/minipercentage/1.png
+    - assets/icon/minipercentage/2.png
+    - assets/icon/minipercentage/3.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
