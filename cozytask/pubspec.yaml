@@ -67,6 +67,7 @@ flutter:
     - assets/icon/Remove.png
     - assets/icon/Percentage.png
     - assets/icon/Search.png
+    - assets/icon/BackButton.png
 
     - assets/icon/minipercentage/1.png
     - assets/icon/minipercentage/2.png

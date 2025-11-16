@@ -1,9 +1,9 @@
 import 'package:cozytask/dashboard2.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() { 
   runApp(const DashboardPage());
-}
+} 
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -397,6 +397,7 @@ class _DashboardState extends State<Dashboard> {
               fontWeight: FontWeight.bold,
               fontSize: 21
               ),
+              
             ),
         ),
 

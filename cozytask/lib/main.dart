@@ -1,3 +1,4 @@
+import 'package:cozytask/addTask.dart';
 import 'package:cozytask/dashboard2.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class MainPage extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GillSansMT',
       ),
-      home: Scaffold(body: Center(child: const DashboardPage())),
+      home: Scaffold(body: Center(child: const AddTaskPage())),
       debugShowCheckedModeBanner: false,
     );
   }
