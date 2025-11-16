@@ -71,7 +71,9 @@ class _LoginState extends State<Login> {
           width: 300,
           height: 50,
           child: TextField(
+            maxLines: 1,
             decoration: InputDecoration(
+              isDense: true,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(width: 0, style: BorderStyle.none),
@@ -98,7 +100,9 @@ class _LoginState extends State<Login> {
           height: 50,
           child: TextField(
             obscureText: true,
+            maxLines: 1,
             decoration: InputDecoration(
+              isDense: true,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(width: 0, style: BorderStyle.none),

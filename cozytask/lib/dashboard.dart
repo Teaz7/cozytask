@@ -36,7 +36,6 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   
-  /* ---- open the blue sheet ---- */
   void _openDrawer() => showModalBottomSheet(
     context: context,
     backgroundColor: Colors.transparent,
@@ -44,11 +43,10 @@ class _DashboardState extends State<Dashboard> {
     builder: (_) => _drawerSheet(),
   );
 
-  /* ---- blue drawer content ---- */
   Widget _drawerSheet() => Container(
     height: 320,
     decoration: const BoxDecoration(
-      color: Colors.blue,
+      color: Color(0XFF004463),
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
     child: Column(
@@ -63,7 +61,7 @@ class _DashboardState extends State<Dashboard> {
           ),
         ),
         const SizedBox(height: 20),
-        /* row 1 */
+        
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -73,7 +71,7 @@ class _DashboardState extends State<Dashboard> {
           ],
         ),
         const SizedBox(height: 10),
-        /* row 2 */
+        
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -86,7 +84,6 @@ class _DashboardState extends State<Dashboard> {
     ),
   );
 
-  /* ---- single icon + label ---- */
   Widget _tile(IconData icon, String label) => Padding(
     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
     child: Column(
@@ -142,6 +139,28 @@ class _DashboardState extends State<Dashboard> {
                 'assets/icon/Search.png',
                 width: 20,
               ),
+
+              Padding(
+                padding: EdgeInsetsGeometry.all(3),
+              ),
+
+              SizedBox(
+                width: 280,
+                child: TextField(
+                  maxLines: 1,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    isCollapsed: true,
+                    hintText: 'Search Here...',
+                    hintStyle: TextStyle(
+                      color: Color(0XFF68A3BC)
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                    )
+                  ),
+                ),
+              )
             ],
           ),
         ),
@@ -416,7 +435,7 @@ class _DashboardState extends State<Dashboard> {
                       width: 200,
                       height: 6,
                       decoration: BoxDecoration(
-                        color: Colors.blueGrey,
+                        color: Color(0XFF004463),
                         borderRadius: BorderRadius.circular(3),
                       ),
                     ),
