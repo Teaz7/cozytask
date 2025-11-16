@@ -1,4 +1,3 @@
-import 'package:cozytask/dashboard2.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cozytask/signup.dart';
