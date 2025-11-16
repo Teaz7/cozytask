@@ -178,7 +178,7 @@ class _AddTaskState extends State<AddTask> {
 
           // Start & End date labels
           Container(
-            padding: const EdgeInsets.only(left: 55),
+            padding: const EdgeInsets.only(right: 142, left: 55),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
@@ -187,8 +187,10 @@ class _AddTaskState extends State<AddTask> {
                   style: TextStyle(fontSize: 14, color: Colors.black),
                 ),
                 Text(
+                  
                   'End Date:',
                   style: TextStyle(fontSize: 14, color: Colors.black),
+                  
                 ),
               ],
             ),
