@@ -20,7 +20,6 @@ class MainPage extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GillSansMT',
       ),
-      home: Scaffold(body: Center(child: const DashBoardApp())),
       home: Scaffold(body: Center(child: const ViewTask())),
       debugShowCheckedModeBanner: false,
     );
