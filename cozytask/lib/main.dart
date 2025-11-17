@@ -21,11 +21,7 @@ class MainPage extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GillSansMT',
       ),
-<<<<<<< HEAD
-      home: Scaffold(body: Center(child: const ViewTask())),
-=======
-      home: Scaffold(body: Center(child: const DashboardPage())),
->>>>>>> 09a6d9ac934c5ff3021b341afea43c460f8a7694
+      home: Scaffold(body: Center(child: const ViewTaskApp())),
       debugShowCheckedModeBanner: false,
     );
   }
