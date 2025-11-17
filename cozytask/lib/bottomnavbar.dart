@@ -24,10 +24,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
     ),
     child: Column(
       children: [
-        const SizedBox(height: 12),
+        const SizedBox(height: 15),
         Container(
-          width: 40,
-          height: 4,
+          width: 200,
+          height: 3,
           decoration: BoxDecoration(
             color: Colors.white54,
             borderRadius: BorderRadius.circular(2),
@@ -72,7 +72,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: 30,
+      bottom: 0,
       left: 0,
       right: 0,
       child: Align(
@@ -80,22 +80,34 @@ class _BottomNavBarState extends State<BottomNavBar> {
         child: GestureDetector(
           onTap: _openDrawer,
           behavior: HitTestBehavior.translucent,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 45),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 200,
-                  height: 6,
-                  decoration: BoxDecoration(
-                    color: Color(0XFF004463),
-                    borderRadius: BorderRadius.circular(3),
-                  ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: double.infinity,
+                height: 100,
+                decoration: BoxDecoration(
+                  color: Color(0XFF004463),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                 ),
-                const SizedBox(height: 20),
-              ],
-            ),
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsetsGeometry.all(10),
+                    ),
+
+                    Container(
+                      alignment: Alignment.topCenter,
+                      height: 3,
+                      width: 200,
+                      decoration: BoxDecoration(
+                        color: Colors.white54
+                      ),
+                    ),    
+                  ],
+                )                
+              ),
+            ],
           ),
         ),
       ),

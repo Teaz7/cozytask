@@ -71,52 +71,81 @@ class _DashboardState extends State<Dashboard> {
           padding: EdgeInsets.all(10),
         ),
 
-        Container(
-          width: 320,
-          height: 35,
-          decoration: BoxDecoration(
-            color: Color(0XFFD8E8F4),
-            borderRadius: BorderRadius.circular(10)
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsetsGeometry.all(5),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              width: 240,
+              height: 35,
+              decoration: BoxDecoration(
+                color: Color(0XFFD8E8F4),
+                borderRadius: BorderRadius.circular(10)
               ),
-              
-              Image.asset(
-                'assets/icon/Search.png',
-                width: 20,
-              ),
-
-              Padding(
-                padding: EdgeInsetsGeometry.all(3),
-              ),
-
-              SizedBox(
-                width: 280,
-                child: TextField(
-                  maxLines: 1,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    isCollapsed: true,
-                    hintText: 'Search Here...',
-                    hintStyle: TextStyle(
-                      color: Color(0XFF68A3BC)
-                    ),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
-                    )
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsetsGeometry.all(5),
                   ),
+                  
+                  Image.asset(
+                    'assets/icon/Search.png',
+                    width: 20,
+                  ),
+
+                  Padding(
+                    padding: EdgeInsetsGeometry.all(3),
+                  ),
+
+                  SizedBox(
+                    width: 200,
+                    child: TextField(
+                      maxLines: 1,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        isCollapsed: true,
+                        hintText: 'Search Here...',
+                        hintStyle: TextStyle(
+                          color: Color(0XFF68A3BC)
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                        )
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+
+            Padding(
+              padding: EdgeInsetsGeometry.all(3),
+            ),
+
+            ElevatedButton(
+              onPressed: () {
+
+              },
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(90, 35),
+                backgroundColor: Color(0XFF004463),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)
+                )
+              ),
+              child: const Text(
+                'Search',
+                style: TextStyle(
+                  fontSize: 16
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
 
         Padding(
-          padding: EdgeInsetsGeometry.all(10),
+          padding: EdgeInsetsGeometry.all(3),
         ),
 
         TaskWidget(
@@ -124,7 +153,7 @@ class _DashboardState extends State<Dashboard> {
         ),
 
         Padding(
-          padding: EdgeInsetsGeometry.all(20),
+          padding: EdgeInsetsGeometry.all(15),
         ),
 
         ElevatedButton(
