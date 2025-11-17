@@ -67,22 +67,21 @@ class _ViewTaskState extends State<ViewTask> {
             ),
           ),
         ),
-
-        const SizedBox(height: 10),
+        const SizedBox(height: 20),
 
         /* ---- circle ---- */
         Center(
           child: CirclePercent(
             percent: 0.75,
-            radius: 70,
+            radius: 85,
             ringColor: const Color(0xFF004562),
-            ringWidth: 15,
+            ringWidth: 25,
           ),
         ),
 
         /* ---- title ---- */
         Padding(
-          padding: const EdgeInsets.only(top: 5, bottom: 5),
+          padding: const EdgeInsets.only(top: 15, bottom: 10),
           child: Text(
             '  App Dev Presentation',
             textAlign: TextAlign.center,
@@ -95,59 +94,41 @@ class _ViewTaskState extends State<ViewTask> {
         ),
 
         /* ---- priority / status ---- */
-        SizedBox(
-          width: 250,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Text(
-                    'Priority: ',
-                    style: TextStyle(fontSize: 16, color: Colors.black),
-                  ),
-                  Text(
-                    '3',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black
-                    ),
-                  ),
-                ],
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(Icons.check_circle, color: Color(0xFF004562), size: 30),
+            Text(
+              'Priority',
+              style: TextStyle(fontSize: 16, color: Colors.black),
+            ),
+            const SizedBox(width: 20),
+            Text(
+              'Status:',
+              style: TextStyle(fontSize: 16, color: Colors.black),
+            ),
+            Text(
+              'Unfinished',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
-
-              Row(
-                children: <Widget>[
-                  Text(
-                    'Status: ',
-                    style: TextStyle(fontSize: 16, color: Colors.black),
-                  ),
-                  Text(
-                    'Unfinished',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),   
-                ],
-              )
-            ],
-          ),
+            ),
+          ],
         ),
-        
-        const SizedBox(height: 10),
+        const SizedBox(height: 20),
 
         /* ---- description label ---- */
         Align(
           alignment: Alignment.centerLeft,
           child: Padding(
-            padding: const EdgeInsets.only(left: 50),
+            padding: const EdgeInsets.only(left: 25),
             child: Text(
               'Description',
               style: TextStyle(
                 fontSize: 16,
+                fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
             ),
@@ -158,12 +139,12 @@ class _ViewTaskState extends State<ViewTask> {
         /* ---- description box ---- */
         Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 300),
+            constraints: const BoxConstraints(maxWidth: 360),
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
                 color: const Color(0xFFD8E8F5),
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(10),
                 boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
@@ -189,7 +170,7 @@ class _ViewTaskState extends State<ViewTask> {
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: const EdgeInsets.only(left: 50, top: 10),
+                padding: const EdgeInsets.only(left: 25, top: 10),
                 child: Text(
                   'Start Date:',
                   style: TextStyle(
@@ -199,7 +180,7 @@ class _ViewTaskState extends State<ViewTask> {
                 ),
               ),
             ),
-            const SizedBox(width: 115),
+            const SizedBox(width: 150),
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
@@ -222,11 +203,11 @@ class _ViewTaskState extends State<ViewTask> {
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: const EdgeInsets.only(left: 55, top: 10),
+                padding: const EdgeInsets.only(left: 25, top: 10),
                 child: Container(
                   decoration: BoxDecoration(
                     color: const Color(0xFFD8E8F5),
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 12,
@@ -256,7 +237,7 @@ class _ViewTaskState extends State<ViewTask> {
                 ),
               ),
             ),
-            const SizedBox(width: 60),
+            const SizedBox(width: 95),
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
@@ -264,7 +245,7 @@ class _ViewTaskState extends State<ViewTask> {
                 child: Container(
                   decoration: BoxDecoration(
                     color: const Color(0xFFD8E8F5),
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 12,
@@ -296,7 +277,7 @@ class _ViewTaskState extends State<ViewTask> {
             ),
           ],
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 20),
 
         /* -------------------------------------------------- */
         /*  SUB-TASKS  (only part changed)                    */
@@ -304,7 +285,7 @@ class _ViewTaskState extends State<ViewTask> {
         Align(
           alignment: Alignment.centerLeft,
           child: Padding(
-            padding: const EdgeInsets.only(left: 45),
+            padding: const EdgeInsets.only(left: 25),
             child: Text(
               'Subtasks',
               style: TextStyle(
@@ -320,7 +301,7 @@ class _ViewTaskState extends State<ViewTask> {
         SizedBox(
           height: 100, // adjustable
           child: ListView(
-            padding: const EdgeInsets.only(top: 8, left: 30),
+            padding: const EdgeInsets.only(top: 8, left: 20),
             children: [
               _subTaskRow('Create presentation slides'),
               _subTaskRow('Practice the pitch'),
@@ -328,13 +309,14 @@ class _ViewTaskState extends State<ViewTask> {
             ],
           ),
         ),
+
+        /* ---- add sub-task ---- */
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 0),
+              padding: const EdgeInsets.only(left: 25),
               child: SizedBox(
-                width: 260, // ← adjust this to your desired width
+                width: 315, // ← adjust this to your desired width
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     vertical: 12,
@@ -352,39 +334,15 @@ class _ViewTaskState extends State<ViewTask> {
           ],
         ),
 
-        const SizedBox(height: 25),
-
-        //change to button soon
+        const SizedBox(height: 35),
         Container(
-          width: 300,
-          height: 35,
-          alignment: Alignment.center,
+          padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 8),
           decoration: BoxDecoration(
             color: const Color(0xFF004562),
             borderRadius: BorderRadius.circular(10),
           ),
           child: const Text(
             'MARK AS DONE',
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-
-        const SizedBox(height: 10,),
-
-        Container(
-          width: 300,
-          height: 35,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: const Color(0xFF898989),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: const Text(
-            'DELETE TASK',
             style: TextStyle(
               fontSize: 20,
               color: Colors.white,

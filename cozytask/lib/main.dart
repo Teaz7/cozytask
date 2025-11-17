@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cozytask/signup.dart';
 import 'package:cozytask/dashboard.dart';
 import 'package:cozytask/viewTask.dart';
+import 'package:cozytask/shopPage.dart';
 
 void main() {
   runApp(const MainPage());
@@ -21,7 +22,7 @@ class MainPage extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GillSansMT',
       ),
-      home: Scaffold(body: Center(child: const ViewTaskApp())),
+      home: Scaffold(body: Center(child: const ShopPage())),
       debugShowCheckedModeBanner: false,
     );
   }
