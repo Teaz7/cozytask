@@ -20,16 +20,17 @@ class SettingsPage extends StatelessWidget {
       home: Scaffold(
         body: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 5),
+              const SizedBox(height: 60),
 
               // Back Button
-              Padding(
-                padding: const EdgeInsets.all(20),
+              SizedBox(
+                width: 350,
                 child: Image.asset(
                   'assets/icon/BackButton.png',
                   height: 30,
+                  alignment: Alignment.centerLeft,
                 ),
               ),
 
@@ -37,11 +38,10 @@ class SettingsPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.only(top: 20),
                 width: 300,
-                alignment: Alignment.center,
                 child: const Text(
                   'Account Settings',
                   style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 21,
                     fontWeight: FontWeight.bold,
                     color: Color(0XFF004463),
                   ),
@@ -53,16 +53,17 @@ class SettingsPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  const SizedBox(width: 55),
+                  const SizedBox(width: 40),
                   Image.asset(
                     'assets/icon/Profile.png',
+                    alignment: Alignment.center,
                     width: 65,
-                    height: 65,
                   ),
-                  const SizedBox(width: 30),
+                  
+                  const SizedBox(width: 20),
 
                   Padding(
-                    padding: const EdgeInsets.only(right: 150),
+                    padding: const EdgeInsets.only(right: 120),
                     child: const Text(
                       'Edit Profile',
                       style: TextStyle(fontSize: 18),
@@ -78,21 +79,20 @@ class SettingsPage extends StatelessWidget {
                 ],
               ),
 
-              const SizedBox(height: 10),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  const SizedBox(width: 53),
+                  const SizedBox(width: 40),
                   Image.asset(
                     'assets/icon/ChangePassword.png',
+                    alignment: Alignment.center,
                     width: 65,
-                    height: 65,
                   ),
-                  const SizedBox(width: 30),
+
+                  const SizedBox(width: 20),
 
                   Padding(
-                    padding: const EdgeInsets.only(right: 100),
+                    padding: const EdgeInsets.only(right: 70),
                     child: const Text(
                       'Change Password',
                       style: TextStyle(fontSize: 18),
@@ -112,12 +112,12 @@ class SettingsPage extends StatelessWidget {
 
               Container(
                 padding: const EdgeInsets.only(top: 20),
-                width: 280,
-                alignment: Alignment.center,
+                width: 300,
+                alignment: Alignment.centerLeft,
                 child: const Text(
                   'About System',
                   style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 21,
                     fontWeight: FontWeight.bold,
                     color: Color(0XFF004463),
                   ),
@@ -129,16 +129,18 @@ class SettingsPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  const SizedBox(width: 65),
+                  const SizedBox(width: 50),
+                  
                   Image.asset(
                     'assets/icon/Help.png',
                     width: 55,
-                    height: 55,
+                    alignment: Alignment.center,
                   ),
-                  const SizedBox(width: 30),
+
+                  const SizedBox(width: 25),
 
                   Padding(
-                    padding: const EdgeInsets.only(right: 195),
+                    padding: const EdgeInsets.only(right: 165),
                     child: const Text(
                       'Help',
                       style: TextStyle(fontSize: 18),
@@ -154,21 +156,20 @@ class SettingsPage extends StatelessWidget {
                 ],
               ),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  const SizedBox(width: 65),
+                  const SizedBox(width: 55),
                   Image.asset(
                     'assets/icon/About.png',
-                    width: 52,
-                    height: 52,
+                    width: 50,
                   ),
-                  const SizedBox(width: 30),
+                  const SizedBox(width: 25),
 
                   Padding(
-                    padding: const EdgeInsets.only(right: 185),
+                    padding: const EdgeInsets.only(right: 160),
                     child: const Text(
                       'About',
                       style: TextStyle(fontSize: 18),
@@ -184,26 +185,23 @@ class SettingsPage extends StatelessWidget {
                 ],
               ),
 
-              const SizedBox(height: 120),
+              const SizedBox(height: 150),
 
-              Padding(
-                padding: const EdgeInsets.only(left: 150),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(250, 40),
-                    backgroundColor: const Color(0XFF004463),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
+              ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(250, 40),
+                  backgroundColor: const Color(0XFF004463),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
                   ),
-                  child: const Text(
-                    'LOG OUT',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 21,
-                    ),
+                ),
+                child: const Text(
+                  'LOG OUT',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 21,
                   ),
                 ),
               ),

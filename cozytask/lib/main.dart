@@ -22,7 +22,7 @@ class MainPage extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GillSansMT',
       ),
-      home: Scaffold(body: Center(child: const SignUpPage())),
+      home: Scaffold(body: Center(child: const SettingsPage())),
       debugShowCheckedModeBanner: false,
     );
   }

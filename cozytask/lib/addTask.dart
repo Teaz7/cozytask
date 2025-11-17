@@ -17,9 +17,7 @@ class AddTaskPage extends StatelessWidget {
         fontFamily: 'GillSansMT',
       ),
       home: Scaffold(
-        body: Center(
-          child: AddTask(),
-        ),
+        body: AddTask(),
       ),
       debugShowCheckedModeBanner: false,
     );
@@ -85,11 +83,13 @@ class _AddTaskState extends State<AddTask> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          const Padding(padding: EdgeInsets.all(5)),
+          Padding(
+            padding: EdgeInsetsGeometry.all(30),
+          ),
 
           // Back Button
           Container(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(15),
             alignment: Alignment.centerLeft,
             child: Image.asset(
               'assets/icon/BackButton.png',
@@ -114,7 +114,7 @@ class _AddTaskState extends State<AddTask> {
 
           // Task Name Label
           Container(
-            width: 400,
+            width: 320,
             alignment: Alignment.centerLeft,
             child: const Text(
               'Task Name',
@@ -128,24 +128,34 @@ class _AddTaskState extends State<AddTask> {
 
           // Task Name Field
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            width: 400,
-            height: 50,
-            child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide.none,
-                ),
-                filled: true,
-                fillColor: const Color(0XFFD8E8F4),
-              ),
+            width: 320,
+            height: 40,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Color(0XFFD8E8F4),
+              borderRadius: BorderRadius.circular(5)
             ),
+            child: Container(
+              padding: EdgeInsets.all(5),
+              child: TextField(
+                maxLines: 1,
+                decoration: InputDecoration(
+                  isDense: true,
+                  isCollapsed: true,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 0,
+                      style: BorderStyle.none
+                    )
+                  ),
+                ),
+              ),
+            )
           ),
 
           // Description Label
           Container(
-            width: 400,
+            width: 320,
             alignment: Alignment.centerLeft,
             child: const Text(
               'Description',
@@ -160,7 +170,7 @@ class _AddTaskState extends State<AddTask> {
           // Description Field
           Container(
             padding: const EdgeInsets.symmetric(vertical: 5),
-            width: 400,
+            width: 320,
             child: TextField(
               maxLines: 5,
               decoration: InputDecoration(
@@ -186,8 +196,8 @@ class _AddTaskState extends State<AddTask> {
                   'Start Date:',
                   style: TextStyle(fontSize: 14, color: Colors.black),
                 ),
-                Text(
-                  
+
+                Text(  
                   'End Date:',
                   style: TextStyle(fontSize: 14, color: Colors.black),
                   
@@ -196,13 +206,13 @@ class _AddTaskState extends State<AddTask> {
             ),
           ),
 
-          const SizedBox(height: 10),
+          const SizedBox(height: 3),
 
           // Date 
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 55),
+            width: 320,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // START DATE
                 datePickerBox(
@@ -218,6 +228,10 @@ class _AddTaskState extends State<AddTask> {
                       setState(() => startDate = picked);
                     }
                   },
+                ),
+
+                Padding(
+                  padding: EdgeInsetsGeometry.all(5),
                 ),
 
                 // END DATE
@@ -241,7 +255,7 @@ class _AddTaskState extends State<AddTask> {
 
           // Prioritization Label
           Container(
-            width: 400,
+            width: 300,
             padding: const EdgeInsets.only(top: 15),
             alignment: Alignment.centerLeft,
             child: const Text(
@@ -254,13 +268,14 @@ class _AddTaskState extends State<AddTask> {
             ),
           ),
 
-                   Row(
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 15),
               for (var index = 0; index < priority.length; index++)
                 Container(
-                  padding: const EdgeInsets.only(left: 45),
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: Row(
                     children: [
                       Checkbox(
@@ -297,7 +312,7 @@ class _AddTaskState extends State<AddTask> {
           // Subtask 
           Container(
             padding: const EdgeInsets.only(left: 5),
-            width: 405,
+            width: 320,
             height: 40,
             child: Row(
               children: <Widget>[
