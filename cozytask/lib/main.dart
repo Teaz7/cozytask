@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cozytask/signup.dart';
 import 'package:cozytask/dashboard.dart';
+import 'package:cozytask/viewTask.dart';
 
 void main() {
   runApp(const MainPage());
@@ -20,7 +21,7 @@ class MainPage extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GillSansMT',
       ),
-      home: Scaffold(body: Center(child: const DashboardPage())),
+      home: Scaffold(body: Center(child: const ViewTaskApp())),
       debugShowCheckedModeBanner: false,
     );
   }
