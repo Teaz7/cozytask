@@ -1,3 +1,5 @@
+
+import 'package:cozytask/components/backbutton.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -83,18 +85,11 @@ class _AddTaskState extends State<AddTask> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Padding(
-            padding: EdgeInsetsGeometry.all(30),
-          ),
-
           // Back Button
-          Container(
-            padding: const EdgeInsets.all(15),
-            alignment: Alignment.centerLeft,
-            child: Image.asset(
-              'assets/icon/BackButton.png',
-              height: 30,
-            ),
+          CustomBackButton(),
+
+          Padding(
+            padding: EdgeInsetsGeometry.all(15),
           ),
 
           // Title

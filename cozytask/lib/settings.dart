@@ -1,3 +1,5 @@
+
+import 'package:cozytask/components/backbutton.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,24 +18,14 @@ class SettingsPage extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GillSansMT',
       ),
-      
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 60),
-
               // Back Button
-              SizedBox(
-                width: 350,
-                child: Image.asset(
-                  'assets/icon/BackButton.png',
-                  height: 30,
-                  alignment: Alignment.centerLeft,
-                ),
-              ),
+              CustomBackButton(),
 
               // Account Settings
               Container(
