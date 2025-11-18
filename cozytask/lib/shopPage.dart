@@ -1,3 +1,5 @@
+import 'package:cozytask/components/backbutton.dart';
+import 'package:cozytask/components/bottomnavbar.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const ShopPage());
@@ -15,7 +17,18 @@ class ShopPage extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GillSansMT',
       ),
-      home: const Scaffold(body: ShoppingPage()),
+      home: Scaffold(
+        body: Center(
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: ShoppingPage()
+              ),
+              BottomNavBar()
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -35,25 +48,31 @@ class _ShoppingPageState extends State<ShoppingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 80), // adjust to taste
-      child: Align(
-        alignment: Alignment.topCenter,
-        child: Container(
-          width: 375,
-          height: 725, // smaller height
+    return Column(
+      children: <Widget>[
+        CustomBackButton(),
+
+        const SizedBox(height: 15),
+
+        Container(
+          width: 360,
+          height: 650, // smaller height
           decoration: BoxDecoration(
             color: const Color(0xFF004562),
             borderRadius: BorderRadius.circular(15),
           ),
           child: Column(
             children: [
+              Padding(
+                padding: EdgeInsetsGeometry.symmetric(vertical: 5),
+              ),
+              
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/img/COZY TASK LOGO WHITE.png',
-                    height: 75,
+                    'assets/img/COZY_TASK_LOGO_WHITE.png',
+                    height: 65,
                   ),
                   const Text(
                     'STORE',
@@ -65,8 +84,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
-
+              const SizedBox(height: 5),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Row(
@@ -83,8 +101,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                   ],
                 ),
               ),
-              const SizedBox(height: 10),
-
+              const SizedBox(height: 5),
               // SCROLLABLE PRODUCT GRID  //
               Expanded(
                 child: Container(
@@ -96,7 +113,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                       bottomRight: Radius.circular(15),
                     ),
                   ),
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(10),
                   child: GridView.builder(
                     itemCount: _products.length,
                     gridDelegate:
@@ -113,7 +130,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
             ],
           ),
         ),
-      ),
+      ]
     );
   }
 
@@ -133,16 +150,16 @@ class _ShoppingPageState extends State<ShoppingPage> {
             color: Color(0xFF5b8cdb),
             size: 60,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 3),
           Text(
             data['name'],
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: 18,
               color: Color(0xFF004562),
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 2),
           Text(
             'Price: ${data['price']}',
             style: const TextStyle(fontSize: 14, color: Color(0xFF004562)),

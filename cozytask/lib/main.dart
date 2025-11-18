@@ -1,10 +1,8 @@
-import 'package:cozytask/dashboard2.dart';
+import 'package:cozytask/chooseaccount.dart';
+import 'package:cozytask/dashboard.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cozytask/signup.dart';
-import 'package:cozytask/dashboard.dart';
-import 'package:cozytask/viewTask.dart';
-import 'package:cozytask/shopPage.dart';
 
 void main() {
   runApp(const MainPage());
@@ -22,7 +20,7 @@ class MainPage extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GillSansMT',
       ),
-      home: Scaffold(body: Center(child: const ShopPage())),
+      home: Scaffold(body: Center(child: const Login())),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -73,7 +71,9 @@ class _LoginState extends State<Login> {
           width: 300,
           height: 50,
           child: TextField(
+            maxLines: 1,
             decoration: InputDecoration(
+              isDense: true,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(width: 0, style: BorderStyle.none),
@@ -100,7 +100,9 @@ class _LoginState extends State<Login> {
           height: 50,
           child: TextField(
             obscureText: true,
+            maxLines: 1,
             decoration: InputDecoration(
+              isDense: true,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(width: 0, style: BorderStyle.none),
@@ -130,7 +132,12 @@ class _LoginState extends State<Login> {
         Padding(padding: EdgeInsets.all(15)),
 
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DashboardPage()),
+            );
+          },
           style: ElevatedButton.styleFrom(
             minimumSize: Size(220, 40),
             backgroundColor: Color(0XFF68A3BC),
@@ -148,7 +155,12 @@ class _LoginState extends State<Login> {
         Padding(padding: EdgeInsets.all(5)),
 
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ChooseAccPage()),
+            );
+          },
           style: ElevatedButton.styleFrom(
             minimumSize: Size(220, 40),
             backgroundColor: Color(0XFF68A3BC),

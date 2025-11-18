@@ -62,12 +62,18 @@ flutter:
     - assets/img/COZY_TASK_LOGO.png
     - assets/img/COZY_TASK_TEXT_BLUE_LOGO.png
     - assets/img/COZY_TASK_FULL_LOGO.png
-    - assets/img/COZY TASK LOGO WHITE.png
+    - assets/img/COZY_TASK_LOGO_WHITE.png
 
     - assets/icon/Filter.png
     - assets/icon/Remove.png
     - assets/icon/Percentage.png
     - assets/icon/Search.png
+    - assets/icon/BackButton.png
+    - assets/icon/Profile.png
+    - assets/icon/ChangePassword.png
+    - assets/icon/Help.png
+    - assets/icon/About.png
+    - assets/icon/UserProfile.png
 
     - assets/icon/minipercentage/1.png
     - assets/icon/minipercentage/2.png

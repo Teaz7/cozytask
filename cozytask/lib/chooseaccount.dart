@@ -1,3 +1,4 @@
+import 'package:cozytask/dashboard.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -72,7 +73,10 @@ class _ChooseAccountState extends State<ChooseAccount> {
           height: 65,
           child: ElevatedButton(
               onPressed: () {
-
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DashboardPage()),
+                );
             },
             style: ElevatedButton.styleFrom(
               minimumSize: Size(300, 60),
