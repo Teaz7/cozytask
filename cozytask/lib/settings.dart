@@ -16,6 +16,7 @@ class SettingsPage extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GillSansMT',
       ),
+      
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: SingleChildScrollView(

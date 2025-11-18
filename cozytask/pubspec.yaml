@@ -72,6 +72,7 @@ flutter:
     - assets/icon/ChangePassword.png
     - assets/icon/Help.png
     - assets/icon/About.png
+    - assets/icon/UserProfile.png
 
     - assets/icon/minipercentage/1.png
     - assets/icon/minipercentage/2.png

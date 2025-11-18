@@ -1,5 +1,6 @@
 import 'package:cozytask/addTask.dart';
 import 'package:cozytask/dashboard2.dart';
+import 'package:cozytask/profile.dart';
 import 'package:cozytask/settings.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class MainPage extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GillSansMT',
       ),
-      home: Scaffold(body: Center(child: const SettingsPage())),
+      home: Scaffold(body: Center(child: const ProfilePage())),
       debugShowCheckedModeBanner: false,
     );
   }
