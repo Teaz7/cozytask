@@ -1,12 +1,13 @@
+import 'package:cozytask/components/backbutton.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(const ViewTaskApp());
+void main() => runApp(const ViewTaskPage());
 
 /* -------------------------------------------------- */
 /*  App shell                                         */
 /* -------------------------------------------------- */
-class ViewTaskApp extends StatelessWidget {
-  const ViewTaskApp({super.key});
+class ViewTaskPage extends StatelessWidget {
+  const ViewTaskPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,11 @@ class ViewTaskApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GillSansMT',
       ),
-      home: const Scaffold(body: Center(child: ViewTask())),
+      home: const Scaffold(
+        body: Center(
+          child: ViewTask()
+        )
+      ),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -56,17 +61,7 @@ class _ViewTaskState extends State<ViewTask> {
     return Column(
       children: <Widget>[
         /* ---- back arrow ---- */
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 25, top: 50),
-            child: Icon(
-              Icons.arrow_back,
-              color: const Color(0xFF004562),
-              size: 50,
-            ),
-          ),
-        ),
+        CustomBackButton(),
 
         const SizedBox(height: 10),
 
