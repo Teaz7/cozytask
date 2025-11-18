@@ -3,9 +3,9 @@ import 'package:cozytask/components/bottomnavbar.dart';
 import 'package:cozytask/components/taskwidget.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() { 
   runApp(const DashboardPage());
-}
+} 
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -178,6 +178,7 @@ class _DashboardState extends State<Dashboard> {
               fontWeight: FontWeight.bold,
               fontSize: 21
               ),
+              
             ),
         ),
       ],
