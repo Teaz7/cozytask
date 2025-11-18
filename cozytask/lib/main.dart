@@ -1,7 +1,8 @@
+import 'package:cozytask/chooseaccount.dart';
+import 'package:cozytask/dashboard.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cozytask/signup.dart';
-import 'package:cozytask/dashboard.dart';
 
 void main() {
   runApp(const MainPage());
@@ -19,7 +20,7 @@ class MainPage extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GillSansMT',
       ),
-      home: Scaffold(body: Center(child: const DashboardPage())),
+      home: Scaffold(body: Center(child: const Login())),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -131,7 +132,12 @@ class _LoginState extends State<Login> {
         Padding(padding: EdgeInsets.all(15)),
 
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DashboardPage()),
+            );
+          },
           style: ElevatedButton.styleFrom(
             minimumSize: Size(220, 40),
             backgroundColor: Color(0XFF68A3BC),
@@ -149,7 +155,12 @@ class _LoginState extends State<Login> {
         Padding(padding: EdgeInsets.all(5)),
 
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ChooseAccPage()),
+            );
+          },
           style: ElevatedButton.styleFrom(
             minimumSize: Size(220, 40),
             backgroundColor: Color(0XFF68A3BC),

@@ -1,3 +1,8 @@
+import 'package:cozytask/dashboard.dart';
+import 'package:cozytask/main.dart';
+import 'package:cozytask/profile.dart';
+import 'package:cozytask/settings.dart';
+import 'package:cozytask/shopPage.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -29,7 +34,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           width: 200,
           height: 3,
           decoration: BoxDecoration(
-            color: Colors.white54,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(2),
           ),
         ),
@@ -38,8 +43,36 @@ class _BottomNavBarState extends State<BottomNavBar> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _tile(Icons.home, 'Home'),
-            _tile(Icons.store, 'Store'),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DashboardPage()),
+                );
+              },
+              child: _tile(Icons.home, 'Home'),
+            ),
+
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ShopPage()),
+                );
+              },
+              child: _tile(Icons.store, 'Store'),
+            ),
+
+            // GestureDetector(
+            //   onTap: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(builder: (context) => ),
+            //     );
+            //   },
+            //   child: ,
+            // ),
+
             _tile(Icons.calendar_today, 'Calendar'),
           ],
         ),
@@ -48,9 +81,35 @@ class _BottomNavBarState extends State<BottomNavBar> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _tile(Icons.settings, 'Settings'),
-            _tile(Icons.person, 'Profile'),
-            _tile(Icons.logout_outlined, 'Logout'),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SettingsPage()),
+                );
+              },
+              child: _tile(Icons.settings, 'Settings'),
+            ),
+
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfilePage()),
+                );
+              },
+              child: _tile(Icons.person, 'Profile'),
+            ),
+
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MainPage()),
+                );
+              },
+              child: _tile(Icons.logout_outlined, 'Logout'),
+            ),
           ],
         ),
       ],
@@ -85,7 +144,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             children: [
               Container(
                 width: double.infinity,
-                height: 100,
+                height: 80,
                 decoration: BoxDecoration(
                   color: Color(0XFF004463),
                   borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -101,7 +160,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                       height: 3,
                       width: 200,
                       decoration: BoxDecoration(
-                        color: Colors.white54
+                        color: Colors.white
                       ),
                     ),    
                   ],

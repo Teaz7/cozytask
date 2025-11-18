@@ -1,3 +1,4 @@
+import 'package:cozytask/viewTask.dart';
 import 'package:flutter/material.dart';
 
 class TaskWidget extends StatefulWidget {
@@ -189,27 +190,35 @@ class _TaskWidgetState extends State<TaskWidget> {
                   children: <Widget>[
                     Column(
                       children: <Widget>[
-                        Container(
-                          width: 150,
-                          height: 35,
-                          decoration: BoxDecoration(
-                            color: Color(0XFF68A3BC),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                'View Task',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  fontSize: 18
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ViewTaskPage()),
+                            );
+                          },
+                          child: Container(
+                            width: 150,
+                            height: 35,
+                            decoration: BoxDecoration(
+                              color: Color(0XFF68A3BC),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'View Task',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 18
+                                  ),
                                 ),
-                              ),
-                            ],
-                          )
+                              ],
+                            )
+                          ),
                         )
                       ],
                     ),
