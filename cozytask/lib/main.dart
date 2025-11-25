@@ -1,5 +1,10 @@
+import 'package:cozytask/changePassword.dart';
 import 'package:cozytask/chooseaccount.dart';
 import 'package:cozytask/dashboard.dart';
+import 'package:cozytask/editProfile.dart';
+import 'package:cozytask/enterCode.dart';
+import 'package:cozytask/forgotPassword';
+import 'package:cozytask/newPassword.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cozytask/signup.dart';
