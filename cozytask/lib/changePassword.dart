@@ -109,7 +109,7 @@ class changePasswordPage extends StatelessWidget {
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                "Maximum of 10 characters",
+                                "Mainimum of 10 characters",
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontStyle: FontStyle.italic,

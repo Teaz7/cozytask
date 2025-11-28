@@ -62,21 +62,21 @@ class enterCodePage extends StatelessWidget {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
                           borderSide: BorderSide(
-                            color: Color(0XFF004463), // visible border color
+                            color: Color(0XFF004463), 
                             width: 1,
                           ),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
                           borderSide: BorderSide(
-                            color: Color(0XFF004463), // border when not focused
+                            color: Color(0XFF004463), 
                             width: 1,
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
                           borderSide: BorderSide(
-                            color: Color(0XFF004463), // border when focused
+                            color: Color(0XFF004463), 
                             width: 2,
                           ),
                         ),
@@ -88,7 +88,7 @@ class enterCodePage extends StatelessWidget {
 
                 const SizedBox(height: 10),
 
-                // "Didn't receive a code? Resend."
+                // Note
                 Center(
                   child: RichText(
                     textAlign: TextAlign.center,
