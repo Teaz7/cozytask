@@ -1,6 +1,7 @@
 import 'package:cozytask/addTask.dart';
 import 'package:cozytask/components/bottomnavbar.dart';
 import 'package:cozytask/components/taskwidget.dart';
+import 'package:cozytask/searchResult.dart';
 import 'package:flutter/material.dart';
 
 void main() { 
@@ -125,7 +126,10 @@ class _DashboardState extends State<Dashboard> {
 
             ElevatedButton(
               onPressed: () {
-
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SearchResultPage()),
+                );
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(90, 35),
