@@ -1,6 +1,7 @@
 import 'package:cozytask/components/backbutton.dart';
 import 'package:cozytask/components/bottomnavbar.dart';
 import 'package:flutter/material.dart';
+import 'package:cozytask/StoreItemDetailPage.dart';
 
 void main() => runApp(const ShopPage());
 
@@ -21,10 +22,8 @@ class ShopPage extends StatelessWidget {
         body: Center(
           child: Stack(
             children: [
-              Positioned.fill(
-                child: ShoppingPage()
-              ),
-              BottomNavBar()
+              Positioned.fill(child: ShoppingPage()),
+              BottomNavBar(),
             ],
           ),
         ),
@@ -63,10 +62,8 @@ class _ShoppingPageState extends State<ShoppingPage> {
           ),
           child: Column(
             children: [
-              Padding(
-                padding: EdgeInsetsGeometry.symmetric(vertical: 5),
-              ),
-              
+              Padding(padding: EdgeInsetsGeometry.symmetric(vertical: 5)),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -130,41 +127,48 @@ class _ShoppingPageState extends State<ShoppingPage> {
             ],
           ),
         ),
-      ]
+      ],
     );
   }
 
   /* --------------------  WIDGET HELPERS  -------------------- */
   Widget _productCard(Map<String, dynamic> data) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFacd1fc),
-        borderRadius: BorderRadius.circular(15),
-      ),
-      padding: const EdgeInsets.all(12),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.person_2_outlined,
-            color: Color(0xFF5b8cdb),
-            size: 60,
-          ),
-          const SizedBox(height: 3),
-          Text(
-            data['name'],
-            style: const TextStyle(
-              fontSize: 18,
-              color: Color(0xFF004562),
-              fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (context) => StoreItem()));
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: const Color(0xFFacd1fc),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.person_2_outlined,
+              color: Color(0xFF5b8cdb),
+              size: 60,
             ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            'Price: ${data['price']}',
-            style: const TextStyle(fontSize: 14, color: Color(0xFF004562)),
-          ),
-        ],
+            const SizedBox(height: 3),
+            Text(
+              data['name'],
+              style: const TextStyle(
+                fontSize: 18,
+                color: Color(0xFF004562),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              'Price: ${data['price']}',
+              style: const TextStyle(fontSize: 14, color: Color(0xFF004562)),
+            ),
+          ],
+        ),
       ),
     );
   }
