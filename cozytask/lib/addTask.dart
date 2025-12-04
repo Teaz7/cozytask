@@ -1,4 +1,5 @@
 import 'package:cozytask/components/backbutton.dart';
+import 'package:cozytask/dashboard.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -49,7 +50,7 @@ class _AddTaskState extends State<AddTask> {
     required VoidCallback onTap,
   }) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {},
       child: Container(
         width: 150,
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 12),
@@ -154,12 +155,14 @@ class _AddTaskState extends State<AddTask> {
           const SizedBox(height: 10),
 
           // Date Labels
-          Padding(
-            padding: const EdgeInsets.only(right: 193, left: 105),
+          Container(
+            alignment: Alignment.center,
+            width: 300,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: const [
                 Text('Start Date:', style: TextStyle(fontSize: 14)),
+                SizedBox(width: 95),
                 Text('End Date:', style: TextStyle(fontSize: 14)),
               ],
             ),
@@ -298,6 +301,11 @@ class _AddTaskState extends State<AddTask> {
                     ),
                   );
                 },
+              );
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DashboardPage()),
               );
             },
             style: ElevatedButton.styleFrom(

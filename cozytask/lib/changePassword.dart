@@ -1,4 +1,4 @@
-import 'package:cozytask/components/backbutton.dart';
+import 'package:cozytask/components/backbutton_login.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -30,7 +30,7 @@ class changePasswordPage extends StatelessWidget {
 
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
-                  child: CustomBackButton(),
+                  child: ReturnLoginButton(),
                 ),
 
                 Center(

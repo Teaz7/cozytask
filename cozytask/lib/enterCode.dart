@@ -1,4 +1,5 @@
-import 'package:cozytask/components/backbutton.dart'; 
+import 'package:cozytask/components/backbutton_login.dart';
+import 'package:cozytask/newPassword.dart'; 
 import 'package:flutter/material.dart';
 
 void main() {
@@ -28,7 +29,7 @@ class enterCodePage extends StatelessWidget {
 
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
-                  child: CustomBackButton(),
+                  child: ReturnLoginButton(),
                 ),
 
                 const SizedBox(height: 30),
@@ -114,7 +115,12 @@ class enterCodePage extends StatelessWidget {
                 // Button
                 Center(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => newPasswordPage()),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size(320, 40),
                       backgroundColor: const Color(0XFF004463),
