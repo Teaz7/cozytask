@@ -1,5 +1,5 @@
-
 import 'package:cozytask/components/backbutton.dart';
+import 'package:cozytask/dashboard.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -50,7 +50,7 @@ class _AddTaskState extends State<AddTask> {
     required VoidCallback onTap,
   }) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {},
       child: Container(
         width: 150,
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 12),
@@ -63,16 +63,9 @@ class _AddTaskState extends State<AddTask> {
           children: [
             Text(
               formatDate(date),
-              style: const TextStyle(
-                fontSize: 14,
-                color: Colors.black,
-              ),
+              style: const TextStyle(fontSize: 14, color: Colors.black),
             ),
-            const Icon(
-              Icons.arrow_drop_down,
-              color: Colors.black,
-              size: 25,
-            ),
+            const Icon(Icons.arrow_drop_down, color: Colors.black, size: 25),
           ],
         ),
       ),
@@ -81,16 +74,13 @@ class _AddTaskState extends State<AddTask> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView( 
+    return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          // Back Button
           CustomBackButton(),
 
-          Padding(
-            padding: EdgeInsetsGeometry.all(15),
-          ),
+          const SizedBox(height: 15),
 
           // Title
           Container(
@@ -107,59 +97,43 @@ class _AddTaskState extends State<AddTask> {
             ),
           ),
 
-          // Task Name Label
+          // Label
           Container(
             width: 320,
             alignment: Alignment.centerLeft,
-            child: const Text(
-              'Task Name',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.normal,
-                color: Color(0XFF000000),
-              ),
-            ),
+            child: const Text('Task Name',
+                style: TextStyle(fontSize: 14, color: Colors.black)),
           ),
 
-          // Task Name Field
+          // Task Field
           Container(
             width: 320,
             height: 40,
-            alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: Color(0XFFD8E8F4),
-              borderRadius: BorderRadius.circular(5)
+              color: const Color(0XFFD8E8F4),
+              borderRadius: BorderRadius.circular(5),
             ),
-            child: Container(
+            child: const Padding(
               padding: EdgeInsets.all(5),
               child: TextField(
                 maxLines: 1,
                 decoration: InputDecoration(
                   isDense: true,
                   isCollapsed: true,
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 0,
-                      style: BorderStyle.none
-                    )
-                  ),
+                  border: OutlineInputBorder(borderSide: BorderSide.none),
                 ),
               ),
-            )
+            ),
           ),
 
-          // Description Label
+          const SizedBox(height: 10),
+
+          // Description
           Container(
             width: 320,
             alignment: Alignment.centerLeft,
-            child: const Text(
-              'Description',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.normal,
-                color: Color(0XFF000000),
-              ),
-            ),
+            child: const Text('Description',
+                style: TextStyle(fontSize: 14, color: Colors.black)),
           ),
 
           // Description Field
@@ -170,143 +144,107 @@ class _AddTaskState extends State<AddTask> {
               maxLines: 5,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide.none,
-                ),
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide.none),
                 filled: true,
                 fillColor: const Color(0XFFD8E8F4),
               ),
             ),
           ),
 
-          const Padding(padding: EdgeInsets.all(5)),
+          const SizedBox(height: 10),
 
-          // Start & End date labels
+          // Date Labels
           Container(
-            padding: const EdgeInsets.only(right: 142, left: 55),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  'Start Date:',
-                  style: TextStyle(fontSize: 14, color: Colors.black),
-                ),
-
-                Text(  
-                  'End Date:',
-                  style: TextStyle(fontSize: 14, color: Colors.black),
-                  
-                ),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: 3),
-
-          // Date 
-          Container(
-            width: 320,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // START DATE
-                datePickerBox(
-                  date: startDate,
-                  onTap: () async {
-                    DateTime? picked = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime(2100),
-                    );
-                    if (picked != null) {
-                      setState(() => startDate = picked);
-                    }
-                  },
-                ),
-
-                Padding(
-                  padding: EdgeInsetsGeometry.all(5),
-                ),
-
-                // END DATE
-                datePickerBox(
-                  date: endDate,
-                  onTap: () async {
-                    DateTime? picked = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime(2100),
-                    );
-                    if (picked != null) {
-                      setState(() => endDate = picked);
-                    }
-                  },
-                ),
-              ],
-            ),
-          ),
-
-          // Prioritization Label
-          Container(
+            alignment: Alignment.center,
             width: 300,
-            padding: const EdgeInsets.only(top: 15),
-            alignment: Alignment.centerLeft,
-            child: const Text(
-              'Prioritization',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.normal,
-                color: Color(0XFF000000),
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: const [
+                Text('Start Date:', style: TextStyle(fontSize: 14)),
+                SizedBox(width: 95),
+                Text('End Date:', style: TextStyle(fontSize: 14)),
+              ],
             ),
           ),
+
+          const SizedBox(height: 5),
 
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 15),
+              datePickerBox(
+                date: startDate,
+                onTap: () async {
+                  DateTime? picked = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100),
+                  );
+                  if (picked != null) setState(() => startDate = picked);
+                },
+              ),
+              const SizedBox(width: 10),
+              datePickerBox(
+                date: endDate,
+                onTap: () async {
+                  DateTime? picked = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100),
+                  );
+                  if (picked != null) setState(() => endDate = picked);
+                },
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 15),
+
+          // Prioritization
+          Container(
+            width: 300,
+            alignment: Alignment.centerLeft,
+            child: const Text('Prioritization',
+                style: TextStyle(fontSize: 14)),
+          ),
+
+          // Checkboxes
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
               for (var index = 0; index < priority.length; index++)
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Row(
-                    children: [
-                      Checkbox(
-                        value: selectedPriorityIndex == index,
-                        onChanged: (val) {
-                          setState(() {
-                            if (val == true) {
-                              selectedPriorityIndex = index;
-                            } else {
-                              selectedPriorityIndex = null;
-                            }
-                          });
-                        },
-                        fillColor:
-                            WidgetStateProperty.resolveWith<Color>((states) {
-                          if (states.contains(WidgetState.selected)) {
-                            return const Color(0XFF004463); 
-                          }
-                          return const Color.fromARGB(255, 255, 253, 253); 
-                        }),
-                      ),
-                      Text(
-                        priority[index],
-                        style: const TextStyle(fontSize: 14),
-                      ),
-                    ],
-                  ),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: selectedPriorityIndex == index,
+                      onChanged: (val) {
+                        setState(() {
+                          selectedPriorityIndex =
+                              val == true ? index : null;
+                        });
+                      },
+                      fillColor:
+                          WidgetStateProperty.resolveWith<Color>((states) {
+                        if (states.contains(WidgetState.selected)) {
+                          return const Color(0XFF004463);
+                        }
+                        return Colors.white;
+                      }),
+                    ),
+                    Text(priority[index]),
+                    const SizedBox(width: 5),
+                  ],
                 ),
             ],
           ),
 
-          const Padding(padding: EdgeInsets.all(5)),
+          const SizedBox(height: 10),
 
           // Subtask 
           Container(
-            padding: const EdgeInsets.only(left: 5),
             width: 320,
             height: 40,
             child: Row(
@@ -316,13 +254,12 @@ class _AddTaskState extends State<AddTask> {
                     decoration: InputDecoration(
                       hintText: 'Add Subtask...',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide.none,
-                      ),
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide.none),
                       filled: true,
                       fillColor: const Color(0XFFD8E8F4),
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
                     ),
                   ),
                 ),
@@ -334,65 +271,146 @@ class _AddTaskState extends State<AddTask> {
                     backgroundColor: const Color(0XFF004463),
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
+                        borderRadius: BorderRadius.circular(5)),
                   ),
                   child: const Text(
                     '+',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 21,
-                    ),
+                        fontWeight: FontWeight.bold, fontSize: 21),
                   ),
                 ),
               ],
             ),
           ),
 
-          const Padding(padding: EdgeInsets.all(20)),
+          const SizedBox(height: 50),
 
-          // ADD TASK 
+          // Custom Dialog
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                context: context,
+                barrierDismissible: true,
+                builder: (BuildContext context) {
+                  return CustomDialog(
+                    title: "TASK ADDED\nSUCCESSFULLY!",
+                    message: "Click anywhere to continue...",
+                    image: Image.asset(
+                      'assets/img/COZY_TASK_LOGO.png',
+                      width: 100,
+                    ),
+                  );
+                },
+              );
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DashboardPage()),
+              );
+            },
             style: ElevatedButton.styleFrom(
-              minimumSize: const Size(220, 40),
+              minimumSize: const Size(260, 40),
               backgroundColor: const Color(0XFF004463),
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
+                  borderRadius: BorderRadius.circular(10)),
             ),
             child: const Text(
               'ADD TASK',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 21,
-              ),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 21),
             ),
           ),
 
-          const Padding(padding: EdgeInsets.all(5)),
+          const SizedBox(height: 15),
 
-          // CANCEL 
+          // Cancel
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
-              minimumSize: const Size(220, 40),
+              minimumSize: const Size(260, 40),
               backgroundColor: const Color(0XFF7B7B7B),
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
+                  borderRadius: BorderRadius.circular(10)),
             ),
             child: const Text(
               'CANCEL',
               style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 21,
+                  fontWeight: FontWeight.bold, fontSize: 21),
+            ),
+          ),
+
+          const SizedBox(height: 20),
+        ],
+      ),
+    );
+  }
+}
+
+class CustomDialog extends StatelessWidget {
+  final String title;
+  final String message;
+  final Image? image;
+
+  const CustomDialog({
+    super.key,
+    required this.title,
+    required this.message,
+    this.image,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pop(),
+      child: Material(
+        color: Colors.black.withOpacity(0.3),
+        child: Center(
+          child: GestureDetector(
+            onTap: () {},
+            child: Container(
+              width: 350,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    height: 110,
+                    child: image ??
+                        Image.asset(
+                          "assets/img/COZY_TASK_LOGO.png",
+                          fit: BoxFit.contain,
+                        ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0XFF004463),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    message,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.black54,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                ],
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }
