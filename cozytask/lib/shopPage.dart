@@ -1,7 +1,7 @@
-import 'package:cozytask/components/backbutton.dart';
+import 'package:cozytask/components/backButton.dart';
 import 'package:cozytask/components/bottomnavbar.dart';
 import 'package:flutter/material.dart';
-import 'package:cozytask/StoreItemDetailPage.dart';
+import 'package:cozytask/storeItem.dart';
 
 void main() => runApp(const ShopPage());
 
