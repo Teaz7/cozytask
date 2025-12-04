@@ -1,9 +1,9 @@
-import 'package:cozytask/chooseaccount.dart';
+import 'package:cozytask/chooseAccount.dart';
 import 'package:cozytask/dashboard.dart';
 import 'package:cozytask/forgotPassword.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:cozytask/signup.dart';
+import 'package:cozytask/signUp.dart';
 
 void main() {
   runApp(const MainPage());
