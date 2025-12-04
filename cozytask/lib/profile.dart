@@ -17,9 +17,7 @@ class ProfilePage extends StatelessWidget {
         fontFamily: 'GillSansMT',
       ),
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Profile()
-      ),
+      home: Scaffold(body: const Profile()),
     );
   }
 }
@@ -32,20 +30,31 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  List<String> labels = ['Account ID', 'Year Level', 'University', 'Rank', 'Current Points'];
-  List<String> personalInfo = ['21','3rd-year Student', 'West Visayas State University', '#3', '2100 points'];
-  
+  final List<String> labels = [
+    'Account ID',
+    'Year Level',
+    'University',
+    'Rank',
+    'Current Points'
+  ];
+  final List<String> personalInfo = [
+    '21',
+    '3rd-year Student',
+    'West Visayas State University',
+    '#3',
+    '2100 points'
+  ];
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          // Back button
-          CustomBackButton(),
+          const CustomBackButton(),
 
-          SizedBox(height: 10,),
+          const SizedBox(height: 10),
 
-          // Profile container
+          
           Container(
             width: 320,
             padding: const EdgeInsets.all(15),
@@ -68,12 +77,11 @@ class _ProfileState extends State<Profile> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                // Profile Icon
+                
                 Image.asset(
                   'assets/icon/UserProfile.png',
                   width: 120,
                 ),
-                // Name
                 const Text(
                   'Pzalm Franzenne',
                   style: TextStyle(
@@ -82,7 +90,6 @@ class _ProfileState extends State<Profile> {
                     color: Color(0XFF004463),
                   ),
                 ),
-                // Email
                 const Text(
                   'pzalmfranzenne@gmail.com',
                   style: TextStyle(
@@ -91,16 +98,18 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 const SizedBox(height: 15),
+
                 Column(
                   children: List.generate(labels.length, (i) {
                     return Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 5),
                       child: Row(
                         children: [
                           Expanded(
                             flex: 4,
                             child: Text(
-                              labels[i] + ":",
+                              '${labels[i]}:',
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13.5,
@@ -112,8 +121,7 @@ class _ProfileState extends State<Profile> {
                             height: 20,
                             width: 1,
                             color: const Color(0xFF68A3BC),
-                            margin:
-                                const EdgeInsets.symmetric(horizontal: 10),
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
                           ),
                           Expanded(
                             flex: 6,
@@ -134,7 +142,9 @@ class _ProfileState extends State<Profile> {
               ],
             ),
           ),
+
           const SizedBox(height: 10),
+
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
@@ -145,7 +155,6 @@ class _ProfileState extends State<Profile> {
                 borderRadius: BorderRadius.circular(5),
               ),
             ),
-            //Leaderboard
             child: const Text(
               'View Leaderboard',
               style: TextStyle(
@@ -154,7 +163,9 @@ class _ProfileState extends State<Profile> {
               ),
             ),
           ),
+
           const SizedBox(height: 5),
+
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
@@ -165,7 +176,6 @@ class _ProfileState extends State<Profile> {
                 borderRadius: BorderRadius.circular(5),
               ),
             ),
-            //History
             child: const Text(
               'View History',
               style: TextStyle(
@@ -174,8 +184,9 @@ class _ProfileState extends State<Profile> {
               ),
             ),
           ),
+
           const SizedBox(height: 5),
-        
+
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -191,7 +202,7 @@ class _ProfileState extends State<Profile> {
                     ),
                   ),
                   child: const Text(
-                    'Edit Account', //Edit
+                    'Edit Account',
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
@@ -200,23 +211,135 @@ class _ProfileState extends State<Profile> {
               SizedBox(
                 width: 165,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (context) {
+                        return CustomDialog(
+                          title: "REMOVING\nACCOUNT",
+                          message:
+                              "Are you sure you want to\nremove this account?",
+                          onConfirm: () {
+                            Navigator.of(context).pop();
+                            
+                            print("Account removed!");
+                          },
+                          onCancel: () {
+                            Navigator.of(context).pop();
+                          },
+                        );
+                      },
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0XFF68A3BC),
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
+                        borderRadius: BorderRadius.circular(5)),
                   ),
                   child: const Text(
-                    'Remove Account', //Remove
+                    'Remove Account',
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
               ),
             ],
           ),
+
+          const SizedBox(height: 20),
         ],
+      ),
+    );
+  }
+}
+
+class CustomDialog extends StatelessWidget {
+  final String title;
+  final String message;
+  final VoidCallback onConfirm;
+  final VoidCallback onCancel;
+
+  const CustomDialog({
+    super.key,
+    required this.title,
+    required this.message,
+    required this.onConfirm,
+    required this.onCancel,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {}, 
+      child: Material(
+        color: Colors.black.withOpacity(0.3),
+        child: Center(
+          child: Container(
+            width: 330,
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(25),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0XFF004463),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  message,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    color: Colors.black54,
+                  ),
+                ),
+                const SizedBox(height: 25),
+                ElevatedButton(
+                  onPressed: onConfirm,
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(260, 40),
+                    backgroundColor: const Color(0XFF004463),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                  ),
+                  child: const Text(
+                    'CONFIRM',
+                    style: TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                ElevatedButton(
+                  onPressed: onCancel,
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(260, 40),
+                    backgroundColor: const Color(0XFF7B7B7B),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                  ),
+                  child: const Text(
+                    'CANCEL',
+                    style: TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(height: 10),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

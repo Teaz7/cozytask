@@ -1,5 +1,6 @@
 import 'package:cozytask/chooseaccount.dart';
 import 'package:cozytask/dashboard.dart';
+import 'package:cozytask/forgotPassword.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cozytask/signup.dart';
@@ -118,15 +119,23 @@ class _LoginState extends State<Login> {
           padding: EdgeInsets.symmetric(vertical: 5),
           width: 300,
           alignment: Alignment.centerRight,
-          child: Text(
-            'Forgot Password?',
-            style: TextStyle(
-              decoration: TextDecoration.underline,
-              color: Color(0XFF898989),
-              decorationColor: Color(0XFF898989),
-              fontWeight: FontWeight.bold,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => forgotPasswordPage()),
+              );
+            },
+            child: Text(
+              'Forgot Password?',
+              style: TextStyle(
+                decoration: TextDecoration.underline,
+                color: Color(0XFF898989),
+                decorationColor: Color(0XFF898989),
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
+          )
         ),
 
         Padding(padding: EdgeInsets.all(15)),
