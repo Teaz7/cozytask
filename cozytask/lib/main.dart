@@ -1,4 +1,5 @@
 import 'package:cozytask/addTask.dart';
+import 'package:cozytask/calendar.dart';
 import 'package:cozytask/changePassword.dart';
 import 'package:cozytask/chooseaccount.dart';
 import 'package:cozytask/dashboard.dart';
@@ -27,7 +28,7 @@ class MainPage extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GillSansMT',
       ),
-      home: Scaffold(body: Center(child: const Login())),
+      home: Scaffold(body: Center(child: const CalendarPage())),
       debugShowCheckedModeBanner: false,
     );
   }
