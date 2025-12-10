@@ -1,4 +1,7 @@
-import 'package:cozytask/chooseAccount.dart';
+import 'package:cozytask/addTask.dart';
+import 'package:cozytask/changePassword.dart';
+import 'package:cozytask/chooseaccount.dart';
+import 'package:cozytask/calendar.dart';
 import 'package:cozytask/dashboard.dart';
 import 'package:cozytask/forgotPassword.dart';
 import 'package:flutter/gestures.dart';
