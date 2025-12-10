@@ -1,6 +1,9 @@
+import 'package:cozytask/database/dbHelper.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cozytask/main.dart';
+import 'package:flutter/services.dart';
+import 'database/models/userModel.dart';
 
 void main() {
   runApp(const SignUpPage());
@@ -36,9 +39,68 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  List<String> fields = ['Username:', 'Email Address:', 'University:', 'Year Level:', 'Password:', 'Confirm Password:'];
+  List<TextInputType> fieldType = [TextInputType.text, TextInputType.emailAddress, TextInputType.text, TextInputType.number, TextInputType.text, TextInputType.text];
+  List<User> users = [];
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController universityController = TextEditingController();
+  TextEditingController yearController = TextEditingController();
+  TextEditingController passController = TextEditingController();
+  TextEditingController confirmController = TextEditingController();
+
+  bool fieldsEmpty() {
+    if (nameController.text.isEmpty || emailController.text.isEmpty || universityController.text.isEmpty || yearController.text.isEmpty || passController.text.isEmpty || confirmController.text.isEmpty) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadUsers();
+  }
+  
+  Future<void> loadUsers() async {
+    final data = await DBHelper.instance.readAllUser();
+    setState(() {
+      users = data;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<String> fields = ['Username:', 'Email Address:', 'University:', 'Year Level:', 'Password:', 'Confirm Password:'];
+    List<TextEditingController> controllers = [nameController, emailController, universityController, yearController, passController, confirmController];
+
+    void clearController() async {
+      for (var i in controllers) {
+        i.clear();
+      }
+    }
+
+    void addUser() async {
+      if (!fieldsEmpty()) {
+        if (passController.text == confirmController.text) {
+          await DBHelper.instance.createUser(User(
+            name: nameController.text,
+            password: passController.text,
+            email: emailController.text,
+            university: universityController.text,
+            year: int.parse(yearController.text),
+            points: 0,
+            loginstatus: 'Logged Out',
+            petid: null
+          ));
+          clearController();
+          loadUsers();
+          print("Database updated!");
+        }
+      }
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
@@ -72,8 +134,8 @@ class _SignUpState extends State<SignUp> {
           ),
         ),
 
-        //for loop here -T
-        for (var i in fields) Container(
+        //Text Fields for looped
+        for (int i = 0; i < fields.length; i++) Container(
           padding: EdgeInsets.symmetric(vertical: 5),
           child: Column(
             children: <Widget>[
@@ -82,7 +144,7 @@ class _SignUpState extends State<SignUp> {
                 width: 300,
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  i,
+                  fields[i],
                   style: TextStyle(
                     fontSize: 14
                   ),
@@ -94,6 +156,8 @@ class _SignUpState extends State<SignUp> {
                 width: 300,
                 height: 50,
                 child: TextField(
+                  keyboardType: fieldType[i],
+                  controller: controllers[i],
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
@@ -120,7 +184,11 @@ class _SignUpState extends State<SignUp> {
 
         ElevatedButton(
           onPressed: () {
-
+            addUser();
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MainPage()),
+            );
           },
           style: ElevatedButton.styleFrom(
             minimumSize: Size(220, 40),
