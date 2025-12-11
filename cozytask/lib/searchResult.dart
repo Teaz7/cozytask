@@ -3,7 +3,8 @@ import 'package:cozytask/components/taskwidget.dart';
 import 'package:flutter/material.dart';
 
 class SearchResultPage extends StatelessWidget {
-  const SearchResultPage({super.key});
+  final int? userid;
+  const SearchResultPage({super.key, required this.userid});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class SearchResultPage extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GillSansMT',
       ),
-      home: Scaffold(body: Center(child: SearchResult())),
+      home: Scaffold(body: Center(child: SearchResult(userid: userid,))),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -23,7 +24,8 @@ class SearchResultPage extends StatelessWidget {
 enum SingingCharacter {Deadline, Name, Last_Updated, Date}
 
 class SearchResult extends StatefulWidget {
-  const SearchResult({super.key});
+  final int? userid;
+  const SearchResult({super.key, required this.userid});
 
   @override
   State<SearchResult> createState() => _SearchResultState();
@@ -411,7 +413,7 @@ class _SearchResultState extends State<SearchResult> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        CustomBackButton(),
+        CustomBackButton(userid: widget.userid,),
 
         Container(
           padding: EdgeInsets.only(top: 10, bottom: 10),

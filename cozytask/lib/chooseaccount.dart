@@ -50,9 +50,9 @@ class _ChooseAccountState extends State<ChooseAccount> {
 
   Future<void> loadUsers() async {
     final data = await DBHelper.instance.readAllUser();
-    print("Loaded ${data.length} users"); // Add this
+    print("Loaded ${data.length} users");
     for (var user in data) {
-      print("User: ${user.name}, ${user.email}"); // Add this
+      print("User: ${user.name}, ${user.email}");
     }
     setState(() {
       users = data;
@@ -92,9 +92,13 @@ class _ChooseAccountState extends State<ChooseAccount> {
           height: 65,
           child: ElevatedButton(
               onPressed: () {
+                int? selectedUser;
+                setState(() {
+                  selectedUser = i.id;
+                });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => DashboardPage()),
+                  MaterialPageRoute(builder: (context) => DashboardPage(userid: selectedUser,)),
                 );
             },
             style: ElevatedButton.styleFrom(

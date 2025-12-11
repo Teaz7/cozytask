@@ -2,7 +2,6 @@ import 'package:cozytask/chooseaccount.dart';
 import 'package:cozytask/components/popupDialog.dart';
 import 'package:cozytask/dashboard.dart';
 import 'package:cozytask/database/dbHelper.dart';
-import 'package:cozytask/database/models/userModel.dart';
 import 'package:cozytask/forgotPassword.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -190,9 +189,8 @@ class _LoginState extends State<Login> {
               if (userid != null) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => DashboardPage()),
+                  MaterialPageRoute(builder: (context) => DashboardPage(userid: userid,)),
                 );
-                userid = null;
               } else {
                 showDialog(
                   context: context,

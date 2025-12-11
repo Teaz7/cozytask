@@ -2,7 +2,8 @@ import 'package:cozytask/shopPage.dart';
 import 'package:flutter/material.dart';
 
 class Storebackbutton extends StatefulWidget {
-  const Storebackbutton({super.key});
+  final int? userid;
+  const Storebackbutton({super.key, required this.userid});
 
   @override
   State<Storebackbutton> createState() => _StorebackbuttonState();
@@ -23,7 +24,7 @@ class _StorebackbuttonState extends State<Storebackbutton> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ShopPage()),
+                  MaterialPageRoute(builder: (context) => ShopPage(userid: widget.userid,)),
                 );
               },
               child: Image.asset(

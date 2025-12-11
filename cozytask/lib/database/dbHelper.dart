@@ -1,3 +1,5 @@
+import 'package:cozytask/database/models/subtaskModel.dart';
+import 'package:cozytask/database/models/taskModel.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'models/userModel.dart';
@@ -180,22 +182,15 @@ class DBHelper {
     final db = await instance.database;
     return await db.insert("calendar", calendar.toMap());
   }
-  
-  Future<List<Calendar>> readAllCalendar() async {
-    final db = await instance.database;
-    final result = await db.query("calendar", orderBy: "CAL_ID DESC");
-    return result.map((e) => Calendar.fromMap(e)).toList();
-  }
 
-  Future<int> updateCalendar(Calendar calendar) async {
+  Future<int?> returnCalendarID(int? userid) async {
     final db = await instance.database;
-    return await db
-        .update("calendar", calendar.toMap(), where: "CAL_ID = ?", whereArgs: [calendar.id]);
-  }
-
-  Future<int> deleteCalendar(int id) async {
-    final db = await instance.database;
-    return await db.delete("calendar", where: "CAL_ID = ?", whereArgs: [id]);
+    final result = await db.query("calendar", columns: ["CAL_ID"], where: "USER_ID = ?", whereArgs: [userid]);
+    if (result.isNotEmpty) {
+      return result.first["CAL_ID"] as int?;
+    } else {
+      return null;
+    }
   }
 
   /*          -- STORE CRUD --         */
@@ -203,21 +198,16 @@ class DBHelper {
     final db = await instance.database;
     return await db.insert("store", store.toMap());
   }
+
+  /*          -- TASK CRUD --         */
+  Future<int> createTask(Task task) async {
+    final db = await instance.database;
+    return await db.insert("task", task.toMap());
+  }
   
-  Future<List<Store>> readAllStore() async {
+  /*          -- SUBTASK CRUD --         */
+  Future<int> createSubtask(SubtTask subtask) async {
     final db = await instance.database;
-    final result = await db.query("store", orderBy: "STORE_ID DESC");
-    return result.map((e) => Store.fromMap(e)).toList();
+    return await db.insert("subtask", subtask.toMap());
   }
-
-  Future<int> updateStore(Store store) async {
-    final db = await instance.database;
-    return await db
-        .update("store", store.toMap(), where: "STORE_ID = ?", whereArgs: [store.id]);
-  }
-
-  Future<int> deleteStore(int id) async {
-    final db = await instance.database;
-    return await db.delete("store", where: "STORE_ID = ?", whereArgs: [id]);
-    }
-  }
+}

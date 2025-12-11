@@ -1,7 +1,7 @@
 class Task {
   int? id, calid, userid;
-  int progress;
-  String name, description, priority, status, datestart, dateend;
+  int progress, priority;
+  String name, description, status, datestart, dateend;
 
   Task({
     this.id,

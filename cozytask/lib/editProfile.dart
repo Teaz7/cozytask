@@ -1,12 +1,9 @@
 import 'package:cozytask/components/backButton.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const editProfilePage());
-}
-
 class editProfilePage extends StatelessWidget {
-  const editProfilePage({super.key});
+  final int? userid;
+  const editProfilePage({super.key, required this.userid});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +25,7 @@ class editProfilePage extends StatelessWidget {
                 // Back Button
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
-                  child: CustomBackButton(),
+                  child: CustomBackButton(userid: userid,),
                 ),
 
                 // EDIT PROFILE

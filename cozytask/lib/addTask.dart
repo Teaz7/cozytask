@@ -1,14 +1,14 @@
 import 'package:cozytask/components/backButton.dart';
 import 'package:cozytask/components/popupDialog.dart';
 import 'package:cozytask/dashboard.dart';
+import 'package:cozytask/database/dbHelper.dart';
+import 'package:cozytask/database/models/subtaskModel.dart';
+import 'package:cozytask/database/models/taskModel.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const AddTaskPage());
-}
-
 class AddTaskPage extends StatelessWidget {
-  const AddTaskPage({super.key});
+  final int? userid;
+  const AddTaskPage({super.key, required this.userid});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class AddTaskPage extends StatelessWidget {
         fontFamily: 'GillSansMT',
       ),
       home: Scaffold(
-        body: AddTask(),
+        body: AddTask(userid: userid,),
       ),
       debugShowCheckedModeBanner: false,
     );
@@ -28,18 +28,24 @@ class AddTaskPage extends StatelessWidget {
 }
 
 class AddTask extends StatefulWidget {
-  const AddTask({super.key});
+  final int? userid;
+  const AddTask({super.key, required this.userid});
 
   @override
   State<AddTask> createState() => _AddTaskState();
 }
 
 class _AddTaskState extends State<AddTask> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController desriptionController = TextEditingController();
+  TextEditingController subtaskController = TextEditingController();
+
   DateTime? startDate;
   DateTime? endDate;
 
-  int? selectedPriorityIndex;
+  int selectedPriorityIndex = 0;
   List<String> priority = ['1', '2', '3', '4', '5'];
+  List<String> subtasks = [];
 
   String formatDate(DateTime? date) {
     if (date == null) return "Select Date";
@@ -51,7 +57,7 @@ class _AddTaskState extends State<AddTask> {
     required VoidCallback onTap,
   }) {
     return GestureDetector(
-      onTap: () {},
+      onTap: onTap,
       child: Container(
         width: 150,
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 12),
@@ -73,13 +79,61 @@ class _AddTaskState extends State<AddTask> {
     );
   }
 
+  bool fieldsEmpty() {
+    if (
+      nameController.text.isEmpty || desriptionController.text.isEmpty ||
+      startDate == null || endDate == null
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    void addTask() async {
+      int taskid = await DBHelper.instance.createTask(Task(
+        progress: 0,
+        name: nameController.text,
+        description: desriptionController.text,
+        priority: selectedPriorityIndex,
+        status: "Unfinished",
+        datestart: formatDate(startDate),
+        dateend: formatDate(endDate),
+        userid: widget.userid,
+        calid: await DBHelper.instance.returnCalendarID(widget.userid)
+      ));
+
+      for (var i in subtasks) {
+        await DBHelper.instance.createSubtask(SubtTask(
+          name: i,
+          status: "unfinished",
+          taskid: taskid
+          ));
+      }
+    }
+
+    void addSubtask() {
+      if (subtaskController.text.isNotEmpty) {
+        setState(() {
+          subtasks.add(subtaskController.text);
+          subtaskController.clear();
+        });
+      }
+    }
+
+    void removeSubtask(int index) {
+      setState(() {
+        subtasks.removeAt(index);
+      });
+    }
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          CustomBackButton(),
+          CustomBackButton(userid: widget.userid,),
 
           const SizedBox(height: 15),
 
@@ -114,9 +168,10 @@ class _AddTaskState extends State<AddTask> {
               color: const Color(0XFFD8E8F4),
               borderRadius: BorderRadius.circular(5),
             ),
-            child: const Padding(
+            child: Padding(
               padding: EdgeInsets.all(5),
               child: TextField(
+                controller: nameController,
                 maxLines: 1,
                 decoration: InputDecoration(
                   isDense: true,
@@ -142,6 +197,7 @@ class _AddTaskState extends State<AddTask> {
             padding: const EdgeInsets.symmetric(vertical: 5),
             width: 320,
             child: TextField(
+              controller: desriptionController,
               maxLines: 5,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -223,8 +279,7 @@ class _AddTaskState extends State<AddTask> {
                       value: selectedPriorityIndex == index,
                       onChanged: (val) {
                         setState(() {
-                          selectedPriorityIndex =
-                              val == true ? index : null;
+                          selectedPriorityIndex = index;
                         });
                       },
                       fillColor:
@@ -252,6 +307,7 @@ class _AddTaskState extends State<AddTask> {
               children: <Widget>[
                 Expanded(
                   child: TextField(
+                    controller: subtaskController,
                     decoration: InputDecoration(
                       hintText: 'Add Subtask...',
                       border: OutlineInputBorder(
@@ -266,7 +322,7 @@ class _AddTaskState extends State<AddTask> {
                 ),
                 const SizedBox(width: 10),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: addSubtask,
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(25, 30),
                     backgroundColor: const Color(0XFF004463),
@@ -284,30 +340,85 @@ class _AddTaskState extends State<AddTask> {
             ),
           ),
 
+          Container(
+            width: 320,
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: subtasks.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  height: 40,
+                  margin: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 12, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: const Color(0XFFD8E8F4),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          subtasks[index],
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close, size: 10),
+                        onPressed: () => removeSubtask(index),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+
           const SizedBox(height: 50),
 
           // Custom Dialog
           ElevatedButton(
             onPressed: () {
-              showDialog(
-                context: context,
-                barrierDismissible: true,
-                builder: (BuildContext context) {
-                  return CustomDialog(
-                    title: "TASK ADDED\nSUCCESSFULLY!",
-                    message: "Click anywhere to continue...",
-                    image: Image.asset(
-                      'assets/img/COZY_TASK_LOGO.png',
-                      width: 100,
-                    ),
-                  );
-                },
-              );
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DashboardPage()),
-              );
+              if (!fieldsEmpty()) {
+                addTask();
+                showDialog(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (BuildContext context) {
+                    return CustomDialog(
+                      title: "TASK ADDED\nSUCCESSFULLY!",
+                      message: "Click anywhere to continue...",
+                      image: Image.asset(
+                        'assets/img/COZY_TASK_LOGO.png',
+                        width: 100,
+                      ),
+                    );
+                  },
+                );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DashboardPage(userid: widget.userid,)),
+                );
+              } else {
+                showDialog(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (BuildContext context) {
+                    return CustomDialog(
+                      title: "Please do not\nleave any field blank",
+                      message: "Click anywhere to continue...",
+                      image: Image.asset(
+                        'assets/img/COZY_TASK_LOGO.png',
+                        width: 100,
+                      ),
+                    );
+                  },
+                );
+              }
             },
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(260, 40),
@@ -319,25 +430,6 @@ class _AddTaskState extends State<AddTask> {
             child: const Text(
               'ADD TASK',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 21),
-            ),
-          ),
-
-          const SizedBox(height: 15),
-
-          // Cancel
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(260, 40),
-              backgroundColor: const Color(0XFF7B7B7B),
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-            ),
-            child: const Text(
-              'CANCEL',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: 21),
             ),
           ),
 
