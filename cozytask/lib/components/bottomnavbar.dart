@@ -1,3 +1,4 @@
+import 'package:cozytask/calendar.dart';
 import 'package:cozytask/dashboard.dart';
 import 'package:cozytask/main.dart';
 import 'package:cozytask/profile.dart';
@@ -63,17 +64,15 @@ class _BottomNavBarState extends State<BottomNavBar> {
               child: _tile(Icons.store, 'Store'),
             ),
 
-            // GestureDetector(
-            //   onTap: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(builder: (context) => ),
-            //     );
-            //   },
-            //   child: ,
-            // ),
-
-            _tile(Icons.calendar_today, 'Calendar'),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CalendarPage()),
+                );
+              },
+              child: _tile(Icons.calendar_today, 'Calendar'),
+            ),
           ],
         ),
         const SizedBox(height: 10),
