@@ -165,6 +165,16 @@ class DBHelper {
     return await db.delete("user", where: "USER_ID = ?", whereArgs: [id]);
   }
 
+  Future<int?> returnUserID(String email, String password) async {
+    final db = await instance.database;
+    final result = await db.query("user", columns: ["USER_ID"], where: "USER_Email = ? AND USER_Password = ?", whereArgs: [email, password]);
+    if (result.isNotEmpty) {
+      return result.first["USER_ID"] as int?;
+    } else {
+      return null;
+    }
+  }
+
   /*          -- CALENDAR CRUD --         */
   Future<int> createCalendar(Calendar calendar) async {
     final db = await instance.database;
