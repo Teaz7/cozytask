@@ -78,7 +78,7 @@ class DBHelper {
       TASK_ID INTEGER PRIMARY KEY AUTOINCREMENT,
       TASK_Name TEXT NOT NULL,
       TASK_Description TEXT NOT NULL,
-      TASK_PriorityClass TEXT NOT NULL,
+      TASK_PriorityClass INTEGER NOT NULL,
       TASK_Status TEXT NOT NULL,
       TASK_DateStart TEXT NOT NULL,
       TASK_DateFinish TEXT NOT NULL,
@@ -203,6 +203,12 @@ class DBHelper {
   Future<int> createTask(Task task) async {
     final db = await instance.database;
     return await db.insert("task", task.toMap());
+  }
+
+  Future<List<Task>> readAllTask(int? userid) async {
+    final db = await instance.database;
+    final result = await db.query("task", where: "USER_ID = ?", whereArgs: [userid], orderBy: "TASK_ID DESC");
+    return result.map((e) => Task.fromMap(e)).toList();
   }
   
   /*          -- SUBTASK CRUD --         */

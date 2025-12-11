@@ -1,5 +1,7 @@
 import 'package:cozytask/components/backButton.dart';
-import 'package:cozytask/components/taskwidget.dart';
+import 'package:cozytask/components/taskWidget.dart';
+import 'package:cozytask/database/dbHelper.dart';
+import 'package:cozytask/database/models/taskModel.dart';
 import 'package:flutter/material.dart';
 
 class SearchResultPage extends StatelessWidget {
@@ -38,10 +40,8 @@ class _SearchResultState extends State<SearchResult> {
   String _selectedStatus = 'Mark As Done';
   String _selectedPriority = '1';
   
-  List<String> taskname = ['Research Worksheet 3', 'Networking Practical 1', 'App Dev Midterm Project'];
-  List<String> remaining = ['10 DAYS REMAINING BEFORE DUE', '2 DAYS REMAINING BEFORE DUE', '11 DAYS REMAINING BEFORE DUE'];
-  List<String> duedate = ['October 2, 2025', 'September 24, 2025', 'October 3, 2025'];
-  List<String> icon = ['assets/icon/minipercentage/1.png', 'assets/icon/minipercentage/2.png', 'assets/icon/minipercentage/3.png'];
+  List<Task> tasklist = [];
+  String icon = 'assets/icon/minipercentage/1.png';
 
   void _openSort() => showDialog(
     context: context,
@@ -407,6 +407,19 @@ class _SearchResultState extends State<SearchResult> {
       ],
     ),
   );
+
+  @override
+  void initState() {
+    super.initState();
+    loadTasks();
+  }
+  
+  Future<void> loadTasks() async {
+    final data = await DBHelper.instance.readAllTask(widget.userid);
+    setState(() {
+      tasklist = data;
+    });
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -452,8 +465,10 @@ class _SearchResultState extends State<SearchResult> {
         ),
 
         TaskWidget(
-          taskname: taskname, remaining: remaining, duedate: duedate, icon: icon
-        ),
+          tasklist: tasklist,
+          icon: icon,
+          userid: widget.userid,
+        )
       ],
     );
   }

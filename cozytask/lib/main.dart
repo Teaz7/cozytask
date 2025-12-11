@@ -55,6 +55,10 @@ class _LoginState extends State<Login> {
     passwordController.clear();
   }
 
+  void resetDB() async {
+    await DBHelper.instance.resetDatabase();
+  }
+
   @override
   Widget build(BuildContext context) {
 
