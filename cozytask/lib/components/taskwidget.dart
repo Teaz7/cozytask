@@ -1,18 +1,17 @@
+import 'package:cozytask/database/models/taskModel.dart';
 import 'package:cozytask/viewTask.dart';
 import 'package:flutter/material.dart';
 
 class TaskWidget extends StatefulWidget {
-  final List<String> taskname;
-  final List<String> remaining;
-  final List<String> duedate;
-  final List<String> icon;
+  final List<Task> tasklist;
+  final String icon;
+  final int? userid;
 
   const TaskWidget({
     Key? key, 
-    required this.taskname,
-    required this.remaining,
-    required this.duedate,
-    required this.icon
+    required this.tasklist,
+    required this.icon,
+    required this.userid
   }) : super(key: key);
 
   @override
@@ -29,12 +28,21 @@ class _TaskWidgetState extends State<TaskWidget> {
   }
 
   @override
-
   void initState() {
     super.initState();
-    isOpenedList = List.generate(widget.taskname.length, (_) => false);
+    isOpenedList = List.generate(widget.tasklist.length, (_) => false);
   }
 
+  @override
+  void didUpdateWidget(TaskWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Update isOpenedList when tasklist changes
+    if (oldWidget.tasklist.length != widget.tasklist.length) {
+      isOpenedList = List.generate(widget.tasklist.length, (_) => false);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
 
     Widget closedTab(String image, String task, String remaining) => Column(
@@ -83,7 +91,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          remaining,
+                          remaining.toString(),
                           textAlign: TextAlign.left,
                         )
                       ],
@@ -151,7 +159,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                         Row(
                           children: <Widget>[
                             Text(
-                              remaining,
+                              remaining.toString(),
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -194,7 +202,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => ViewTaskPage()),
+                              MaterialPageRoute(builder: (context) => ViewTaskPage(userid: widget.userid,)),
                             );
                           },
                           child: Container(
@@ -264,13 +272,44 @@ class _TaskWidgetState extends State<TaskWidget> {
       ]
     );
 
+    String remainingDays(Task task) {
+      DateTime start;
+      DateTime end;
+      
+      // Check if it's in MM/DD/YYYY format
+      if (task.datestart.contains('/')) {
+        List<String> startParts = task.datestart.split('/');
+        start = DateTime(
+          int.parse(startParts[1]), // year
+          int.parse(startParts[2]), // month
+          int.parse(startParts[0])  // day
+        );
+      } else {
+        start = DateTime.parse(task.datestart);
+      }
+      
+      if (task.dateend.contains('/')) {
+        List<String> endParts = task.dateend.split('/');
+        end = DateTime(
+          int.parse(endParts[1]), // year
+          int.parse(endParts[2]), // month
+          int.parse(endParts[0])  // day
+        );
+      } else {
+        end = DateTime.parse(task.dateend);
+      }
+      
+      Duration difference = end.difference(start);
+      return "${difference.inDays} days remaining";
+    }
+
     return Column(
       children: <Widget>[
-        for (int i = 0; i < widget.taskname.length; i++) GestureDetector(
+        for (int i = 0; i < widget.tasklist.length; i++) GestureDetector(
           onTap: () => toggleTask(i),
           child: isOpenedList[i]
-              ? openedTab(widget.taskname[i], widget.remaining[i], widget.duedate[i])
-              : closedTab(widget.icon[i], widget.taskname[i], widget.remaining[i])
+              ? openedTab(widget.tasklist[i].name, remainingDays(widget.tasklist[i]), widget.tasklist[i].dateend)
+              : closedTab(widget.icon, widget.tasklist[i].name, remainingDays(widget.tasklist[i]))
         )
       ],
     );
