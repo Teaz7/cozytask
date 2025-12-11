@@ -2,10 +2,9 @@ import 'package:cozytask/components/storeBackButton.dart';
 
 import 'package:flutter/material.dart';
 
-void main() => runApp(const StoreItem());
-
 class StoreItem extends StatelessWidget {
-  const StoreItem({super.key});
+  final int? userid;
+  const StoreItem({super.key, required this.userid});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +18,7 @@ class StoreItem extends StatelessWidget {
       ),
       home: Scaffold(
         body: Center(
-          child: Stack(children: [Positioned.fill(child: ShoppingPageItem())]),
+          child: Stack(children: [Positioned.fill(child: ShoppingPageItem(userid: userid,))]),
         ),
       ),
     );
@@ -27,7 +26,8 @@ class StoreItem extends StatelessWidget {
 }
 
 class ShoppingPageItem extends StatefulWidget {
-  const ShoppingPageItem({super.key});
+  final int? userid;
+  const ShoppingPageItem({super.key, required this.userid});
 
   @override
   State<ShoppingPageItem> createState() => _ShoppingPageItemState();
@@ -191,7 +191,7 @@ class _ShoppingPageItemState extends State<ShoppingPageItem> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Storebackbutton(),
+        Storebackbutton(userid: widget.userid,),
         const SizedBox(height: 100),
         Container(
           width: 360,

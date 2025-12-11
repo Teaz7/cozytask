@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-void main() {
-  runApp(const CalendarPage());
-}
-
 class CalendarPage extends StatelessWidget {
-  const CalendarPage({super.key});
+  final int? userid;
+  const CalendarPage({super.key, required this.userid});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +37,7 @@ class CalendarPage extends StatelessWidget {
 
               Padding(
                   padding: const EdgeInsets.only(bottom: 20),
-                  child: CustomBackButton(),
+                  child: CustomBackButton(userid: userid,),
                 ),
 
               Image.asset(

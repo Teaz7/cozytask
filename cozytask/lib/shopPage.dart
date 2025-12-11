@@ -3,10 +3,9 @@ import 'package:cozytask/components/bottomnavbar.dart';
 import 'package:flutter/material.dart';
 import 'package:cozytask/storeItem.dart';
 
-void main() => runApp(const ShopPage());
-
 class ShopPage extends StatelessWidget {
-  const ShopPage({super.key});
+  final int? userid;
+  const ShopPage({super.key, required this.userid});
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +21,8 @@ class ShopPage extends StatelessWidget {
         body: Center(
           child: Stack(
             children: [
-              Positioned.fill(child: ShoppingPage()),
-              BottomNavBar(),
+              Positioned.fill(child: ShoppingPage(userid: userid,)),
+              BottomNavBar(userid: userid,),
             ],
           ),
         ),
@@ -33,7 +32,8 @@ class ShopPage extends StatelessWidget {
 }
 
 class ShoppingPage extends StatefulWidget {
-  const ShoppingPage({super.key});
+  final int? userid;
+  const ShoppingPage({super.key, required this.userid});
 
   @override
   State<ShoppingPage> createState() => _ShoppingPageState();
@@ -49,7 +49,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        CustomBackButton(),
+        CustomBackButton(userid: widget.userid,),
 
         const SizedBox(height: 15),
 
@@ -137,7 +137,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
       onTap: () {
         Navigator.of(
           context,
-        ).push(MaterialPageRoute(builder: (context) => StoreItem()));
+        ).push(MaterialPageRoute(builder: (context) => StoreItem(userid: widget.userid,)));
       },
       child: Container(
         decoration: BoxDecoration(
