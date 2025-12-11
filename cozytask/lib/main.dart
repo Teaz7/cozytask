@@ -1,5 +1,7 @@
-import 'package:cozytask/chooseAccount.dart';
+import 'package:cozytask/chooseaccount.dart';
+import 'package:cozytask/components/popupDialog.dart';
 import 'package:cozytask/dashboard.dart';
+import 'package:cozytask/database/dbHelper.dart';
 import 'package:cozytask/forgotPassword.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +37,31 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  int? userid;
+
+  bool fieldsEmpty() {
+    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void clearField() {
+    emailController.clear();
+    passwordController.clear();
+  }
+
+  void resetDB() async {
+    await DBHelper.instance.resetDatabase();
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
@@ -62,7 +87,7 @@ class _LoginState extends State<Login> {
           width: 300,
           alignment: Alignment.centerLeft,
           child: Text(
-            'Username or Email Address:',
+            'Email Address:',
             style: TextStyle(fontSize: 14),
           ),
         ),
@@ -72,6 +97,7 @@ class _LoginState extends State<Login> {
           width: 300,
           height: 50,
           child: TextField(
+            controller: emailController,
             maxLines: 1,
             decoration: InputDecoration(
               isDense: true,
@@ -100,6 +126,7 @@ class _LoginState extends State<Login> {
           width: 300,
           height: 50,
           child: TextField(
+            controller: passwordController,
             obscureText: true,
             maxLines: 1,
             decoration: InputDecoration(
@@ -141,11 +168,51 @@ class _LoginState extends State<Login> {
         Padding(padding: EdgeInsets.all(15)),
 
         ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => DashboardPage()),
-            );
+          onPressed: () async {
+            if (fieldsEmpty()) {
+              showDialog(
+                context: context,
+                barrierDismissible: true,
+                builder: (BuildContext context) {
+                  return CustomDialog(
+                    title: "Incomplete Username\nor Password",
+                    message: "Click anywhere to continue...",
+                    image: Image.asset(
+                      'assets/img/COZY_TASK_LOGO.png',
+                      width: 100,
+                    ),
+                  );
+                },
+              );
+            } else {
+              userid = await DBHelper.instance.returnUserID(
+                emailController.text, 
+                passwordController.text
+              );
+
+              if (userid != null) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DashboardPage(userid: userid,)),
+                );
+              } else {
+                showDialog(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (BuildContext context) {
+                    return CustomDialog(
+                      title: "Invalid Username\nor Password",
+                      message: "Click anywhere to continue...",
+                      image: Image.asset(
+                        'assets/img/COZY_TASK_LOGO.png',
+                        width: 100,
+                      ),
+                    );
+                  },
+                );
+              }
+            }
+            clearField();
           },
           style: ElevatedButton.styleFrom(
             minimumSize: Size(220, 40),

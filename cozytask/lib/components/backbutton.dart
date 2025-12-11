@@ -2,7 +2,8 @@ import 'package:cozytask/dashboard.dart';
 import 'package:flutter/material.dart';
 
 class CustomBackButton extends StatefulWidget {
-  const CustomBackButton({super.key});
+  final int? userid;
+  const CustomBackButton({super.key, required this.userid});
 
   @override
   State<CustomBackButton> createState() => _CustomBackButtonState();
@@ -23,7 +24,7 @@ class _CustomBackButtonState extends State<CustomBackButton> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => DashboardPage()),
+                  MaterialPageRoute(builder: (context) => DashboardPage(userid: widget.userid,)),
                 );
               },
               child: Image.asset(

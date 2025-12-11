@@ -1,29 +1,21 @@
 import 'package:cozytask/components/backButton.dart';
+import 'package:cozytask/database/dbHelper.dart';
+import 'package:cozytask/main.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const ProfilePage());
-}
-
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+  final int? userid;
+  const ProfilePage({super.key, required this.userid});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        primarySwatch: Colors.blue,
-        fontFamily: 'GillSansMT',
-      ),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(body: const Profile()),
-    );
+    return Scaffold(body: Profile(userid: userid,));
   }
 }
 
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+  final int? userid;
+  const Profile({super.key, required this.userid});
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -45,12 +37,18 @@ class _ProfileState extends State<Profile> {
     '2100 points'
   ];
 
+  Future<void> deleteUser(int? id) async {
+    if (id != null) {
+      await DBHelper.instance.deleteUser(id);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          const CustomBackButton(),
+          CustomBackButton(userid: widget.userid,),
 
           const SizedBox(height: 10),
 
@@ -220,10 +218,16 @@ class _ProfileState extends State<Profile> {
                           title: "REMOVING\nACCOUNT",
                           message:
                               "Are you sure you want to\nremove this account?",
-                          onConfirm: () {
+                          onConfirm: () async {
                             Navigator.of(context).pop();
-                            
-                            print("Account removed!");
+
+                            await deleteUser(widget.userid);
+                            print("Account removed! ${widget.userid}");
+
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(builder: (context) => MainPage()),
+                              (route) => false,
+                            );
                           },
                           onCancel: () {
                             Navigator.of(context).pop();
@@ -257,15 +261,15 @@ class _ProfileState extends State<Profile> {
 class CustomDialog extends StatelessWidget {
   final String title;
   final String message;
-  final VoidCallback onConfirm;
   final VoidCallback onCancel;
+  final Future<void> Function() onConfirm;
 
   const CustomDialog({
     super.key,
     required this.title,
     required this.message,
-    required this.onConfirm,
     required this.onCancel,
+    required this.onConfirm
   });
 
   @override
@@ -305,7 +309,9 @@ class CustomDialog extends StatelessWidget {
                 ),
                 const SizedBox(height: 25),
                 ElevatedButton(
-                  onPressed: onConfirm,
+                  onPressed: () async {
+                    await onConfirm();
+                  },
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(260, 40),
                     backgroundColor: const Color(0XFF004463),

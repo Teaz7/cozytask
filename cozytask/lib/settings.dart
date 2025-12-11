@@ -2,12 +2,9 @@
 import 'package:cozytask/components/backButton.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const SettingsPage());
-}
-
 class SettingsPage extends StatelessWidget {
-  const SettingsPage({super.key});
+  final int? userid;
+  const SettingsPage({super.key, required this.userid});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +22,7 @@ class SettingsPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Back Button
-              CustomBackButton(),
+              CustomBackButton(userid: userid,),
 
               // Account Settings
               Container(

@@ -1,4 +1,9 @@
 import 'package:cozytask/dashboard.dart';
+import 'package:cozytask/database/dbHelper.dart';
+import 'package:cozytask/database/models/userModel.dart';
+import 'package:cozytask/main.dart';
+import 'package:cozytask/signUp.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -35,18 +40,32 @@ class ChooseAccount extends StatefulWidget {
 }
 
 class _ChooseAccountState extends State<ChooseAccount> {
+  List<User> users = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadUsers();
+  }
+
+  Future<void> loadUsers() async {
+    final data = await DBHelper.instance.readAllUser();
+    print("Loaded ${data.length} users");
+    for (var user in data) {
+      print("User: ${user.name}, ${user.email}");
+    }
+    setState(() {
+      users = data;
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
-    //Following the figma design muna
-    List<String> username = ['Sean Patrick', 'Pzam Franz', 'Ty James', 'James Galbiz',
-    'Peter James', 'Jay Ivan', 'Vonn Vonita', 'RJ Jeshrell'];
-    List<String> email = ['sean@gmail.com', 'pfranzee@gmail.com', 'tyjames@gmail.com',
-    'thejames@gmail.com', 'peterj@gmail.com', 'tuante@gmail.com', 'vonvon@gmail.com', 'rjjeshrell@gmail.com'];
     
     return Column(
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.all(45),
+          padding: EdgeInsets.all(40),
         ),
 
         Container(
@@ -67,15 +86,19 @@ class _ChooseAccountState extends State<ChooseAccount> {
           padding: EdgeInsets.all(20),
         ),
 
-        for (int i = 0; i < username.length; i++) Container(
+        for (var i in users) Container(
           padding: EdgeInsets.symmetric(vertical: 7),
           width: 300,
           height: 65,
           child: ElevatedButton(
               onPressed: () {
+                int? selectedUser;
+                setState(() {
+                  selectedUser = i.id;
+                });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => DashboardPage()),
+                  MaterialPageRoute(builder: (context) => DashboardPage(userid: selectedUser,)),
                 );
             },
             style: ElevatedButton.styleFrom(
@@ -94,12 +117,12 @@ class _ChooseAccountState extends State<ChooseAccount> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      username[i],
+                      i.name,
                       textAlign: TextAlign.left,
                     ),
 
                     Text(
-                      email[i],
+                      i.email,
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         color: Color(0XFFD8E8F4),
@@ -131,7 +154,10 @@ class _ChooseAccountState extends State<ChooseAccount> {
 
         ElevatedButton(
           onPressed: () {
-
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SignUpPage()),
+            );
           },
           style: ElevatedButton.styleFrom(
             minimumSize: Size(220, 40),
@@ -148,7 +174,39 @@ class _ChooseAccountState extends State<ChooseAccount> {
               fontSize: 21
               ),
             ),
-        )
+        ),
+
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          width: 300,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                "Return to ",
+                style: TextStyle(fontSize: 12),
+              ),
+
+              RichText(
+                text: TextSpan(
+                  text: 'Login?',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MainPage()),
+                      );
+                    },
+                ),
+              ),
+            ],
+          ),
+        ),
       ]
     );
   }
