@@ -25,15 +25,9 @@ class CalendarPage extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.white,
-        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
-
-              const SizedBox(height: 20),
 
               Padding(
                   padding: const EdgeInsets.only(bottom: 20),
@@ -50,9 +44,9 @@ class CalendarPage extends StatelessWidget {
               const Text(
                 "2025 CALENDAR",
                 style: TextStyle(
-                  fontSize: 28,
+                  fontSize: 36,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF0B4A6F),
+                  color: Color(0xFF68A3BC),
                 ),
               ),
 
@@ -66,6 +60,7 @@ class CalendarPage extends StatelessWidget {
                     children: [
                    
                       Container(
+                        height: 40,
                         decoration: BoxDecoration(
                           color: Color(0xFF0B4A6F),
                           borderRadius: BorderRadius.circular(6),
@@ -102,6 +97,7 @@ class CalendarPage extends StatelessWidget {
                       const SizedBox(width: 10),
 
                       Container(
+                        height: 40,
                         decoration: BoxDecoration(
                           color: Color(0xFF0B4A6F),
                           borderRadius: BorderRadius.circular(6),
@@ -148,6 +144,7 @@ class CalendarPage extends StatelessWidget {
                               DateFormat('MMMM').format(DateTime.now());
                         },
                         child: Container(
+                          height: 40,
                           padding: EdgeInsets.symmetric(
                               horizontal: 14, vertical: 8),
                           decoration: BoxDecoration(
@@ -179,7 +176,7 @@ class CalendarPage extends StatelessWidget {
                     ),
                     child: TableCalendar(
                       locale: "en_US",
-                      rowHeight: 42,
+                      rowHeight: 60,
                       focusedDay: fDay,
                       firstDay: DateTime.utc(2020),
                       lastDay: DateTime.utc(2035),
@@ -188,7 +185,6 @@ class CalendarPage extends StatelessWidget {
                       calendarStyle: CalendarStyle(
                         todayDecoration: BoxDecoration(
                           color: Color(0xFF0B4A6F),
-                          shape: BoxShape.circle,
                         ),
                         selectedDecoration: BoxDecoration(
                           color: Color(0xFF4A90A4),
