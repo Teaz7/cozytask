@@ -1,5 +1,6 @@
 import 'package:cozytask/components/backButton.dart';
 import 'package:flutter/material.dart';
+import 'LeaderBoard.dart';
 
 void main() {
   runApp(const ProfilePage());
@@ -35,14 +36,14 @@ class _ProfileState extends State<Profile> {
     'Year Level',
     'University',
     'Rank',
-    'Current Points'
+    'Current Points',
   ];
   final List<String> personalInfo = [
     '21',
     '3rd-year Student',
     'West Visayas State University',
     '#3',
-    '2100 points'
+    '2100 points',
   ];
 
   @override
@@ -54,16 +55,12 @@ class _ProfileState extends State<Profile> {
 
           const SizedBox(height: 10),
 
-          
           Container(
             width: 320,
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
-              border: Border.all(
-                color: const Color(0XFF68A4BC),
-                width: 3,
-              ),
+              border: Border.all(color: const Color(0XFF68A4BC), width: 3),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -77,11 +74,8 @@ class _ProfileState extends State<Profile> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                
-                Image.asset(
-                  'assets/icon/UserProfile.png',
-                  width: 120,
-                ),
+
+                Image.asset('assets/icon/UserProfile.png', width: 120),
                 const Text(
                   'Pzalm Franzenne',
                   style: TextStyle(
@@ -92,10 +86,7 @@ class _ProfileState extends State<Profile> {
                 ),
                 const Text(
                   'pzalmfranzenne@gmail.com',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Color(0XFF626262),
-                  ),
+                  style: TextStyle(fontSize: 12, color: Color(0XFF626262)),
                 ),
                 const SizedBox(height: 15),
 
@@ -103,7 +94,9 @@ class _ProfileState extends State<Profile> {
                   children: List.generate(labels.length, (i) {
                     return Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 5),
+                        vertical: 10,
+                        horizontal: 5,
+                      ),
                       child: Row(
                         children: [
                           Expanded(
@@ -144,9 +137,15 @@ class _ProfileState extends State<Profile> {
           ),
 
           const SizedBox(height: 10),
-
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              // Navigate to the LeaderboardPage
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const LeaderBoardPage(),
+                ),
+              );
+            },
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(320, 40),
               backgroundColor: const Color(0XFF004463),
@@ -157,10 +156,7 @@ class _ProfileState extends State<Profile> {
             ),
             child: const Text(
               'View Leaderboard',
-              style: TextStyle(
-                fontWeight: FontWeight.normal,
-                fontSize: 18,
-              ),
+              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18),
             ),
           ),
 
@@ -178,10 +174,7 @@ class _ProfileState extends State<Profile> {
             ),
             child: const Text(
               'View History',
-              style: TextStyle(
-                fontWeight: FontWeight.normal,
-                fontSize: 18,
-              ),
+              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18),
             ),
           ),
 
@@ -222,7 +215,7 @@ class _ProfileState extends State<Profile> {
                               "Are you sure you want to\nremove this account?",
                           onConfirm: () {
                             Navigator.of(context).pop();
-                            
+
                             print("Account removed!");
                           },
                           onCancel: () {
@@ -236,7 +229,8 @@ class _ProfileState extends State<Profile> {
                     backgroundColor: const Color(0XFF68A3BC),
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
                   ),
                   child: const Text(
                     'Remove Account',
@@ -271,7 +265,7 @@ class CustomDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {}, 
+      onTap: () {},
       child: Material(
         color: Colors.black.withOpacity(0.3),
         child: Center(
@@ -298,10 +292,7 @@ class CustomDialog extends StatelessWidget {
                 Text(
                   message,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    color: Colors.black54,
-                  ),
+                  style: const TextStyle(fontSize: 15, color: Colors.black54),
                 ),
                 const SizedBox(height: 25),
                 ElevatedButton(
@@ -311,12 +302,12 @@ class CustomDialog extends StatelessWidget {
                     backgroundColor: const Color(0XFF004463),
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                   ),
                   child: const Text(
                     'CONFIRM',
-                    style: TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -327,12 +318,12 @@ class CustomDialog extends StatelessWidget {
                     backgroundColor: const Color(0XFF7B7B7B),
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                   ),
                   child: const Text(
                     'CANCEL',
-                    style: TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
                 const SizedBox(height: 10),
