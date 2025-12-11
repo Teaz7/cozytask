@@ -1,3 +1,4 @@
+import 'package:cozytask/AdminSide/dashboardAdmin';
 import 'package:cozytask/chooseaccount.dart';
 import 'package:cozytask/components/popupDialog.dart';
 import 'package:cozytask/dashboard.dart';
@@ -23,7 +24,7 @@ class MainPage extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GillSansMT',
       ),
-      home: Scaffold(body: Center(child: const Login())),
+      home: Scaffold(body: Center(child: const AdminDashboardPage())),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -37,7 +38,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   int? userid;
@@ -61,7 +61,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
@@ -86,10 +85,7 @@ class _LoginState extends State<Login> {
           padding: EdgeInsets.all(0),
           width: 300,
           alignment: Alignment.centerLeft,
-          child: Text(
-            'Email Address:',
-            style: TextStyle(fontSize: 14),
-          ),
+          child: Text('Email Address:', style: TextStyle(fontSize: 14)),
         ),
 
         Container(
@@ -162,7 +158,7 @@ class _LoginState extends State<Login> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-          )
+          ),
         ),
 
         Padding(padding: EdgeInsets.all(15)),
@@ -186,14 +182,16 @@ class _LoginState extends State<Login> {
               );
             } else {
               userid = await DBHelper.instance.returnUserID(
-                emailController.text, 
-                passwordController.text
+                emailController.text,
+                passwordController.text,
               );
 
               if (userid != null) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => DashboardPage(userid: userid,)),
+                  MaterialPageRoute(
+                    builder: (context) => DashboardPage(userid: userid),
+                  ),
                 );
               } else {
                 showDialog(

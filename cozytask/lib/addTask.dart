@@ -19,9 +19,7 @@ class AddTaskPage extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GillSansMT',
       ),
-      home: Scaffold(
-        body: AddTask(userid: userid,),
-      ),
+      home: Scaffold(body: AddTask(userid: userid)),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -52,10 +50,7 @@ class _AddTaskState extends State<AddTask> {
     return "${date.day}/${date.month}/${date.year}";
   }
 
-  Widget datePickerBox({
-    required DateTime? date,
-    required VoidCallback onTap,
-  }) {
+  Widget datePickerBox({required DateTime? date, required VoidCallback onTap}) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -80,10 +75,10 @@ class _AddTaskState extends State<AddTask> {
   }
 
   bool fieldsEmpty() {
-    if (
-      nameController.text.isEmpty || desriptionController.text.isEmpty ||
-      startDate == null || endDate == null
-    ) {
+    if (nameController.text.isEmpty ||
+        desriptionController.text.isEmpty ||
+        startDate == null ||
+        endDate == null) {
       return true;
     } else {
       return false;
@@ -93,24 +88,24 @@ class _AddTaskState extends State<AddTask> {
   @override
   Widget build(BuildContext context) {
     void addTask() async {
-      int taskid = await DBHelper.instance.createTask(Task(
-        progress: 0,
-        name: nameController.text,
-        description: desriptionController.text,
-        priority: selectedPriorityIndex,
-        status: "Unfinished",
-        datestart: formatDate(startDate),
-        dateend: formatDate(endDate),
-        userid: widget.userid,
-        calid: await DBHelper.instance.returnCalendarID(widget.userid)
-      ));
+      int taskid = await DBHelper.instance.createTask(
+        Task(
+          progress: 0,
+          name: nameController.text,
+          description: desriptionController.text,
+          priority: selectedPriorityIndex,
+          status: "Unfinished",
+          datestart: formatDate(startDate),
+          dateend: formatDate(endDate),
+          userid: widget.userid,
+          calid: await DBHelper.instance.returnCalendarID(widget.userid),
+        ),
+      );
 
       for (var i in subtasks) {
-        await DBHelper.instance.createSubtask(SubtTask(
-          name: i,
-          status: "unfinished",
-          taskid: taskid
-          ));
+        await DBHelper.instance.createSubtask(
+          SubtTask(name: i, status: "unfinished", taskid: taskid),
+        );
       }
     }
 
@@ -133,7 +128,7 @@ class _AddTaskState extends State<AddTask> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          CustomBackButton(userid: widget.userid,),
+          CustomBackButton(userid: widget.userid),
 
           const SizedBox(height: 15),
 
@@ -156,8 +151,10 @@ class _AddTaskState extends State<AddTask> {
           Container(
             width: 320,
             alignment: Alignment.centerLeft,
-            child: const Text('Task Name',
-                style: TextStyle(fontSize: 14, color: Colors.black)),
+            child: const Text(
+              'Task Name',
+              style: TextStyle(fontSize: 14, color: Colors.black),
+            ),
           ),
 
           // Task Field
@@ -188,8 +185,10 @@ class _AddTaskState extends State<AddTask> {
           Container(
             width: 320,
             alignment: Alignment.centerLeft,
-            child: const Text('Description',
-                style: TextStyle(fontSize: 14, color: Colors.black)),
+            child: const Text(
+              'Description',
+              style: TextStyle(fontSize: 14, color: Colors.black),
+            ),
           ),
 
           // Description Field
@@ -201,8 +200,9 @@ class _AddTaskState extends State<AddTask> {
               maxLines: 5,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    borderSide: BorderSide.none),
+                  borderRadius: BorderRadius.circular(5),
+                  borderSide: BorderSide.none,
+                ),
                 filled: true,
                 fillColor: const Color(0XFFD8E8F4),
               ),
@@ -264,8 +264,7 @@ class _AddTaskState extends State<AddTask> {
           Container(
             width: 300,
             alignment: Alignment.centerLeft,
-            child: const Text('Prioritization',
-                style: TextStyle(fontSize: 14)),
+            child: const Text('Prioritization', style: TextStyle(fontSize: 14)),
           ),
 
           // Checkboxes
@@ -282,8 +281,9 @@ class _AddTaskState extends State<AddTask> {
                           selectedPriorityIndex = index;
                         });
                       },
-                      fillColor:
-                          WidgetStateProperty.resolveWith<Color>((states) {
+                      fillColor: WidgetStateProperty.resolveWith<Color>((
+                        states,
+                      ) {
                         if (states.contains(WidgetState.selected)) {
                           return const Color(0XFF004463);
                         }
@@ -299,8 +299,8 @@ class _AddTaskState extends State<AddTask> {
 
           const SizedBox(height: 10),
 
-          // Subtask 
-          Container(
+          // Subtask
+          SizedBox(
             width: 320,
             height: 40,
             child: Row(
@@ -311,12 +311,15 @@ class _AddTaskState extends State<AddTask> {
                     decoration: InputDecoration(
                       hintText: 'Add Subtask...',
                       border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide.none),
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: BorderSide.none,
+                      ),
                       filled: true,
                       fillColor: const Color(0XFFD8E8F4),
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 10),
+                        horizontal: 10,
+                        vertical: 10,
+                      ),
                     ),
                   ),
                 ),
@@ -328,19 +331,19 @@ class _AddTaskState extends State<AddTask> {
                     backgroundColor: const Color(0XFF004463),
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
                   ),
                   child: const Text(
                     '+',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 21),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 21),
                   ),
                 ),
               ],
             ),
           ),
 
-          Container(
+          SizedBox(
             width: 320,
             child: ListView.builder(
               shrinkWrap: true,
@@ -351,7 +354,9 @@ class _AddTaskState extends State<AddTask> {
                   height: 40,
                   margin: const EdgeInsets.only(bottom: 8),
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 12, vertical: 10),
+                    horizontal: 12,
+                    vertical: 10,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0XFFD8E8F4),
                     borderRadius: BorderRadius.circular(5),
@@ -401,7 +406,9 @@ class _AddTaskState extends State<AddTask> {
                 );
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => DashboardPage(userid: widget.userid,)),
+                  MaterialPageRoute(
+                    builder: (context) => DashboardPage(userid: widget.userid),
+                  ),
                 );
               } else {
                 showDialog(
@@ -425,7 +432,8 @@ class _AddTaskState extends State<AddTask> {
               backgroundColor: const Color(0XFF004463),
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
             child: const Text(
               'ADD TASK',

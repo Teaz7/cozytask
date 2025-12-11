@@ -17,7 +17,9 @@ class ViewTaskPage extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GillSansMT',
       ),
-      home: Scaffold(body: Center(child: ViewTask(userid: userid,))),
+      home: Scaffold(
+        body: Center(child: ViewTask(userid: userid)),
+      ),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -47,15 +49,16 @@ class _ViewTaskState extends State<ViewTask> {
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     );
-    if (picked != null)
+    if (picked != null) {
       setState(() => isStart ? _startDate = picked : _endDate = picked);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        CustomBackButton(userid: widget.userid,),
+        CustomBackButton(userid: widget.userid),
 
         const SizedBox(height: 10),
         Center(
