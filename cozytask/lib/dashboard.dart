@@ -1,59 +1,65 @@
 import 'package:cozytask/addTask.dart';
 import 'package:cozytask/components/bottomnavbar.dart';
-import 'package:cozytask/components/taskwidget.dart';
+import 'package:cozytask/components/taskWidget.dart';
+import 'package:cozytask/database/dbHelper.dart';
+import 'package:cozytask/database/models/taskModel.dart';
 import 'package:cozytask/searchResult.dart';
 import 'package:flutter/material.dart';
 
-void main() { 
-  runApp(const DashboardPage());
-} 
-
 class DashboardPage extends StatelessWidget {
-  const DashboardPage({super.key});
+  final int? userid;
+  const DashboardPage({super.key, required this.userid});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        primarySwatch: Colors.blue,
-        fontFamily: 'GillSansMT'
-      ),
-      home: Scaffold(
-        body: Center(
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: Dashboard()
-              ),
-              BottomNavBar()
-            ],
-          ),
+    return Scaffold(
+      body: Center(
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Dashboard(userid: userid,)
+            ),
+            BottomNavBar(userid: userid,)
+          ],
         ),
       ),
-      debugShowCheckedModeBanner: false,
     );
   }
 }
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+  final int? userid;
+  const Dashboard({super.key, required this.userid});
 
   @override
   State<Dashboard> createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
-
-  List<String> taskname = ['Research Worksheet 3', 'Networking Practical 1', 'App Dev Midterm Project'];
-  List<String> remaining = ['10 DAYS REMAINING BEFORE DUE', '2 DAYS REMAINING BEFORE DUE', '11 DAYS REMAINING BEFORE DUE'];
-  List<String> duedate = ['October 2, 2025', 'September 24, 2025', 'October 3, 2025'];
-  List<String> icon = ['assets/icon/minipercentage/1.png', 'assets/icon/minipercentage/2.png', 'assets/icon/minipercentage/3.png'];
+  List<Task> tasklist = [];
+  String icon = 'assets/icon/minipercentage/1.png';
+  
+  @override
+  void initState() {
+    super.initState();
+    loadTasks();
+  }
+  
+  Future<void> loadTasks() async {
+    print('Loading tasks for userid: ${widget.userid}');
+    final data = await DBHelper.instance.readAllTask(widget.userid);
+    print('Tasks loaded: ${data.length}');
+    for (var task in data) {
+      print('Task: ${task.name}, Start: ${task.datestart}, End: ${task.dateend}');
+    }
+    setState(() {
+      tasklist = data;
+    });
+  }
   
   @override
   Widget build(BuildContext context) {
-
+    print('Dashboard userid: ${widget.userid}');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
@@ -128,7 +134,7 @@ class _DashboardState extends State<Dashboard> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SearchResultPage()),
+                  MaterialPageRoute(builder: (context) => SearchResultPage(userid: widget.userid,)),
                 );
               },
               style: ElevatedButton.styleFrom(
@@ -154,7 +160,9 @@ class _DashboardState extends State<Dashboard> {
         ),
 
         TaskWidget(
-          taskname: taskname, remaining: remaining, duedate: duedate, icon: icon
+          tasklist: tasklist,
+          icon: icon,
+          userid: widget.userid,
         ),
 
         Padding(
@@ -162,11 +170,12 @@ class _DashboardState extends State<Dashboard> {
         ),
 
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AddTaskPage()),
+              MaterialPageRoute(builder: (context) => AddTaskPage(userid: widget.userid,)),
             );
+            await loadTasks();
           },
           style: ElevatedButton.styleFrom(
             minimumSize: Size(220, 40),
