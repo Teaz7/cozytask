@@ -11,7 +11,7 @@ class Store {
   Map<String, dynamic> toMap() {
     return {
       'STORE_ID': id,
-      'STORE_NumOfProducts': num,
+      'STORE_NumOfProduct': num,
       'USER_ID': userid
     };
   }
@@ -19,7 +19,7 @@ class Store {
   static Store fromMap(Map<String, dynamic> map) {
     return Store(
       id: map['STORE_ID'],
-      num: map['STORE_NumOfProducts'],
+      num: map['STORE_NumOfProduct'],
       userid: map['USER_ID']
     );
   }
