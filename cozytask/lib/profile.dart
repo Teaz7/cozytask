@@ -10,7 +10,7 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Profile(userid: userid,));
+    return Scaffold(body: Profile(userid: userid));
   }
 }
 
@@ -49,7 +49,7 @@ class _ProfileState extends State<Profile> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          CustomBackButton(userid: widget.userid,),
+          CustomBackButton(userid: widget.userid),
 
           const SizedBox(height: 10),
 
@@ -214,17 +214,7 @@ class _ProfileState extends State<Profile> {
                           onConfirm: () async {
                             Navigator.of(context).pop();
 
-<<<<<<< HEAD
                             print("Account removed!");
-=======
-                            await deleteUser(widget.userid);
-                            print("Account removed! ${widget.userid}");
-
-                            Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(builder: (context) => MainPage()),
-                              (route) => false,
-                            );
->>>>>>> fd8b1cda4e058ae4e4783cbb370c5e52a2ed91ed
                           },
                           onCancel: () {
                             Navigator.of(context).pop();
@@ -267,7 +257,7 @@ class CustomDialog extends StatelessWidget {
     required this.title,
     required this.message,
     required this.onCancel,
-    required this.onConfirm
+    required this.onConfirm,
   });
 
   @override
