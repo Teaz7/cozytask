@@ -4,7 +4,6 @@ import 'package:cozytask/database/models/storeModel.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cozytask/main.dart';
-import 'package:flutter/services.dart';
 import 'database/models/userModel.dart';
 
 void main() {
@@ -21,13 +20,9 @@ class SignUpPage extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         primarySwatch: Colors.blue,
-        fontFamily: 'GillSansMT'
+        fontFamily: 'GillSansMT',
       ),
-      home: Scaffold(
-        body: Center(
-          child: const SignUp(),
-        ),
-      ),
+      home: Scaffold(body: Center(child: const SignUp())),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -41,8 +36,22 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  List<String> fields = ['Username:', 'Email Address:', 'University:', 'Year Level:', 'Password:', 'Confirm Password:'];
-  List<TextInputType> fieldType = [TextInputType.text, TextInputType.emailAddress, TextInputType.text, TextInputType.number, TextInputType.text, TextInputType.text];
+  List<String> fields = [
+    'Username:',
+    'Email Address:',
+    'University:',
+    'Year Level:',
+    'Password:',
+    'Confirm Password:',
+  ];
+  List<TextInputType> fieldType = [
+    TextInputType.text,
+    TextInputType.emailAddress,
+    TextInputType.text,
+    TextInputType.number,
+    TextInputType.text,
+    TextInputType.text,
+  ];
   List<User> users = [];
 
   TextEditingController nameController = TextEditingController();
@@ -53,7 +62,12 @@ class _SignUpState extends State<SignUp> {
   TextEditingController confirmController = TextEditingController();
 
   bool fieldsEmpty() {
-    if (nameController.text.isEmpty || emailController.text.isEmpty || universityController.text.isEmpty || yearController.text.isEmpty || passController.text.isEmpty || confirmController.text.isEmpty) {
+    if (nameController.text.isEmpty ||
+        emailController.text.isEmpty ||
+        universityController.text.isEmpty ||
+        yearController.text.isEmpty ||
+        passController.text.isEmpty ||
+        confirmController.text.isEmpty) {
       return true;
     } else {
       return false;
@@ -65,7 +79,7 @@ class _SignUpState extends State<SignUp> {
     super.initState();
     loadUsers();
   }
-  
+
   Future<void> loadUsers() async {
     final data = await DBHelper.instance.readAllUser();
     setState(() {
@@ -75,7 +89,14 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    List<TextEditingController> controllers = [nameController, emailController, universityController, yearController, passController, confirmController];
+    List<TextEditingController> controllers = [
+      nameController,
+      emailController,
+      universityController,
+      yearController,
+      passController,
+      confirmController,
+    ];
 
     void clearController() async {
       for (var i in controllers) {
@@ -86,18 +107,22 @@ class _SignUpState extends State<SignUp> {
     void addUser() async {
       if (!fieldsEmpty()) {
         if (passController.text == confirmController.text) {
-          int newid = await DBHelper.instance.createUser(User(
-            name: nameController.text,
-            password: passController.text,
-            email: emailController.text,
-            university: universityController.text,
-            year: int.parse(yearController.text),
-            points: 0,
-            loginstatus: 'Logged Out',
-            petid: null
-          ));
+          int newid = await DBHelper.instance.createUser(
+            User(
+              name: nameController.text,
+              password: passController.text,
+              email: emailController.text,
+              university: universityController.text,
+              year: int.parse(yearController.text),
+              points: 0,
+              loginstatus: 'Logged Out',
+              petid: null,
+            ),
+          );
 
-          await DBHelper.instance.createCalendar(Calendar(numoftask: 0, userid: newid));
+          await DBHelper.instance.createCalendar(
+            Calendar(numoftask: 0, userid: newid),
+          );
           await DBHelper.instance.createStore(Store(num: 0, userid: newid));
 
           clearController();
@@ -110,21 +135,17 @@ class _SignUpState extends State<SignUp> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Padding(
-          padding: EdgeInsets.all(45),
-        ),
+        Padding(padding: EdgeInsets.all(45)),
 
         Container(
           alignment: Alignment.center,
           child: Image.asset(
-            'assets/img/COZY_TASK_TEXT_BLUE_LOGO.png',  
+            'assets/img/COZY_TASK_TEXT_BLUE_LOGO.png',
             height: 75,
           ),
         ),
 
-        Padding(
-          padding: EdgeInsets.all(25),
-        ),
+        Padding(padding: EdgeInsets.all(25)),
 
         Container(
           padding: EdgeInsets.all(0),
@@ -135,58 +156,50 @@ class _SignUpState extends State<SignUp> {
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Color(0XFF68A3BC)
+              color: Color(0XFF68A3BC),
             ),
           ),
         ),
 
         //Text Fields for looped
-        for (int i = 0; i < fields.length; i++) Container(
-          padding: EdgeInsets.symmetric(vertical: 5),
-          child: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(0),
-                width: 300,
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  fields[i],
-                  style: TextStyle(
-                    fontSize: 14
-                  ),
+        for (int i = 0; i < fields.length; i++)
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(0),
+                  width: 300,
+                  alignment: Alignment.centerLeft,
+                  child: Text(fields[i], style: TextStyle(fontSize: 14)),
                 ),
-              ),
 
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 5),
-                width: 300,
-                height: 50,
-                child: TextField(
-                  keyboardType: fieldType[i],
-                  controller: controllers[i],
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      borderSide: BorderSide(
-                        width: 0,
-                        style: BorderStyle.none
-                      )
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 5),
+                  width: 300,
+                  height: 50,
+                  child: TextField(
+                    keyboardType: fieldType[i],
+                    controller: controllers[i],
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: BorderSide(
+                          width: 0,
+                          style: BorderStyle.none,
+                        ),
+                      ),
+                      filled: true,
+                      fillColor: Color(0XFFD8E8F4),
                     ),
-                    filled: true,
-                    fillColor: Color(0XFFD8E8F4)
-                  ),
-                  style: TextStyle(
-                    fontSize: 14
+                    style: TextStyle(fontSize: 14),
                   ),
                 ),
-              ),
-            ],
-          )
-        ),
+              ],
+            ),
+          ),
 
-        Padding(
-          padding: EdgeInsets.all(10),
-        ),
+        Padding(padding: EdgeInsets.all(10)),
 
         ElevatedButton(
           onPressed: () {
@@ -201,16 +214,13 @@ class _SignUpState extends State<SignUp> {
             backgroundColor: Color(0XFF68A3BC),
             foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5)
-            )
+              borderRadius: BorderRadius.circular(5),
+            ),
           ),
           child: const Text(
             'SIGN UP',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 21
-              ),
-            ),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 21),
+          ),
         ),
 
         Container(
@@ -219,12 +229,7 @@ class _SignUpState extends State<SignUp> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                "Already have an account? ",
-                style: TextStyle(
-                  fontSize: 12
-                ),
-              ),
+              Text("Already have an account? ", style: TextStyle(fontSize: 12)),
 
               RichText(
                 text: TextSpan(
@@ -232,20 +237,21 @@ class _SignUpState extends State<SignUp> {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black
+                    color: Colors.black,
                   ),
-                  recognizer: TapGestureRecognizer()..onTap = () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MainPage())
-                    );
-                  }
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MainPage()),
+                      );
+                    },
                 ),
               ),
             ],
           ),
-        )
-      ]
+        ),
+      ],
     );
   }
 }

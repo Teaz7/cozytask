@@ -1,3 +1,4 @@
+import 'package:cozytask/AdminSide/dashboardAdmin';
 import 'package:cozytask/chooseaccount.dart';
 import 'package:cozytask/components/popupDialog.dart';
 import 'package:cozytask/dashboard.dart';
@@ -6,7 +7,6 @@ import 'package:cozytask/forgotPassword.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cozytask/signUp.dart';
-import 'package:cozytask/dashboardAdmin.dart';
 
 void main() {
   runApp(const MainPage());

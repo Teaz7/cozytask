@@ -1,6 +1,5 @@
 import 'package:cozytask/components/backButton.dart';
 import 'package:cozytask/database/dbHelper.dart';
-import 'package:cozytask/main.dart';
 import 'package:flutter/material.dart';
 import 'LeaderBoard.dart';
 

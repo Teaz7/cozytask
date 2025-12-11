@@ -109,11 +109,9 @@ class LeaderBoardPage extends StatelessWidget {
                       children: [
                         _header(),
 
-                        ...players
-                            .asMap()
-                            .entries
-                            .map((e) => _row(index: e.key, player: e.value))
-                            .toList(),
+                        ...players.asMap().entries.map(
+                          (e) => _row(index: e.key, player: e.value),
+                        ),
 
                         Padding(
                           padding: const EdgeInsets.all(16),
