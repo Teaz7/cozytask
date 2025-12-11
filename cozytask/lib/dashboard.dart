@@ -4,41 +4,30 @@ import 'package:cozytask/components/taskwidget.dart';
 import 'package:cozytask/searchResult.dart';
 import 'package:flutter/material.dart';
 
-void main() { 
-  runApp(const DashboardPage());
-} 
-
 class DashboardPage extends StatelessWidget {
-  const DashboardPage({super.key});
+  final int? userid;
+  const DashboardPage({super.key, required this.userid});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        primarySwatch: Colors.blue,
-        fontFamily: 'GillSansMT'
-      ),
-      home: Scaffold(
-        body: Center(
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: Dashboard()
-              ),
-              BottomNavBar()
-            ],
-          ),
+    return Scaffold(
+      body: Center(
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Dashboard(userid: userid,)
+            ),
+            BottomNavBar(userid: userid,)
+          ],
         ),
       ),
-      debugShowCheckedModeBanner: false,
     );
   }
 }
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+  final int? userid;
+  const Dashboard({super.key, required this.userid});
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -53,7 +42,7 @@ class _DashboardState extends State<Dashboard> {
   
   @override
   Widget build(BuildContext context) {
-
+    print('Dashboard userid: ${widget.userid}');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
@@ -128,7 +117,7 @@ class _DashboardState extends State<Dashboard> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SearchResultPage()),
+                  MaterialPageRoute(builder: (context) => SearchResultPage(userid: widget.userid,)),
                 );
               },
               style: ElevatedButton.styleFrom(
@@ -165,7 +154,7 @@ class _DashboardState extends State<Dashboard> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AddTaskPage()),
+              MaterialPageRoute(builder: (context) => AddTaskPage(userid: widget.userid,)),
             );
           },
           style: ElevatedButton.styleFrom(

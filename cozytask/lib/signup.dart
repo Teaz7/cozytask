@@ -1,4 +1,6 @@
 import 'package:cozytask/database/dbHelper.dart';
+import 'package:cozytask/database/models/calendarModel.dart';
+import 'package:cozytask/database/models/storeModel.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cozytask/main.dart';
@@ -84,7 +86,7 @@ class _SignUpState extends State<SignUp> {
     void addUser() async {
       if (!fieldsEmpty()) {
         if (passController.text == confirmController.text) {
-          await DBHelper.instance.createUser(User(
+          int newid = await DBHelper.instance.createUser(User(
             name: nameController.text,
             password: passController.text,
             email: emailController.text,
@@ -94,6 +96,10 @@ class _SignUpState extends State<SignUp> {
             loginstatus: 'Logged Out',
             petid: null
           ));
+
+          await DBHelper.instance.createCalendar(Calendar(numoftask: 0, userid: newid));
+          await DBHelper.instance.createStore(Store(num: 0, userid: newid));
+
           clearController();
           loadUsers();
           print("Database updated!");

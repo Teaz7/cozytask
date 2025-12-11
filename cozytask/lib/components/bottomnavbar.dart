@@ -7,7 +7,8 @@ import 'package:cozytask/shopPage.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
+  final int? userid;
+  const BottomNavBar({super.key, required this.userid});
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
@@ -19,10 +20,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
     context: context,
     backgroundColor: Colors.transparent,
     isScrollControlled: true,
-    builder: (_) => _drawerSheet(),
+    builder: (BuildContext modalContext) => _drawerSheet(modalContext),
   );
 
-  Widget _drawerSheet() => Container(
+  Widget _drawerSheet(BuildContext modalContext) => Container(
     height: 320,
     decoration: const BoxDecoration(
       color: Color(0XFF004463),
@@ -46,9 +47,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
           children: [
             GestureDetector(
               onTap: () {
+                print("User ID: ${widget.userid}");
+                Navigator.pop(modalContext);
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DashboardPage()),
+                  modalContext,
+                  MaterialPageRoute(builder: (context) => DashboardPage(userid: widget.userid,)),
                 );
               },
               child: _tile(Icons.home, 'Home'),
@@ -56,9 +59,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
             GestureDetector(
               onTap: () {
+                print("User ID: ${widget.userid}");
+                Navigator.pop(modalContext);
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ShopPage()),
+                  modalContext,
+                  MaterialPageRoute(builder: (context) => ShopPage(userid: widget.userid,)),
                 );
               },
               child: _tile(Icons.store, 'Store'),
@@ -66,9 +71,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
             GestureDetector(
               onTap: () {
+                print("User ID: ${widget.userid}");
+                Navigator.pop(modalContext);
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CalendarPage()),
+                  modalContext,
+                  MaterialPageRoute(builder: (context) => CalendarPage(userid: widget.userid,)),
                 );
               },
               child: _tile(Icons.calendar_today, 'Calendar'),
@@ -82,9 +89,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
           children: [
             GestureDetector(
               onTap: () {
+                print("User ID: ${widget.userid}");
+                Navigator.pop(modalContext);
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SettingsPage()),
+                  modalContext,
+                  MaterialPageRoute(builder: (context) => SettingsPage(userid: widget.userid,)),
                 );
               },
               child: _tile(Icons.settings, 'Settings'),
@@ -92,9 +101,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
             GestureDetector(
               onTap: () {
+                print("User ID: ${widget.userid}");
+                Navigator.pop(modalContext);
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfilePage()),
+                  modalContext,
+                  MaterialPageRoute(builder: (context) => ProfilePage(userid: widget.userid,)),
                 );
               },
               child: _tile(Icons.person, 'Profile'),
@@ -102,8 +113,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
             GestureDetector(
               onTap: () {
+                print("User ID: ${widget.userid}");
+                Navigator.pop(modalContext);
                 Navigator.push(
-                  context,
+                  modalContext,
                   MaterialPageRoute(builder: (context) => MainPage()),
                 );
               },
