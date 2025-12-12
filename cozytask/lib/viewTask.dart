@@ -56,14 +56,35 @@ class _ViewTaskState extends State<ViewTask> {
     });
   }
 
+  double calculateProgress() {
+    if (subtasklist.isEmpty) return 0.0;
+
+    int completedCount = subtasklist.where((task) => task.status == "finished").length;
+    
+    int totalItems = subtasklist.length + 1;
+    
+    return (completedCount / totalItems) * 100;
+  }
+
   void addSubtask() async {
     await DBHelper.instance.createSubtask(SubtTask(
       name: subtaskController.text,
       status: "unfinished",
       taskid: widget.taskid
     ));
-    loadTasks();
+    await loadTasks();
+    int newProgress = (calculateProgress()).toInt();
+    await DBHelper.instance.updateTaskProgress(widget.taskid!, newProgress);
     subtaskController.clear();
+    setState(() {});
+  }
+
+  Future<void> updateSubtaskStatus(SubtTask subtask, String newStatus) async {
+    subtask.status = newStatus;
+    await DBHelper.instance.updateSubtask(subtask);
+    int newProgress = (calculateProgress()).toInt();
+    await DBHelper.instance.updateTaskProgress(widget.taskid!, newProgress);
+    setState(() {});
   }
 
   @override
@@ -71,7 +92,8 @@ class _ViewTaskState extends State<ViewTask> {
     return FutureBuilder(
       future: DBHelper.instance.returnTask(widget.taskid),
       builder: (context, snapshot) {
-        final task = snapshot.data;
+        final task = snapshot.data!;
+
         return Column(
           children: <Widget>[
             CustomBackButton(userid: widget.userid,),
@@ -79,7 +101,7 @@ class _ViewTaskState extends State<ViewTask> {
             const SizedBox(height: 10),
             Center(
               child: CirclePercent(
-                percent: task!.progress * 0.01,
+                percent: calculateProgress() * 0.01,
                 radius: 85,
                 ringColor: const Color(0xFF004562),
                 ringWidth: 25,
@@ -306,11 +328,7 @@ class _ViewTaskState extends State<ViewTask> {
                 padding: const EdgeInsets.only(top: 8, left: 20),
                 children: [
                   for (var i in subtasklist) _subTaskRow(
-                    i.name, i.status, (newValue) {
-                      setState(() {
-                        i.status = newValue;
-                      });
-                    }
+                    i, (newvalue) async {await updateSubtaskStatus(i, newvalue);}
                   )
                 ],
               ),
@@ -649,19 +667,19 @@ class _ViewTaskState extends State<ViewTask> {
     );
   }
 
-  Widget _subTaskRow(String text, String value, ValueChanged<String> onChanged) => Padding(
+  Widget _subTaskRow(SubtTask subtask, ValueChanged<String> onChanged) => Padding(
     padding: const EdgeInsets.only(left: 25),
     child: Row(
       children: [
         Checkbox(
-          value: value == "finished",
+          value: subtask.status == "finished",
           onChanged: (checked) => onChanged(checked == true ? "finished" : "unfinished"),
           activeColor: const Color(0xFF004562),
         ),
         GestureDetector(
-          onTap: () => onChanged(value == "finished" ? "unfinished" : "finished"),
+          onTap: () => onChanged(subtask.status == "finished" ? "unfinished" : "finished"),
           child: Text(
-            text,
+            subtask.name,
             style: const TextStyle(fontSize: 14, color: Colors.black),
           ),
         ),

@@ -227,6 +227,11 @@ class DBHelper {
     return await db
         .update("task", {"TASK_Progress": 100}, where: "TASK_ID = ?", whereArgs: [id]);
   }
+
+  Future<int> updateTaskProgress(int taskId, int progress) async {
+  Database db = await instance.database;
+  return await db.update("task", {'TASK_Progress': progress}, where: 'TASK_ID = ?', whereArgs: [taskId]);
+}
   
   /*          -- SUBTASK CRUD --         */
   Future<int> createSubtask(SubtTask subtask) async {
@@ -244,4 +249,9 @@ class DBHelper {
     final db = await instance.database;
     return await db.delete("subtask", where: "SUBTASK_ID = ?", whereArgs: [id]);
   }
+
+  Future<int> updateSubtask(SubtTask subtask) async {
+  Database db = await instance.database;
+  return await db.update("subtask", subtask.toMap(), where: 'SUBTASK_ID = ?', whereArgs: [subtask.id]);
+}
 }
