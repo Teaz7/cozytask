@@ -229,8 +229,14 @@ class DBHelper {
   }
 
   Future<int> updateTaskProgress(int taskId, int progress) async {
-  Database db = await instance.database;
-  return await db.update("task", {'TASK_Progress': progress}, where: 'TASK_ID = ?', whereArgs: [taskId]);
+    Database db = await instance.database;
+    return await db.update("task", {'TASK_Progress': progress}, where: 'TASK_ID = ?', whereArgs: [taskId]);
+  }
+
+  Future<List<Task>> getTasksByDate(int? userid, String date) async {
+  final db = await instance.database;
+  final result = await db.query("task", where: "USER_ID = ? AND TASK_DateFinish = ? AND TASK_Progress < 100", whereArgs: [userid, date], orderBy: "TASK_ID DESC");
+  return result.map((e) => Task.fromMap(e)).toList();
 }
   
   /*          -- SUBTASK CRUD --         */
