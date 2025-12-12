@@ -177,6 +177,12 @@ class DBHelper {
     }
   }
 
+  Future<User> returnUser(int? userid) async {
+    final db = await instance.database;
+    final result = await db.query("user", where: "USER_ID = ?", whereArgs: [userid]);
+    return User.fromMap(result.first);
+  }
+
   /*          -- CALENDAR CRUD --         */
   Future<int> createCalendar(Calendar calendar) async {
     final db = await instance.database;
@@ -234,10 +240,10 @@ class DBHelper {
   }
 
   Future<List<Task>> getTasksByDate(int? userid, String date) async {
-  final db = await instance.database;
-  final result = await db.query("task", where: "USER_ID = ? AND TASK_DateFinish = ? AND TASK_Progress < 100", whereArgs: [userid, date], orderBy: "TASK_ID DESC");
-  return result.map((e) => Task.fromMap(e)).toList();
-}
+    final db = await instance.database;
+    final result = await db.query("task", where: "USER_ID = ? AND TASK_DateFinish = ? AND TASK_Progress < 100", whereArgs: [userid, date], orderBy: "TASK_ID DESC");
+    return result.map((e) => Task.fromMap(e)).toList();
+  }
   
   /*          -- SUBTASK CRUD --         */
   Future<int> createSubtask(SubtTask subtask) async {
