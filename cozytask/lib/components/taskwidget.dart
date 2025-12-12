@@ -49,7 +49,6 @@ class _TaskWidgetState extends State<TaskWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     Widget closedTab(String task, String remaining, int progress) => Column(
       children: <Widget>[
         Container(
@@ -67,16 +66,14 @@ class _TaskWidgetState extends State<TaskWidget> {
                 Column(
                   children: <Widget>[
                     MiniCirclePercent(
-                      percent: progress*0.01,
+                      percent: progress * 0.01,
                       radius: 20,
                       ringColor: const Color(0xFF004562),
                       ringWidth: 15,
                     ),
                   ],
                 ),
-                Padding(
-                  padding: EdgeInsetsGeometry.all(5),
-                ),
+                Padding(padding: EdgeInsetsGeometry.all(5)),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -106,7 +103,13 @@ class _TaskWidgetState extends State<TaskWidget> {
       ],
     );
 
-    Widget openedTab(String task, String remaining, String duedate, int progress, int i) => Column(
+    Widget openedTab(
+      String task,
+      String remaining,
+      String duedate,
+      int progress,
+      int i,
+    ) => Column(
       children: <Widget>[
         Container(
           width: 340,
@@ -125,7 +128,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                     Column(
                       children: <Widget>[
                         CirclePercent(
-                          percent: progress*0.01,
+                          percent: progress * 0.01,
                           radius: 35,
                           ringColor: const Color(0xFF004562),
                           ringWidth: 15,
@@ -193,7 +196,12 @@ class _TaskWidgetState extends State<TaskWidget> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => ViewTaskPage(userid: widget.userid, taskid: widget.tasklist[i].id,)),
+                              MaterialPageRoute(
+                                builder: (context) => ViewTaskPage(
+                                  userid: widget.userid,
+                                  taskid: widget.tasklist[i].id,
+                                ),
+                              ),
                             );
                           },
                           child: Container(
@@ -245,13 +253,13 @@ class _TaskWidgetState extends State<TaskWidget> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
-                                    fontSize: 18
+                                    fontSize: 18,
                                   ),
                                 ),
                               ],
-                            )
+                            ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ],
