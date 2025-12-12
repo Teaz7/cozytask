@@ -210,10 +210,38 @@ class DBHelper {
     final result = await db.query("task", where: "USER_ID = ?", whereArgs: [userid], orderBy: "TASK_ID DESC");
     return result.map((e) => Task.fromMap(e)).toList();
   }
+
+  Future<Task> returnTask(int? taskid) async {
+    final db = await instance.database;
+    final result = await db.query("task", where: "TASK_ID = ?", whereArgs: [taskid]);
+    return Task.fromMap(result.first);
+  }
+
+  Future<int> deleteTask(int id) async {
+    final db = await instance.database;
+    return await db.delete("task", where: "TASK_ID = ?", whereArgs: [id]);
+  }
+
+  Future<int> taskMarkAsDone(int id) async {
+    final db = await instance.database;
+    return await db
+        .update("task", {"TASK_Progress": 100}, where: "TASK_ID = ?", whereArgs: [id]);
+  }
   
   /*          -- SUBTASK CRUD --         */
   Future<int> createSubtask(SubtTask subtask) async {
     final db = await instance.database;
     return await db.insert("subtask", subtask.toMap());
+  }
+
+  Future<List<SubtTask>> readAllSubtask(int? taskid) async {
+    final db = await instance.database;
+    final result = await db.query("subtask", where: "TASK_ID = ?", whereArgs: [taskid], orderBy: "SUBTASK_ID DESC");
+    return result.map((e) => SubtTask.fromMap(e)).toList();
+  }
+
+  Future<int> deleteSubtask(int id) async {
+    final db = await instance.database;
+    return await db.delete("subtask", where: "SUBTASK_ID = ?", whereArgs: [id]);
   }
 }
