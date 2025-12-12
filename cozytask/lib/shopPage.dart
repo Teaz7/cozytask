@@ -1,5 +1,8 @@
 import 'package:cozytask/components/backButton.dart';
 import 'package:cozytask/components/bottomnavbar.dart';
+import 'package:cozytask/database/dbHelper.dart';
+import 'package:cozytask/database/models/productModel.dart';
+import 'package:cozytask/database/models/userModel.dart';
 import 'package:flutter/material.dart';
 import 'package:cozytask/storeItem.dart';
 
@@ -40,10 +43,30 @@ class ShoppingPage extends StatefulWidget {
 }
 
 class _ShoppingPageState extends State<ShoppingPage> {
-  final List<Map<String, dynamic>> _products = List.generate(
-    6,
-    (i) => {'name': 'Item #${i + 1}', 'price': 500 + i * 100},
-  );
+  List<Product> productlist = [];
+  late User user;
+
+  @override
+  void initState() {
+    super.initState();
+    loadProducts();
+    loadUsers();
+  }
+
+  Future<void> loadUsers() async {
+    final data = await DBHelper.instance.returnUser(widget.userid);
+    setState(() {
+      user = data;
+    });
+  }
+  
+  Future<void> loadProducts() async {
+    final storeid = await DBHelper.instance.returnCalendarID(widget.userid);
+    final data = await DBHelper.instance.returnProductsfromStore(storeid);
+    setState(() {
+      productlist = data;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,13 +109,13 @@ class _ShoppingPageState extends State<ShoppingPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
+                  children:  [
                     Text(
                       'Current Points:',
                       style: TextStyle(fontSize: 18, color: Colors.white),
                     ),
                     Text(
-                      '2100 Points',
+                      user.points.toString(),
                       style: TextStyle(fontSize: 18, color: Colors.white),
                     ),
                   ],
@@ -112,7 +135,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                   ),
                   padding: const EdgeInsets.all(10),
                   child: GridView.builder(
-                    itemCount: _products.length,
+                    itemCount: productlist.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
@@ -120,7 +143,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                           crossAxisSpacing: 12,
                           childAspectRatio: 125 / 150,
                         ),
-                    itemBuilder: (_, i) => _productCard(_products[i]),
+                    itemBuilder: (_, i) => _productCard(productlist[i]),
                   ),
                 ),
               ),
@@ -132,12 +155,12 @@ class _ShoppingPageState extends State<ShoppingPage> {
   }
 
   /* --------------------  WIDGET HELPERS  -------------------- */
-  Widget _productCard(Map<String, dynamic> data) {
+  Widget _productCard(Product product) {
     return GestureDetector(
       onTap: () {
         Navigator.of(
           context,
-        ).push(MaterialPageRoute(builder: (context) => StoreItem(userid: widget.userid,)));
+        ).push(MaterialPageRoute(builder: (context) => StoreItem(userid: widget.userid, product: product,)));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -148,14 +171,24 @@ class _ShoppingPageState extends State<ShoppingPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.person_2_outlined,
-              color: Color(0xFF5b8cdb),
-              size: 60,
-            ),
+            product.photo != null
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.memory(
+                    product.photo!,
+                    height: 60,
+                    width: 60,
+                    fit: BoxFit.cover,
+                  ),
+                )
+              : const Icon(
+                  Icons.image_outlined,
+                  color: Color(0xFF5b8cdb),
+                  size: 60,
+                ),
             const SizedBox(height: 3),
             Text(
-              data['name'],
+              product.name,
               style: const TextStyle(
                 fontSize: 18,
                 color: Color(0xFF004562),
@@ -164,7 +197,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
             ),
             const SizedBox(height: 2),
             Text(
-              'Price: ${data['price']}',
+              'Price: ${product.amount}',
               style: const TextStyle(fontSize: 14, color: Color(0xFF004562)),
             ),
           ],
