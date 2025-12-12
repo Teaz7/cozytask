@@ -7,6 +7,7 @@ import 'models/userModel.dart';
 import 'models/calendarModel.dart';
 import 'models/storeModel.dart';
 import 'models/productModel.dart';
+import 'models/userLeaderboardModel.dart';
 
 class DBHelper {
   static final DBHelper instance = DBHelper._init();
@@ -183,18 +184,22 @@ class DBHelper {
 
   Future<User> returnUser(int? userid) async {
     final db = await instance.database;
-    final result = await db.query("user", where: "USER_ID = ?", whereArgs: [userid]);
+    final result = await db.query(
+      "user",
+      where: "USER_ID = ?",
+      whereArgs: [userid],
+    );
     return User.fromMap(result.first);
   }
 
   Future<int> updateUserPoints(int? userid, int points) async {
     final db = await database;
-      return await db.update(
-        'user',
-        {'USER_Points': points},
-        where: 'USER_ID = ?',
-        whereArgs: [userid],
-      );
+    return await db.update(
+      'user',
+      {'USER_Points': points},
+      where: 'USER_ID = ?',
+      whereArgs: [userid],
+    );
   }
 
   /*          -- CALENDAR CRUD --         */
@@ -259,7 +264,12 @@ class DBHelper {
 
   Future<List<Product>> returnProductsfromStore(int? id) async {
     final db = await instance.database;
-    final result = await db.query("product", where: "STORE_ID = ?", whereArgs: [id], orderBy: "PROD_ID DESC");
+    final result = await db.query(
+      "product",
+      where: "STORE_ID = ?",
+      whereArgs: [id],
+      orderBy: "PROD_ID DESC",
+    );
     return result.map((e) => Product.fromMap(e)).toList();
   }
 
@@ -279,9 +289,21 @@ class DBHelper {
   }
 
   /*          -- PURCHASES CRUD --         */
+  // FIXED: Changed from "product" to "purchases" table
   Future<int> createPurchases(Purchases purchases) async {
     final db = await instance.database;
-    return await db.insert("product", purchases.toMap());
+    return await db.insert("purchases", purchases.toMap());
+  }
+
+  // FIXED: Column names now match DB schema (USER_ID, PROD_ID)
+  Future<bool> hasUserPurchasedProduct(int userId, int productId) async {
+    final db = await database;
+    final List<Map<String, dynamic>> result = await db.query(
+      'purchases',
+      where: 'USER_ID = ? AND PROD_ID = ?',
+      whereArgs: [userId, productId],
+    );
+    return result.isNotEmpty;
   }
 
   /*          -- TASK CRUD --         */
@@ -320,7 +342,7 @@ class DBHelper {
     final db = await instance.database;
     await db.rawUpdate(
       "UPDATE user SET USER_Points = USER_Points + 500 WHERE USER_ID = ?",
-      [userid]
+      [userid],
     );
     return await db.update(
       "task",
@@ -332,15 +354,25 @@ class DBHelper {
 
   Future<int> updateTaskProgress(int taskId, int progress) async {
     Database db = await instance.database;
-    return await db.update("task", {'TASK_Progress': progress}, where: 'TASK_ID = ?', whereArgs: [taskId]);
+    return await db.update(
+      "task",
+      {'TASK_Progress': progress},
+      where: 'TASK_ID = ?',
+      whereArgs: [taskId],
+    );
   }
 
   Future<List<Task>> getTasksByDate(int? userid, String date) async {
     final db = await instance.database;
-    final result = await db.query("task", where: "USER_ID = ? AND TASK_DateFinish = ? AND TASK_Progress < 100", whereArgs: [userid, date], orderBy: "TASK_ID DESC");
+    final result = await db.query(
+      "task",
+      where: "USER_ID = ? AND TASK_DateFinish = ? AND TASK_Progress < 100",
+      whereArgs: [userid, date],
+      orderBy: "TASK_ID DESC",
+    );
     return result.map((e) => Task.fromMap(e)).toList();
   }
-  
+
   /*          -- SUBTASK CRUD --         */
   Future<int> createSubtask(SubtTask subtask) async {
     final db = await instance.database;
@@ -363,8 +395,26 @@ class DBHelper {
     return await db.delete("subtask", where: "SUBTASK_ID = ?", whereArgs: [id]);
   }
 
+  // In lib/database/dbHelper.dart
+  Future<List<UserLeaderboard>> fetchLeaderboardUsers() async {
+    final db = await instance.database;
+
+    final result = await db.query(
+      'USER', // Adjust this table name if needed
+      orderBy: 'USER_Points DESC', // Make sure this column exists
+      limit: 10,
+    );
+
+    return result.map((map) => UserLeaderboard.fromMap(map)).toList();
+  }
+
   Future<int> updateSubtask(SubtTask subtask) async {
-  Database db = await instance.database;
-  return await db.update("subtask", subtask.toMap(), where: 'SUBTASK_ID = ?', whereArgs: [subtask.id]);
-}
+    final db = await instance.database;
+    return await db.update(
+      "subtask",
+      subtask.toMap(),
+      where: "SUBTASK_ID = ?",
+      whereArgs: [subtask.id],
+    );
+  }
 }
