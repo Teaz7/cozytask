@@ -1,5 +1,6 @@
 import 'package:cozytask/components/backButton.dart';
 import 'package:cozytask/database/dbHelper.dart';
+import 'package:cozytask/taskhistory.dart';
 import 'package:flutter/material.dart';
 import 'LeaderBoard.dart';
 
@@ -29,13 +30,6 @@ class _ProfileState extends State<Profile> {
     'Rank',
     'Current Points',
   ];
-  final List<String> personalInfo = [
-    '21',
-    '3rd-year Student',
-    'West Visayas State University',
-    '#3',
-    '2100 points',
-  ];
 
   Future<void> deleteUser(int? id) async {
     if (id != null) {
@@ -45,202 +39,234 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          CustomBackButton(userid: widget.userid),
+    return FutureBuilder(
+      future: DBHelper.instance.returnUser(widget.userid),
+      builder:(context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-          const SizedBox(height: 10),
+        // Add error state
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        }
 
-          Container(
-            width: 320,
-            padding: const EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(color: const Color(0XFF68A4BC), width: 3),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Text(
-                  'USER PROFILE',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0XFF68A3BC),
-                  ),
-                  textAlign: TextAlign.center,
+        // Check if data is null
+        if (!snapshot.hasData || snapshot.data == null) {
+          return const Center(child: Text('No user data found'));
+        }
+        
+        final user = snapshot.data!;
+        final List<String> personalInfo = [
+          user.id.toString(),
+          'Year ${user.year.toString()} Student',
+          user.university,
+          '#',
+          user.points.toString(),
+        ];
+        return SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              CustomBackButton(userid: widget.userid),
+
+              const SizedBox(height: 10),
+
+              Container(
+                width: 320,
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(color: const Color(0XFF68A4BC), width: 3),
                 ),
-
-                Image.asset('assets/icon/UserProfile.png', width: 120),
-                const Text(
-                  'Pzalm Franzenne',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0XFF004463),
-                  ),
-                ),
-                const Text(
-                  'pzalmfranzenne@gmail.com',
-                  style: TextStyle(fontSize: 12, color: Color(0XFF626262)),
-                ),
-                const SizedBox(height: 15),
-
-                Column(
-                  children: List.generate(labels.length, (i) {
-                    return Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 5,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'USER PROFILE',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0XFF68A3BC),
                       ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 4,
-                            child: Text(
-                              '${labels[i]}:',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13.5,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: 20,
-                            width: 1,
-                            color: const Color(0xFF68A3BC),
-                            margin: const EdgeInsets.symmetric(horizontal: 10),
-                          ),
-                          Expanded(
-                            flex: 6,
-                            child: Text(
-                              personalInfo[i],
-                              style: const TextStyle(
-                                fontSize: 13.5,
-                                color: Colors.black,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
+                      textAlign: TextAlign.center,
+                    ),
+
+                    Image.asset('assets/icon/UserProfile.png', width: 120),
+                    Text(
+                      user.name,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0XFF004463),
                       ),
-                    );
-                  }),
+                    ),
+                    Text(
+                      user.email,
+                      style: TextStyle(fontSize: 12, color: Color(0XFF626262)),
+                    ),
+                    const SizedBox(height: 15),
+
+                    Column(
+                      children: List.generate(labels.length, (i) {
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 5,
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 4,
+                                child: Text(
+                                  '${labels[i]}:',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13.5,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: 20,
+                                width: 1,
+                                color: const Color(0xFF68A3BC),
+                                margin: const EdgeInsets.symmetric(horizontal: 10),
+                              ),
+                              Expanded(
+                                flex: 6,
+                                child: Text(
+                                  personalInfo[i],
+                                  style: const TextStyle(
+                                    fontSize: 13.5,
+                                    color: Colors.black,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
 
-          const SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () {
-              // Navigate to the LeaderboardPage
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const LeaderBoardPage(),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  // Navigate to the LeaderboardPage
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const LeaderBoardPage(),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(320, 40),
+                  backgroundColor: const Color(0XFF004463),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
                 ),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(320, 40),
-              backgroundColor: const Color(0XFF004463),
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
+                child: const Text(
+                  'View Leaderboard',
+                  style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18),
+                ),
               ),
-            ),
-            child: const Text(
-              'View Leaderboard',
-              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18),
-            ),
-          ),
 
-          const SizedBox(height: 5),
+              const SizedBox(height: 5),
 
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(320, 40),
-              backgroundColor: const Color(0XFF68A3BC),
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TaskHistoryPage(userid: widget.userid,)),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(320, 40),
+                  backgroundColor: const Color(0XFF68A3BC),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+                child: const Text(
+                  'View History',
+                  style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18),
+                ),
               ),
-            ),
-            child: const Text(
-              'View History',
-              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18),
-            ),
-          ),
 
-          const SizedBox(height: 5),
+              const SizedBox(height: 5),
 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 150,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0XFF68A3BC),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 150,
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0XFF68A3BC),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      child: const Text(
+                        'Edit Account',
+                        style: TextStyle(fontSize: 16),
+                      ),
                     ),
                   ),
-                  child: const Text(
-                    'Edit Account',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 5),
-              SizedBox(
-                width: 165,
-                child: ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      barrierDismissible: true,
-                      builder: (context) {
-                        return CustomDialog(
-                          title: "REMOVING\nACCOUNT",
-                          message:
-                              "Are you sure you want to\nremove this account?",
-                          onConfirm: () async {
-                            Navigator.of(context).pop();
+                  const SizedBox(width: 5),
+                  SizedBox(
+                    width: 165,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (context) {
+                            return CustomDialog(
+                              title: "REMOVING\nACCOUNT",
+                              message:
+                                  "Are you sure you want to\nremove this account?",
+                              onConfirm: () async {
+                                Navigator.of(context).pop();
 
-                            print("Account removed!");
-                          },
-                          onCancel: () {
-                            Navigator.of(context).pop();
+                                print("Account removed!");
+                              },
+                              onCancel: () {
+                                Navigator.of(context).pop();
+                              },
+                            );
                           },
                         );
                       },
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0XFF68A3BC),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0XFF68A3BC),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      child: const Text(
+                        'Remove Account',
+                        style: TextStyle(fontSize: 16),
+                      ),
                     ),
                   ),
-                  child: const Text(
-                    'Remove Account',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
+                ],
               ),
+
+              const SizedBox(height: 20),
             ],
           ),
-
-          const SizedBox(height: 20),
-        ],
-      ),
+        );
+      },
     );
   }
 }

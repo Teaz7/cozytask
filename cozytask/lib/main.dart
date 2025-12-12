@@ -1,4 +1,3 @@
-import 'package:cozytask/AdminSide/dashboardAdmin.dart';
 import 'package:cozytask/chooseaccount.dart';
 import 'package:cozytask/components/popupDialog.dart';
 import 'package:cozytask/dashboard.dart';
@@ -24,7 +23,7 @@ class MainPage extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GillSansMT',
       ),
-      home: Scaffold(body: Center(child: const Login())),
+      home: Scaffold(body: Center(child: Login())),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -58,6 +57,12 @@ class _LoginState extends State<Login> {
   void resetDB() async {
     await DBHelper.instance.resetDatabase();
   }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   resetDB();
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -1,10 +1,16 @@
 import 'package:cozytask/components/storeBackButton.dart';
+import 'package:cozytask/database/dbHelper.dart';
+import 'package:cozytask/database/models/productModel.dart';
+import 'package:cozytask/database/models/purchasesModel.dart';
+import 'package:cozytask/database/models/userModel.dart';
+import 'package:cozytask/shopPage.dart';
 
 import 'package:flutter/material.dart';
 
 class StoreItem extends StatelessWidget {
   final int? userid;
-  const StoreItem({super.key, required this.userid});
+  final Product product;
+  const StoreItem({super.key, required this.userid, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +24,7 @@ class StoreItem extends StatelessWidget {
       ),
       home: Scaffold(
         body: Center(
-          child: Stack(children: [Positioned.fill(child: ShoppingPageItem(userid: userid,))]),
+          child: Stack(children: [Positioned.fill(child: ShoppingPageItem(userid: userid, product: product,))]),
         ),
       ),
     );
@@ -27,13 +33,31 @@ class StoreItem extends StatelessWidget {
 
 class ShoppingPageItem extends StatefulWidget {
   final int? userid;
-  const ShoppingPageItem({super.key, required this.userid});
+  final Product product;
+  const ShoppingPageItem({super.key, required this.userid, required this.product});
 
   @override
   State<ShoppingPageItem> createState() => _ShoppingPageItemState();
 }
 
 class _ShoppingPageItemState extends State<ShoppingPageItem> {
+  User? user;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    loadUser();
+  }
+
+  Future<void> loadUser() async {
+    final data = await DBHelper.instance.returnUser(widget.userid);
+    setState(() {
+      user = data;
+      isLoading = false;
+    });
+  }
+
   Future<bool> _showPurchaseConfirmation(BuildContext context) async {
     return await showDialog<bool>(
           context: context,
@@ -76,7 +100,7 @@ class _ShoppingPageItemState extends State<ShoppingPageItem> {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'Are you sure you want to\npurchase this item?',
+                      'Are you sure you want to\npurchase this item for ${widget.product.amount} points?',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
@@ -187,6 +211,45 @@ class _ShoppingPageItemState extends State<ShoppingPageItem> {
     );
   }
 
+  Future<void> _handlePurchase() async {
+    if (user == null) return;
+
+    // Check if user has enough points
+    if (user!.points < widget.product.amount) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Insufficient points! You need ${widget.product.amount} points.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    // Deduct points from user
+    final updatedPoints = user!.points - widget.product.amount;
+    
+    // Update user points in database
+    // You'll need to add this method to your DBHelper if it doesn't exist
+    await DBHelper.instance.updateUserPoints(widget.userid, updatedPoints);
+    await DBHelper.instance.createPurchases(Purchases(
+      photo: widget.product.photo,
+      userid: widget.userid,
+      prodid: widget.product.id
+    ));
+    await DBHelper.instance.deleteProduct(widget.product.id);
+    
+    // Show success dialog
+    await _showPurchaseSuccessDialog(context);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ShopPage(userid: widget.userid)),
+    );
+    
+    // Reload user data
+    await loadUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -205,13 +268,27 @@ class _ShoppingPageItemState extends State<ShoppingPageItem> {
               style: BorderStyle.solid,
             ),
           ),
-          child: Align(
-            alignment: Alignment.center,
-            child: Icon(Icons.person, size: 200, color: Color(0xFF004562)),
-          ),
+          child: widget.product.photo != null
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.memory(
+                    widget.product.photo!,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
+                )
+              : Align(
+                  alignment: Alignment.center,
+                  child: Icon(
+                    Icons.image_outlined,
+                    size: 200,
+                    color: Color(0xFF004562),
+                  ),
+                ),
         ),
         Text(
-          'Item Name',
+          widget.product.name,
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -219,7 +296,7 @@ class _ShoppingPageItemState extends State<ShoppingPageItem> {
           ),
         ),
         Text(
-          'Price: 500 Points',
+          'Price: ${widget.product.amount} Points',
           style: TextStyle(fontSize: 20, color: Color(0xFF004562)),
         ),
         SizedBox(height: 20),
@@ -229,7 +306,7 @@ class _ShoppingPageItemState extends State<ShoppingPageItem> {
 
             if (confirmed) {
               // Show the new success dialog
-              await _showPurchaseSuccessDialog(context);
+              await _handlePurchase();
 
               // Add your purchase logic here
               // e.g., deduct points, update inventory, etc.

@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:cozytask/database/models/storeModel.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -14,6 +15,8 @@ class AddProductAdminPage extends StatefulWidget {
 }
 
 class _AddProductAdminPageState extends State<AddProductAdminPage> {
+  List<Store> storelist = [];
+
   final TextEditingController nameController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   File? selectedImage;
@@ -44,14 +47,21 @@ class _AddProductAdminPageState extends State<AddProductAdminPage> {
 
       const String defaultCategory = "General";
 
-      final product = Product(
-        name: nameController.text,
-        category: defaultCategory,
-        amount: int.tryParse(priceController.text) ?? 0,
-        photo: imageBytes,
-      );
+      final data = await DBHelper.instance.readAllStore();
+      setState(() {
+        storelist = data;
+      });
 
-      await DBHelper.instance.createProduct(product);
+      for (var i in storelist) {
+        await DBHelper.instance.createProduct(Product(
+          name: nameController.text,
+          category: defaultCategory,
+          amount: int.tryParse(priceController.text) ?? 0,
+          photo: imageBytes,
+          storeid: i.id
+        ));
+      }
+      
       if (mounted) Navigator.pop(context, true);
     } catch (e) {
       ScaffoldMessenger.of(

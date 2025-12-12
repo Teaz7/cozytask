@@ -40,7 +40,7 @@ class Task {
       status: map['TASK_Status'],
       datestart: map['TASK_DateStart'],
       dateend: map['TASK_DateFinish'],
-      progress: map['TASK_Progress'],
+      progress: (map['TASK_Progress'] as num).toInt(),
       calid: map['CAL_ID'],
       userid: map['USER_ID']
     );

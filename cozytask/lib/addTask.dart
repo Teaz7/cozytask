@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 
 class AddTaskPage extends StatelessWidget {
   final int? userid;
-  const AddTaskPage({super.key, required this.userid});
+  final VoidCallback? loadTask;
+  const AddTaskPage({super.key, required this.userid, this.loadTask});
 
   @override
   Widget build(BuildContext context) {
@@ -383,7 +384,7 @@ class _AddTaskState extends State<AddTask> {
             ),
           ),
 
-          const SizedBox(height: 50),
+          const SizedBox(height: 25),
 
           // Custom Dialog
           ElevatedButton(
