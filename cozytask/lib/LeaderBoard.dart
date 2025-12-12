@@ -1,41 +1,6 @@
 import 'package:flutter/material.dart';
-
-void main() => runApp(const MaterialApp(home: LeaderBoardPage()));
-
-class Player {
-  final String id;
-  final String name;
-  final int score;
-  const Player(this.id, this.name, this.score);
-}
-
-class LeaderboardRepo {
-  static Future<List<Player>> fetchLeaderboard() async {
-    await Future.delayed(const Duration(milliseconds: 400));
-
-    final raw = <Player>[
-      Player('u4', 'tea', 1376),
-      Player('u2', 'zam', 1221),
-      Player('u7', 'jims', 1092),
-      Player('u5', 'luris', 890),
-      Player('u1', 'mikil', 670),
-      Player('u6', 'jistir', 548),
-      Player('u3', 'arjey', 123),
-      Player('u3', 'arjey', 123),
-      Player('u3', 'arjey', 123),
-      Player('u3', 'arjey', 123),
-      Player('u6', 'jistir', 548),
-    ]..sort((a, b) => b.score.compareTo(a.score));
-
-    final top10 = raw.take(10).toList();
-
-    while (top10.length < 10) {
-      top10.add(Player('', '——', 0));
-    }
-
-    return top10;
-  }
-}
+import 'package:cozytask/database/dbHelper.dart';
+import 'package:cozytask/database/models/userLeaderboardModel.dart'; // ✅ Correct import
 
 class LeaderBoardPage extends StatelessWidget {
   const LeaderBoardPage({super.key});
@@ -48,11 +13,10 @@ class LeaderBoardPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            // header bar -------------------------------------------------------
+            // Header
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // 1. Arrow: ALIGNED LEFT
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
@@ -67,8 +31,6 @@ class LeaderBoardPage extends StatelessWidget {
                     ),
                   ),
                 ),
-
-                // 2. Title: CENTERED
                 const Center(
                   child: Padding(
                     padding: EdgeInsets.only(bottom: 10),
@@ -85,10 +47,11 @@ class LeaderBoardPage extends StatelessWidget {
               ],
             ),
 
-            // table + banner ---------------------------------------------------
+            // Data Table
             Expanded(
-              child: FutureBuilder<List<Player>>(
-                future: LeaderboardRepo.fetchLeaderboard(),
+              child: FutureBuilder<List<UserLeaderboard>>(
+                // ✅ Correct type
+                future: DBHelper.instance.fetchLeaderboardUsers(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -96,27 +59,33 @@ class LeaderBoardPage extends StatelessWidget {
                   if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   }
-                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text('No data'));
+
+                  // Get users or pad with empty slots
+                  final users = snapshot.data ?? [];
+                  final topUsers = users.take(10).toList();
+
+                  while (topUsers.length < 10) {
+                    topUsers.add(
+                      UserLeaderboard(userName: '——', userPoints: 0),
+                    ); // ✅ Correct constructor
                   }
 
-                  final players = snapshot.data!;
-                  final topPlayerName = players.first.name;
+                  final topUserName = users.isNotEmpty
+                      ? users.first.userName
+                      : 'No players'; // ✅ Use userName
 
                   return SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Column(
                       children: [
                         _header(),
-
-                        ...players.asMap().entries.map(
-                          (e) => _row(index: e.key, player: e.value),
+                        ...topUsers.asMap().entries.map(
+                          (e) => _row(index: e.key, user: e.value),
                         ),
-
                         Padding(
                           padding: const EdgeInsets.all(16),
                           child: Text(
-                            'Number 1: ${topPlayerName[0].toUpperCase()}${topPlayerName.substring(1)}',
+                            'Number 1: ${topUserName.isNotEmpty ? "${topUserName[0].toUpperCase()}${topUserName.substring(1)}" : "No players"}',
                             style: const TextStyle(
                               color: primaryColor,
                               fontSize: 24,
@@ -173,18 +142,12 @@ class LeaderBoardPage extends StatelessWidget {
     ),
   );
 
-  // --- UPDATED ROW LOGIC ---
-  Widget _row({required int index, required Player player}) {
+  Widget _row({required int index, required UserLeaderboard user}) {
+    // ✅ Correct type
     final isTopThree = index < 3;
-    // 1. Determine Background Color
-    Color rowColor;
-    if (index == 0) {
-      // Rank 1 gets the special light blue color
-      rowColor = const Color(0xFFd8e8f4);
-    } else {
-      // The rest use zebra striping
-      rowColor = index.isEven ? Colors.white : Colors.grey.shade50;
-    }
+    Color rowColor = index == 0
+        ? const Color(0xFFd8e8f4)
+        : (index.isEven ? Colors.white : Colors.grey.shade50);
 
     final textStyle = TextStyle(
       fontWeight: isTopThree ? FontWeight.w900 : FontWeight.normal,
@@ -195,11 +158,10 @@ class LeaderBoardPage extends StatelessWidget {
     return Column(
       children: [
         Container(
-          color: rowColor, // <--- Applied here
+          color: rowColor,
           height: 40,
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
                 width: 40,
@@ -207,24 +169,22 @@ class LeaderBoardPage extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  player.name,
+                  user.userName,
                   textAlign: TextAlign.center,
                   style: textStyle,
                 ),
-              ),
+              ), // ✅ Use userName
               SizedBox(
                 width: 60,
                 child: Text(
-                  '${player.score}',
+                  '${user.userPoints}',
                   textAlign: TextAlign.right,
                   style: textStyle,
                 ),
-              ),
+              ), // ✅ Use userPoints
             ],
           ),
         ),
-        // Only show divider if it's NOT the special rank 1 row,
-        // to make the color block look cleaner.
         if (index != 0) Divider(height: 1, color: Colors.grey.shade300),
       ],
     );
