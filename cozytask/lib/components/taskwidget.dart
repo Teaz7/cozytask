@@ -1,18 +1,19 @@
+import 'package:cozytask/components/circlepercent.dart';
+import 'package:cozytask/components/minicirclepercent.dart';
+import 'package:cozytask/database/dbHelper.dart';
 import 'package:cozytask/database/models/taskModel.dart';
 import 'package:cozytask/viewTask.dart';
 import 'package:flutter/material.dart';
 
 class TaskWidget extends StatefulWidget {
   final List<Task> tasklist;
-  final String icon;
   final int? userid;
 
   const TaskWidget({
     super.key,
     required this.tasklist,
-    required this.icon,
     required this.userid,
-  });
+  }) : super(key: key);
 
   @override
   State<TaskWidget> createState() => _TaskWidgetState();
@@ -44,7 +45,8 @@ class _TaskWidgetState extends State<TaskWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Widget closedTab(String image, String task, String remaining) => Column(
+
+    Widget closedTab(String task, String remaining, int progress) => Column(
       children: <Widget>[
         Container(
           width: 340,
@@ -58,8 +60,19 @@ class _TaskWidgetState extends State<TaskWidget> {
             padding: EdgeInsets.all(10),
             child: Row(
               children: <Widget>[
-                Column(children: <Widget>[Image.asset(image, width: 40)]),
-                Padding(padding: EdgeInsetsGeometry.all(5)),
+                Column(
+                  children: <Widget>[
+                    MiniCirclePercent(
+                      percent: progress*0.01,
+                      radius: 20,
+                      ringColor: const Color(0xFF004562),
+                      ringWidth: 15,
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsetsGeometry.all(5),
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -89,7 +102,7 @@ class _TaskWidgetState extends State<TaskWidget> {
       ],
     );
 
-    Widget openedTab(String task, String remaining, String duedate) => Column(
+    Widget openedTab(String task, String remaining, String duedate, int progress, int i) => Column(
       children: <Widget>[
         Container(
           width: 340,
@@ -104,11 +117,15 @@ class _TaskWidgetState extends State<TaskWidget> {
             child: Column(
               children: <Widget>[
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Column(
                       children: <Widget>[
-                        Image.asset('assets/icon/Percentage.png', width: 70),
+                        CirclePercent(
+                          percent: progress*0.01,
+                          radius: 35,
+                          ringColor: const Color(0xFF004562),
+                          ringWidth: 15,
+                        ),
                       ],
                     ),
                     Padding(
@@ -172,10 +189,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    ViewTaskPage(userid: widget.userid),
-                              ),
+                              MaterialPageRoute(builder: (context) => ViewTaskPage(userid: widget.userid, taskid: widget.tasklist[i].id,)),
                             );
                           },
                           child: Container(
@@ -206,28 +220,33 @@ class _TaskWidgetState extends State<TaskWidget> {
                     Padding(padding: EdgeInsetsGeometry.all(5)),
                     Column(
                       children: <Widget>[
-                        Container(
-                          width: 150,
-                          height: 35,
-                          decoration: BoxDecoration(
-                            color: Color(0XFF004463),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                'Mark as Done',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  fontSize: 18,
+                        GestureDetector(
+                          onTap: () async{
+                            await DBHelper.instance.taskMarkAsDone(widget.tasklist[i].id!);
+                          },
+                          child: Container(
+                            width: 150,
+                            height: 35,
+                            decoration: BoxDecoration(
+                              color: Color(0XFF004463),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'Mark as Done',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 18
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            )
                           ),
-                        ),
+                        )
                       ],
                     ),
                   ],
@@ -274,21 +293,12 @@ class _TaskWidgetState extends State<TaskWidget> {
 
     return Column(
       children: <Widget>[
-        for (int i = 0; i < widget.tasklist.length; i++)
-          GestureDetector(
-            onTap: () => toggleTask(i),
-            child: isOpenedList[i]
-                ? openedTab(
-                    widget.tasklist[i].name,
-                    remainingDays(widget.tasklist[i]),
-                    widget.tasklist[i].dateend,
-                  )
-                : closedTab(
-                    widget.icon,
-                    widget.tasklist[i].name,
-                    remainingDays(widget.tasklist[i]),
-                  ),
-          ),
+        for (int i = 0; i < widget.tasklist.length; i++) GestureDetector(
+          onTap: () => toggleTask(i),
+          child: isOpenedList[i]
+              ? openedTab(widget.tasklist[i].name, remainingDays(widget.tasklist[i]), widget.tasklist[i].dateend, widget.tasklist[i].progress, i)
+              : closedTab(widget.tasklist[i].name, remainingDays(widget.tasklist[i]), widget.tasklist[i].progress)
+        )
       ],
     );
   }

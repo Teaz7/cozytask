@@ -41,7 +41,6 @@ class _SearchResultState extends State<SearchResult> {
   String _selectedPriority = '1';
   
   List<Task> tasklist = [];
-  String icon = 'assets/icon/minipercentage/1.png';
 
   void _openSort() => showDialog(
     context: context,
@@ -466,7 +465,6 @@ class _SearchResultState extends State<SearchResult> {
 
         TaskWidget(
           tasklist: tasklist,
-          icon: icon,
           userid: widget.userid,
         )
       ],

@@ -37,7 +37,6 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   List<Task> tasklist = [];
-  String icon = 'assets/icon/minipercentage/1.png';
   
   @override
   void initState() {
@@ -161,7 +160,6 @@ class _DashboardState extends State<Dashboard> {
 
         TaskWidget(
           tasklist: tasklist,
-          icon: icon,
           userid: widget.userid,
         ),
 
