@@ -188,6 +188,16 @@ class DBHelper {
     return User.fromMap(result.first);
   }
 
+  Future<int> updateUserPoints(int? userid, int points) async {
+    final db = await database;
+      return await db.update(
+        'user',
+        {'USER_Points': points},
+        where: 'USER_ID = ?',
+        whereArgs: [userid],
+      );
+  }
+
   /*          -- CALENDAR CRUD --         */
   Future<int> createCalendar(Calendar calendar) async {
     final db = await instance.database;
