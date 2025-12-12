@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cozytask/components/backButton.dart';
 
 class ViewProfilePage extends StatelessWidget {
   final String name;
@@ -24,172 +23,122 @@ class ViewProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: ViewProfile(
-          name: name,
-          email: email,
-          accountId: accountId,
-          yearLevel: yearLevel,
-          university: university,
-          rank: rank,
-          points: points,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: const Color(0XFF68A3BC),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          "User Profile",
+          style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'GillSansMT',
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 50,
+                      backgroundColor: const Color(0XFF68A3BC),
+                      child: Text(
+                        name
+                            .split(' ')
+                            .map((e) => e[0])
+                            .take(2)
+                            .join()
+                            .toUpperCase(),
+                        style: const TextStyle(
+                          fontSize: 24,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    Text(
+                      name,
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0XFF004463),
+                        fontFamily: 'GillSansMT',
+                      ),
+                    ),
+                    Text(
+                      email,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                        fontFamily: 'GillSansMT',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 40),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: const Color(0XFF004463),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildDetailRow("Account ID", accountId),
+                    const SizedBox(height: 15),
+                    _buildDetailRow("University", university),
+                    const SizedBox(height: 15),
+                    _buildDetailRow("Year Level", yearLevel),
+                    const SizedBox(height: 15),
+                    _buildDetailRow("Rank", "Rank #$rank"),
+                    const SizedBox(height: 15),
+                    _buildDetailRow("Points", "$points pts"),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
-}
 
-class ViewProfile extends StatefulWidget {
-  final String name;
-  final String email;
-  final String accountId;
-  final String yearLevel;
-  final String university;
-  final String rank;
-  final String points;
-
-  const ViewProfile({
-    super.key,
-    required this.name,
-    required this.email,
-    required this.accountId,
-    required this.yearLevel,
-    required this.university,
-    required this.rank,
-    required this.points,
-  });
-
-  @override
-  State<ViewProfile> createState() => _ViewProfileState();
-}
-
-class _ViewProfileState extends State<ViewProfile> {
-  @override
-  Widget build(BuildContext context) {
-    final List<String> labels = [
-      'Account ID',
-      'Year Level',
-      'University',
-      'Rank',
-      'Current Points',
-    ];
-
-    final List<String> info = [
-      widget.accountId,
-      widget.yearLevel,
-      widget.university,
-      widget.rank,
-      widget.points,
-    ];
-
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: CustomBackButton(userid: null),
+  Widget _buildDetailRow(String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 12,
+            color: Colors.white70,
+            fontFamily: 'GillSansMT',
           ),
-
-          const SizedBox(height: 40),
-
-          // Center the profile card
-          Center(
-            child: Container(
-              width: 320,
-              padding: const EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: Color(0XFF68A4BC), width: 3),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center, 
-                children: [
-                  const Text(
-                    'USER PROFILE',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0XFF68A3BC),
-                    ),
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  Image.asset('assets/icon/UserProfile.png', width: 120),
-
-                  Text(
-                    widget.name,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0XFF004463),
-                    ),
-                  ),
-
-                  Text(
-                    widget.email,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Color(0XFF626262),
-                    ),
-                  ),
-
-                  const SizedBox(height: 15),
-
-                  Column(
-                    children: List.generate(labels.length, (i) {
-                      return Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 5,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              flex: 4,
-                              child: Text(
-                                '${labels[i]}:',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13.5,
-                                ),
-                                textAlign: TextAlign.right,
-                              ),
-                            ),
-
-                            Container(
-                              height: 20,
-                              width: 1,
-                              color: Color(0xFF68A3BC),
-                              margin: const EdgeInsets.symmetric(horizontal: 10),
-                            ),
-
-                            Expanded(
-                              flex: 6,
-                              child: Text(
-                                info[i],
-                                style: const TextStyle(
-                                  fontSize: 13.5,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }),
-                  ),
-                ],
-              ),
-            ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontFamily: 'GillSansMT',
           ),
-
-          const SizedBox(height: 20),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

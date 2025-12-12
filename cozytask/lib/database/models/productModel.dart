@@ -1,15 +1,20 @@
+import 'dart:typed_data';
+
 class Product {
-  int? id, storeid;
+  int? id;
   int amount;
-  String name, category, photo;
+  String name;
+  String? category; // ✅ Hidden from UI
+  Uint8List? photo;
+  int? storeid; // ✅ Not needed but kept for compatibility
 
   Product({
     this.id,
-    this.storeid,
     required this.amount,
     required this.name,
-    required this.category,
-    required this.photo
+    this.category,
+    this.photo,
+    this.storeid, // ✅ Optional
   });
 
   Map<String, dynamic> toMap() {
@@ -19,7 +24,7 @@ class Product {
       'PROD_Category': category,
       'PROD_Amount': amount,
       'PROD_Photo': photo,
-      'STORE_ID': storeid
+      'STORE_ID': 1, // ✅ CONSTANT - always 1
     };
   }
 
@@ -30,7 +35,7 @@ class Product {
       category: map['PROD_Category'],
       amount: map['PROD_Amount'],
       photo: map['PROD_Photo'],
-      storeid: map['STORE_ID']
+      storeid: map['STORE_ID'], // ✅ Will be 1
     );
   }
 }
