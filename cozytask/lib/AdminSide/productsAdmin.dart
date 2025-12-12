@@ -5,6 +5,7 @@ import 'package:cozytask/AdminSide/addProducts.dart';
 import 'package:cozytask/AdminSide/modifyProduct.dart';
 import 'package:cozytask/database/dbHelper.dart';
 import 'package:cozytask/database/models/productModel.dart';
+import 'package:cozytask/components/backButtonLogin.dart';
 
 class ProductsAdminPage extends StatelessWidget {
   const ProductsAdminPage({super.key});
@@ -61,9 +62,9 @@ class _ShoppingPageState extends State<ShoppingPage> {
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: const EdgeInsets.only(left: 15, top: 10),
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back, size: 30),
-                  onPressed: () => Navigator.pop(context),
+                child: const Padding(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: ReturnLoginButton(),
                 ),
               ),
             ),
@@ -137,8 +138,6 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                       crossAxisCount: 2,
                                       mainAxisSpacing: 12,
                                       crossAxisSpacing: 12,
-                                      // ✅ 1. CHANGED ASPECT RATIO
-                                      // Adjusted from 125/150 to allow more vertical space for bigger images
                                       childAspectRatio: 125 / 180,
                                     ),
                                 itemBuilder: (_, i) =>
@@ -198,17 +197,26 @@ class _ShoppingPageState extends State<ShoppingPage> {
           imageFile = tempFile;
         }
 
+        // ✅ Navigate and await the result from ModifyProductPage
         final result = await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (_) => ModifyProductPage(
+              id: product.id, // ✅ PASS PRODUCT ID
               name: product.name,
               price: product.amount,
               image: imageFile,
             ),
           ),
         );
-        if (result == true) _refreshProducts();
+
+        // ✅ Handle the returned data map
+        if (result != null && result is Map<String, dynamic>) {
+          // ✅ Update the database
+          await _updateProductInDB(result);
+          // ✅ Refresh the UI
+          _refreshProducts();
+        }
       },
       child: Container(
         decoration: BoxDecoration(
@@ -242,11 +250,32 @@ class _ShoppingPageState extends State<ShoppingPage> {
     );
   }
 
-  Widget _buildProductImage(Uint8List? photoBytes) {
-    // ✅ 2. INCREASED IMAGE SIZE HERE
-    // Changed size from 60 to 100
-    double imageSize = 150;
+  // ✅ NEW METHOD: Update product in database
+  Future<void> _updateProductInDB(Map<String, dynamic> updatedData) async {
+    try {
+      // Assuming your Product model has an id field
+      final updatedProduct = Product(
+        id: updatedData['id'],
+        name: updatedData['name'],
+        amount: updatedData['price'],
+        photo: updatedData['image'] != null
+            ? await (updatedData['image'] as File).readAsBytes()
+            : null,
+      );
 
+      await DBHelper.instance.updateProduct(updatedProduct);
+      print("✅ Product updated successfully");
+    } catch (e) {
+      print("❌ Error updating product: $e");
+      // Show error snackbar
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to update product: $e')));
+    }
+  }
+
+  Widget _buildProductImage(Uint8List? photoBytes) {
+    double imageSize = 150;
     if (photoBytes == null || photoBytes.isEmpty) {
       return Icon(
         Icons.inventory_2_outlined,

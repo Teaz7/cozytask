@@ -7,6 +7,7 @@ import 'models/userModel.dart';
 import 'models/calendarModel.dart';
 import 'models/storeModel.dart';
 import 'models/productModel.dart';
+import 'models/userLeaderboardModel.dart';
 
 class DBHelper {
   static final DBHelper instance = DBHelper._init();
@@ -363,8 +364,17 @@ class DBHelper {
     return await db.delete("subtask", where: "SUBTASK_ID = ?", whereArgs: [id]);
   }
 
-  Future<int> updateSubtask(SubtTask subtask) async {
-  Database db = await instance.database;
-  return await db.update("subtask", subtask.toMap(), where: 'SUBTASK_ID = ?', whereArgs: [subtask.id]);
-}
+  // In lib/database/dbHelper.dart
+
+  Future<List<UserLeaderboard>> fetchLeaderboardUsers() async {
+    final db = await instance.database;
+
+    final result = await db.query(
+      'USER', // Adjust this table name if needed
+      orderBy: 'USER_Points DESC', // Make sure this column exists
+      limit: 10,
+    );
+
+    return result.map((map) => UserLeaderboard.fromMap(map)).toList();
+  }
 }
