@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cozytask/AdminSide/viewUsers';
+import 'package:cozytask/AdminSide/viewUsers.dart';
 import 'package:cozytask/AdminSide/productsAdmin.dart';
-
 
 void main() => runApp(const MaterialApp(home: AdminDashboardPage()));
 
@@ -12,11 +11,7 @@ class AdminDashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: AdminDashboardBody(),
-        ),
-      ),
+      body: SafeArea(child: SingleChildScrollView(child: AdminDashboardBody())),
     );
   }
 }
@@ -51,14 +46,13 @@ class AdminDashboardBody extends StatelessWidget {
 
         const SizedBox(height: 30),
 
-
         DashboardCard(
           title: "USERS",
           imagePath: 'assets/img/User.png',
           description: 'View user details',
           onTap: () {
-             Navigator.push(
-               context,
+            Navigator.push(
+              context,
               MaterialPageRoute(builder: (context) => const ViewUsersPage()),
             );
           },
@@ -72,7 +66,7 @@ class AdminDashboardBody extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const productsAdminPage(),
+                builder: (context) => const ProductsAdminPage(),
               ),
             );
           },
@@ -86,7 +80,7 @@ class DashboardCard extends StatelessWidget {
   final String title;
   final String imagePath;
   final String description;
-  final VoidCallback onTap; 
+  final VoidCallback onTap;
 
   const DashboardCard({
     super.key,
@@ -151,5 +145,3 @@ class DashboardCard extends StatelessWidget {
     );
   }
 }
-
-

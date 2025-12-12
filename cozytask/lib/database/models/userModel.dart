@@ -25,7 +25,7 @@ class User {
       'USER_YearLevel': year,
       'USER_Points': points,
       'USER_LoginStatus': loginstatus,
-      'USER_SelectedPetID': petid
+      'USER_SelectedPetID': petid,
     };
   }
 
@@ -39,7 +39,7 @@ class User {
       year: map['USER_YearLevel'],
       points: map['USER_Points'],
       loginstatus: map['USER_LoginStatus'],
-      petid: map['USER_SelectedPetID']
+      petid: map['USER_SelectedPetID'],
     );
   }
 }

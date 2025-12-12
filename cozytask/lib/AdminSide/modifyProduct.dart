@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:cozytask/AdminSide/editProduct';
+import 'package:cozytask/AdminSide/editProduct.dart';
 
 class ModifyProductPage extends StatelessWidget {
   final String name;
@@ -36,10 +36,7 @@ class ModifyProductPage extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: const Color(0xFFD8E8F4),
                   borderRadius: BorderRadius.circular(15),
-                  border: Border.all(
-                    color: const Color(0xFF004562),
-                    width: 3,
-                  ),
+                  border: Border.all(color: const Color(0xFF004562), width: 3),
                 ),
                 child: image == null
                     ? const Icon(
@@ -69,10 +66,7 @@ class ModifyProductPage extends StatelessWidget {
                   ),
                   Text(
                     "Price: $price points",
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.black87,
-                    ),
+                    style: const TextStyle(fontSize: 18, color: Colors.black87),
                   ),
                 ],
               ),
@@ -104,10 +98,7 @@ class ModifyProductPage extends StatelessWidget {
                 ),
                 child: const Text(
                   "EDIT INFO",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -127,10 +118,7 @@ class ModifyProductPage extends StatelessWidget {
                 ),
                 child: const Text(
                   "DELETE ITEM",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
             ),

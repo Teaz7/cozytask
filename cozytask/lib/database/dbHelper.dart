@@ -5,6 +5,7 @@ import 'package:path/path.dart';
 import 'models/userModel.dart';
 import 'models/calendarModel.dart';
 import 'models/storeModel.dart';
+import 'models/productModel.dart';
 
 class DBHelper {
   static final DBHelper instance = DBHelper._init();
@@ -28,24 +29,20 @@ class DBHelper {
       onCreate: _createDB,
       onConfigure: (db) async {
         await db.execute('PRAGMA foreign_keys = ON');
-      }
+      },
     );
   }
 
   Future<void> resetDatabase() async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, "app.db");
-    
-    // Close the database if it's open
+
     if (_database != null) {
       await _database!.close();
       _database = null;
     }
-    
-    // Delete the database file
+
     await deleteDatabase(path);
-    
-    // Reinitialize the database (creates fresh tables)
     _database = await _initDB("app.db");
   }
 
@@ -120,18 +117,18 @@ class DBHelper {
     )
     ''');
 
+    // ✅ FIXED: Remove foreign key constraint, STORE_ID is constant
     await db.execute('''
     CREATE TABLE product(
       PROD_ID INTEGER PRIMARY KEY AUTOINCREMENT,
       PROD_Name TEXT NOT NULL,
-      PROD_Category TEXT NOT NULL,
+      PROD_Category TEXT,
       PROD_Amount INTEGER NOT NULL,
-      PROD_Photo TEXT NOT NULL,
-      STORE_ID INTEGER, 
-      FOREIGN KEY (STORE_ID) REFERENCES store (STORE_ID) ON DELETE CASCADE
+      PROD_Photo BLOB,
+      STORE_ID INTEGER NOT NULL
     )
     ''');
-    
+
     await db.execute('''
     CREATE TABLE purchases(
       PUR_ID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -149,7 +146,7 @@ class DBHelper {
     final db = await instance.database;
     return await db.insert("user", user.toMap());
   }
-  
+
   Future<List<User>> readAllUser() async {
     final db = await instance.database;
     final result = await db.query("user", orderBy: "USER_ID DESC");
@@ -158,8 +155,12 @@ class DBHelper {
 
   Future<int> updateUser(User user) async {
     final db = await instance.database;
-    return await db
-        .update("user", user.toMap(), where: "USER_ID = ?", whereArgs: [user.id]);
+    return await db.update(
+      "user",
+      user.toMap(),
+      where: "USER_ID = ?",
+      whereArgs: [user.id],
+    );
   }
 
   Future<int> deleteUser(int id) async {
@@ -169,7 +170,12 @@ class DBHelper {
 
   Future<int?> returnUserID(String email, String password) async {
     final db = await instance.database;
-    final result = await db.query("user", columns: ["USER_ID"], where: "USER_Email = ? AND USER_Password = ?", whereArgs: [email, password]);
+    final result = await db.query(
+      "user",
+      columns: ["USER_ID"],
+      where: "USER_Email = ? AND USER_Password = ?",
+      whereArgs: [email, password],
+    );
     if (result.isNotEmpty) {
       return result.first["USER_ID"] as int?;
     } else {
@@ -185,7 +191,12 @@ class DBHelper {
 
   Future<int?> returnCalendarID(int? userid) async {
     final db = await instance.database;
-    final result = await db.query("calendar", columns: ["CAL_ID"], where: "USER_ID = ?", whereArgs: [userid]);
+    final result = await db.query(
+      "calendar",
+      columns: ["CAL_ID"],
+      where: "USER_ID = ?",
+      whereArgs: [userid],
+    );
     if (result.isNotEmpty) {
       return result.first["CAL_ID"] as int?;
     } else {
@@ -199,6 +210,33 @@ class DBHelper {
     return await db.insert("store", store.toMap());
   }
 
+  /*          -- PRODUCT CRUD --         */
+  Future<int> createProduct(Product product) async {
+    final db = await instance.database;
+    return await db.insert("product", product.toMap());
+  }
+
+  Future<List<Product>> readAllProducts() async {
+    final db = await instance.database;
+    final result = await db.query("product", orderBy: "PROD_ID DESC");
+    return result.map((e) => Product.fromMap(e)).toList();
+  }
+
+  Future<int> updateProduct(Product product) async {
+    final db = await instance.database;
+    return await db.update(
+      "product",
+      product.toMap(),
+      where: "PROD_ID = ?",
+      whereArgs: [product.id],
+    );
+  }
+
+  Future<int> deleteProduct(int id) async {
+    final db = await instance.database;
+    return await db.delete("product", where: "PROD_ID = ?", whereArgs: [id]);
+  }
+
   /*          -- TASK CRUD --         */
   Future<int> createTask(Task task) async {
     final db = await instance.database;
@@ -207,13 +245,22 @@ class DBHelper {
 
   Future<List<Task>> readAllTask(int? userid) async {
     final db = await instance.database;
-    final result = await db.query("task", where: "USER_ID = ?", whereArgs: [userid], orderBy: "TASK_ID DESC");
+    final result = await db.query(
+      "task",
+      where: "USER_ID = ?",
+      whereArgs: [userid],
+      orderBy: "TASK_ID DESC",
+    );
     return result.map((e) => Task.fromMap(e)).toList();
   }
 
   Future<Task> returnTask(int? taskid) async {
     final db = await instance.database;
-    final result = await db.query("task", where: "TASK_ID = ?", whereArgs: [taskid]);
+    final result = await db.query(
+      "task",
+      where: "TASK_ID = ?",
+      whereArgs: [taskid],
+    );
     return Task.fromMap(result.first);
   }
 
@@ -224,10 +271,14 @@ class DBHelper {
 
   Future<int> taskMarkAsDone(int id) async {
     final db = await instance.database;
-    return await db
-        .update("task", {"TASK_Progress": 100}, where: "TASK_ID = ?", whereArgs: [id]);
+    return await db.update(
+      "task",
+      {"TASK_Progress": 100},
+      where: "TASK_ID = ?",
+      whereArgs: [id],
+    );
   }
-  
+
   /*          -- SUBTASK CRUD --         */
   Future<int> createSubtask(SubtTask subtask) async {
     final db = await instance.database;
@@ -236,7 +287,12 @@ class DBHelper {
 
   Future<List<SubtTask>> readAllSubtask(int? taskid) async {
     final db = await instance.database;
-    final result = await db.query("subtask", where: "TASK_ID = ?", whereArgs: [taskid], orderBy: "SUBTASK_ID DESC");
+    final result = await db.query(
+      "subtask",
+      where: "TASK_ID = ?",
+      whereArgs: [taskid],
+      orderBy: "SUBTASK_ID DESC",
+    );
     return result.map((e) => SubtTask.fromMap(e)).toList();
   }
 
