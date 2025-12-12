@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cozytask/components/backButton.dart';
 
 class ViewProfilePage extends StatelessWidget {
   final String name;

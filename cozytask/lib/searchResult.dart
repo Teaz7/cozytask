@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 
 class SearchResultPage extends StatelessWidget {
   final int? userid;
-  const SearchResultPage({super.key, required this.userid});
+  final String search;
+  const SearchResultPage({super.key, required this.userid, required this.search});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class SearchResultPage extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GillSansMT',
       ),
-      home: Scaffold(body: Center(child: SearchResult(userid: userid,))),
+      home: Scaffold(body: Center(child: SearchResult(userid: userid, search: search,))),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -27,7 +28,8 @@ enum SingingCharacter {Deadline, Name, Last_Updated, Date}
 
 class SearchResult extends StatefulWidget {
   final int? userid;
-  const SearchResult({super.key, required this.userid});
+  final String search;
+  const SearchResult({super.key, required this.userid, required this.search});
 
   @override
   State<SearchResult> createState() => _SearchResultState();
@@ -466,6 +468,7 @@ class _SearchResultState extends State<SearchResult> {
         TaskWidget(
           tasklist: tasklist,
           userid: widget.userid,
+          dashboard: true,
         )
       ],
     );

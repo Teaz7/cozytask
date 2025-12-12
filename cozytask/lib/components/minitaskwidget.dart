@@ -5,13 +5,13 @@ import 'package:cozytask/database/models/taskModel.dart';
 import 'package:cozytask/viewTask.dart';
 import 'package:flutter/material.dart';
 
-class TaskWidget extends StatefulWidget {
+class MiniTaskWidget extends StatefulWidget {
   final List<Task> tasklist;
   final int? userid;
   final bool dashboard;
   final VoidCallback? loadTask;
 
-  const TaskWidget({
+  const MiniTaskWidget({
     super.key,
     required this.tasklist,
     required this.userid,
@@ -20,10 +20,10 @@ class TaskWidget extends StatefulWidget {
   });
 
   @override
-  State<TaskWidget> createState() => _TaskWidgetState();
+  State<MiniTaskWidget> createState() => _MiniTaskWidgetState();
 }
 
-class _TaskWidgetState extends State<TaskWidget> {
+class _MiniTaskWidgetState extends State<MiniTaskWidget> {
   List<bool> isOpenedList = [];
 
   void toggleTask(int i) {
@@ -39,7 +39,7 @@ class _TaskWidgetState extends State<TaskWidget> {
   }
 
   @override
-  void didUpdateWidget(TaskWidget oldWidget) {
+  void didUpdateWidget(MiniTaskWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     // Update isOpenedList when tasklist changes
     if (oldWidget.tasklist.length != widget.tasklist.length) {
@@ -49,6 +49,7 @@ class _TaskWidgetState extends State<TaskWidget> {
 
   @override
   Widget build(BuildContext context) {
+
     Widget closedTab(String task, String remaining, int progress) => Column(
       children: <Widget>[
         Container(
@@ -66,14 +67,16 @@ class _TaskWidgetState extends State<TaskWidget> {
                 Column(
                   children: <Widget>[
                     MiniCirclePercent(
-                      percent: progress * 0.01,
+                      percent: progress*0.01,
                       radius: 20,
                       ringColor: const Color(0xFF004562),
                       ringWidth: 15,
                     ),
                   ],
                 ),
-                Padding(padding: EdgeInsetsGeometry.all(5)),
+                Padding(
+                  padding: EdgeInsetsGeometry.all(5),
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -103,13 +106,7 @@ class _TaskWidgetState extends State<TaskWidget> {
       ],
     );
 
-    Widget openedTab(
-      String task,
-      String remaining,
-      String duedate,
-      int progress,
-      int i,
-    ) => Column(
+    Widget openedTab(String task, String remaining, String duedate, int progress, int i) => Column(
       children: <Widget>[
         Container(
           width: 340,
@@ -128,7 +125,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                     Column(
                       children: <Widget>[
                         CirclePercent(
-                          percent: progress * 0.01,
+                          percent: progress*0.01,
                           radius: 35,
                           ringColor: const Color(0xFF004562),
                           ringWidth: 15,
@@ -196,16 +193,11 @@ class _TaskWidgetState extends State<TaskWidget> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) => ViewTaskPage(
-                                  userid: widget.userid,
-                                  taskid: widget.tasklist[i].id,
-                                ),
-                              ),
+                              MaterialPageRoute(builder: (context) => ViewTaskPage(userid: widget.userid, taskid: widget.tasklist[i].id,)),
                             );
                           },
                           child: Container(
-                            width: 150,
+                            width: 130,
                             height: 35,
                             decoration: BoxDecoration(
                               color: Color(0XFF68A3BC),
@@ -238,7 +230,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                             widget.loadTask?.call();
                           },
                           child: Container(
-                            width: 150,
+                            width: 130,
                             height: 35,
                             decoration: BoxDecoration(
                               color: Color(0XFF004463),
@@ -253,13 +245,13 @@ class _TaskWidgetState extends State<TaskWidget> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
-                                    fontSize: 18,
+                                    fontSize: 18
                                   ),
                                 ),
                               ],
-                            ),
+                            )
                           ),
-                        ),
+                        )
                       ],
                     ),
                   ],

@@ -183,6 +183,12 @@ class DBHelper {
     }
   }
 
+  Future<User> returnUser(int? userid) async {
+    final db = await instance.database;
+    final result = await db.query("user", where: "USER_ID = ?", whereArgs: [userid]);
+    return User.fromMap(result.first);
+  }
+
   /*          -- CALENDAR CRUD --         */
   Future<int> createCalendar(Calendar calendar) async {
     final db = await instance.database;
@@ -279,6 +285,17 @@ class DBHelper {
     );
   }
 
+  Future<int> updateTaskProgress(int taskId, int progress) async {
+    Database db = await instance.database;
+    return await db.update("task", {'TASK_Progress': progress}, where: 'TASK_ID = ?', whereArgs: [taskId]);
+  }
+
+  Future<List<Task>> getTasksByDate(int? userid, String date) async {
+    final db = await instance.database;
+    final result = await db.query("task", where: "USER_ID = ? AND TASK_DateFinish = ? AND TASK_Progress < 100", whereArgs: [userid, date], orderBy: "TASK_ID DESC");
+    return result.map((e) => Task.fromMap(e)).toList();
+  }
+  
   /*          -- SUBTASK CRUD --         */
   Future<int> createSubtask(SubtTask subtask) async {
     final db = await instance.database;
@@ -300,4 +317,9 @@ class DBHelper {
     final db = await instance.database;
     return await db.delete("subtask", where: "SUBTASK_ID = ?", whereArgs: [id]);
   }
+
+  Future<int> updateSubtask(SubtTask subtask) async {
+  Database db = await instance.database;
+  return await db.update("subtask", subtask.toMap(), where: 'SUBTASK_ID = ?', whereArgs: [subtask.id]);
+}
 }
