@@ -117,7 +117,6 @@ class DBHelper {
     )
     ''');
 
-    // ✅ FIXED: Remove foreign key constraint, STORE_ID is constant
     await db.execute('''
     CREATE TABLE product(
       PROD_ID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -177,7 +176,7 @@ class DBHelper {
       whereArgs: [email, password],
     );
     if (result.isNotEmpty) {
-      return result.first["USER_ID"] as int?;
+      return result.first["USER_ID"] as int;
     } else {
       return null;
     }
@@ -216,6 +215,12 @@ class DBHelper {
     return await db.insert("store", store.toMap());
   }
 
+  Future<List<Store>> readAllStore() async {
+    final db = await instance.database;
+    final result = await db.query("store", orderBy: "STORE_ID DESC");
+    return result.map((e) => Store.fromMap(e)).toList();
+  }
+
   /*          -- PRODUCT CRUD --         */
   Future<int> createProduct(Product product) async {
     final db = await instance.database;
@@ -241,6 +246,27 @@ class DBHelper {
   Future<int> deleteProduct(int id) async {
     final db = await instance.database;
     return await db.delete("product", where: "PROD_ID = ?", whereArgs: [id]);
+  }
+
+  Future<List<Product>> returnProductsfromStore(int? id) async {
+    final db = await instance.database;
+    final result = await db.query("product", where: "STORE_ID = ?", whereArgs: [id], orderBy: "PROD_ID DESC");
+    return result.map((e) => Product.fromMap(e)).toList();
+  }
+
+  Future<int?> returnStoreID(int id) async {
+    final db = await instance.database;
+    final result = await db.query(
+      "store",
+      columns: ["STORE"],
+      where: "USER_ID = ?",
+      whereArgs: [id],
+    );
+    if (result.isNotEmpty) {
+      return result.first["STORE_ID"] as int;
+    } else {
+      return null;
+    }
   }
 
   /*          -- TASK CRUD --         */
@@ -275,8 +301,12 @@ class DBHelper {
     return await db.delete("task", where: "TASK_ID = ?", whereArgs: [id]);
   }
 
-  Future<int> taskMarkAsDone(int id) async {
+  Future<int> taskMarkAsDone(int id, int userid) async {
     final db = await instance.database;
+    await db.rawUpdate(
+      "UPDATE user SET USER_Points = USER_Points + 500 WHERE USER_ID = ?",
+      [userid]
+    );
     return await db.update(
       "task",
       {"TASK_Progress": 100},

@@ -226,7 +226,7 @@ class _MiniTaskWidgetState extends State<MiniTaskWidget> {
                       children: <Widget>[
                         GestureDetector(
                           onTap: () async{
-                            await DBHelper.instance.taskMarkAsDone(widget.tasklist[i].id!);
+                            await DBHelper.instance.taskMarkAsDone(widget.tasklist[i].id!, widget.tasklist[i].userid!);
                             widget.loadTask?.call();
                           },
                           child: Container(

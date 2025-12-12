@@ -4,9 +4,9 @@ class Product {
   int? id;
   int amount;
   String name;
-  String? category; // ✅ Hidden from UI
+  String? category; 
   Uint8List? photo;
-  int? storeid; // ✅ Not needed but kept for compatibility
+  int? storeid;
 
   Product({
     this.id,
@@ -14,7 +14,7 @@ class Product {
     required this.name,
     this.category,
     this.photo,
-    this.storeid, // ✅ Optional
+    this.storeid,
   });
 
   Map<String, dynamic> toMap() {
@@ -24,7 +24,7 @@ class Product {
       'PROD_Category': category,
       'PROD_Amount': amount,
       'PROD_Photo': photo,
-      'STORE_ID': 1, // ✅ CONSTANT - always 1
+      'STORE_ID': storeid,
     };
   }
 
@@ -35,7 +35,7 @@ class Product {
       category: map['PROD_Category'],
       amount: map['PROD_Amount'],
       photo: map['PROD_Photo'],
-      storeid: map['STORE_ID'], // ✅ Will be 1
+      storeid: map['STORE_ID'],
     );
   }
 }

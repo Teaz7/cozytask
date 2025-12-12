@@ -418,7 +418,7 @@ class _ViewTaskState extends State<ViewTask> {
                                   children: [
                                     TextButton(
                                       onPressed: () async{
-                                        await DBHelper.instance.taskMarkAsDone(widget.taskid!);
+                                        await DBHelper.instance.taskMarkAsDone(widget.taskid!, widget.userid!);
                                         Navigator.pop(context);
                                         // Show success dialog
                                         showDialog(

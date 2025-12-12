@@ -42,6 +42,20 @@ class _ProfileState extends State<Profile> {
     return FutureBuilder(
       future: DBHelper.instance.returnUser(widget.userid),
       builder:(context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        // Add error state
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        }
+
+        // Check if data is null
+        if (!snapshot.hasData || snapshot.data == null) {
+          return const Center(child: Text('No user data found'));
+        }
+        
         final user = snapshot.data!;
         final List<String> personalInfo = [
           user.id.toString(),

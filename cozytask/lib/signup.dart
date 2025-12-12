@@ -1,5 +1,6 @@
 import 'package:cozytask/database/dbHelper.dart';
 import 'package:cozytask/database/models/calendarModel.dart';
+import 'package:cozytask/database/models/productModel.dart';
 import 'package:cozytask/database/models/storeModel.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -87,6 +88,60 @@ class _SignUpState extends State<SignUp> {
     });
   }
 
+  Future<int?> getStoreIdForUser(int userId) async {
+    final db = await DBHelper.instance.database;
+    final result = await db.query(
+      "store",
+      columns: ["STORE_ID"],
+      where: "USER_ID = ?",
+      whereArgs: [userId],
+    );
+    if (result.isNotEmpty) {
+      return result.first["STORE_ID"] as int?;
+    }
+    return null;
+  }
+
+  Future<void> duplicateProductsForNewUser(int newStoreId) async {
+    // Get all existing products from the database
+    final allProducts = await DBHelper.instance.readAllProducts();
+    
+    if (allProducts.isEmpty) {
+      print("No products to duplicate");
+      return;
+    }
+
+    // Create a map to track unique products by their key attributes
+    // Using name + category as the unique identifier
+    final Map<String, Product> uniqueProducts = {};
+    
+    for (var product in allProducts) {
+      // Create a unique key (name + category, case-insensitive)
+      String productKey = '${product.name.toLowerCase().trim()}_${(product.category ?? '').toLowerCase().trim()}';
+      
+      // Keep the first occurrence of each unique product
+      if (!uniqueProducts.containsKey(productKey)) {
+        uniqueProducts[productKey] = product;
+      }
+    }
+
+    // Now create copies for the new user's store
+    for (var product in uniqueProducts.values) {
+      await DBHelper.instance.createProduct(
+        Product(
+          name: product.name,
+          amount: product.amount,
+          category: product.category,
+          photo: product.photo,
+          storeid: newStoreId,
+        ),
+      );
+      print("Added product: ${product.name} to store $newStoreId");
+    }
+    
+    print("Duplicated ${uniqueProducts.length} unique products for store $newStoreId");
+  }
+
   @override
   Widget build(BuildContext context) {
     List<TextEditingController> controllers = [
@@ -123,7 +178,8 @@ class _SignUpState extends State<SignUp> {
           await DBHelper.instance.createCalendar(
             Calendar(numoftask: 0, userid: newid),
           );
-          await DBHelper.instance.createStore(Store(num: 0, userid: newid));
+          int newstore = await DBHelper.instance.createStore(Store(num: 0, userid: newid));
+          await duplicateProductsForNewUser(newstore);
 
           clearController();
           loadUsers();
