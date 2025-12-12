@@ -9,11 +9,8 @@ class TaskWidget extends StatefulWidget {
   final List<Task> tasklist;
   final int? userid;
 
-  const TaskWidget({
-    super.key,
-    required this.tasklist,
-    required this.userid,
-  }) : super(key: key);
+  const TaskWidget({super.key, required this.tasklist, required this.userid})
+    : super(key: key);
 
   @override
   State<TaskWidget> createState() => _TaskWidgetState();
@@ -45,7 +42,6 @@ class _TaskWidgetState extends State<TaskWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     Widget closedTab(String task, String remaining, int progress) => Column(
       children: <Widget>[
         Container(
@@ -63,16 +59,14 @@ class _TaskWidgetState extends State<TaskWidget> {
                 Column(
                   children: <Widget>[
                     MiniCirclePercent(
-                      percent: progress*0.01,
+                      percent: progress * 0.01,
                       radius: 20,
                       ringColor: const Color(0xFF004562),
                       ringWidth: 15,
                     ),
                   ],
                 ),
-                Padding(
-                  padding: EdgeInsetsGeometry.all(5),
-                ),
+                Padding(padding: EdgeInsetsGeometry.all(5)),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -102,7 +96,13 @@ class _TaskWidgetState extends State<TaskWidget> {
       ],
     );
 
-    Widget openedTab(String task, String remaining, String duedate, int progress, int i) => Column(
+    Widget openedTab(
+      String task,
+      String remaining,
+      String duedate,
+      int progress,
+      int i,
+    ) => Column(
       children: <Widget>[
         Container(
           width: 340,
@@ -121,7 +121,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                     Column(
                       children: <Widget>[
                         CirclePercent(
-                          percent: progress*0.01,
+                          percent: progress * 0.01,
                           radius: 35,
                           ringColor: const Color(0xFF004562),
                           ringWidth: 15,
@@ -189,7 +189,12 @@ class _TaskWidgetState extends State<TaskWidget> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => ViewTaskPage(userid: widget.userid, taskid: widget.tasklist[i].id,)),
+                              MaterialPageRoute(
+                                builder: (context) => ViewTaskPage(
+                                  userid: widget.userid,
+                                  taskid: widget.tasklist[i].id,
+                                ),
+                              ),
                             );
                           },
                           child: Container(
@@ -221,8 +226,10 @@ class _TaskWidgetState extends State<TaskWidget> {
                     Column(
                       children: <Widget>[
                         GestureDetector(
-                          onTap: () async{
-                            await DBHelper.instance.taskMarkAsDone(widget.tasklist[i].id!);
+                          onTap: () async {
+                            await DBHelper.instance.taskMarkAsDone(
+                              widget.tasklist[i].id!,
+                            );
                           },
                           child: Container(
                             width: 150,
@@ -240,13 +247,13 @@ class _TaskWidgetState extends State<TaskWidget> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
-                                    fontSize: 18
+                                    fontSize: 18,
                                   ),
                                 ),
                               ],
-                            )
+                            ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ],
@@ -293,12 +300,23 @@ class _TaskWidgetState extends State<TaskWidget> {
 
     return Column(
       children: <Widget>[
-        for (int i = 0; i < widget.tasklist.length; i++) GestureDetector(
-          onTap: () => toggleTask(i),
-          child: isOpenedList[i]
-              ? openedTab(widget.tasklist[i].name, remainingDays(widget.tasklist[i]), widget.tasklist[i].dateend, widget.tasklist[i].progress, i)
-              : closedTab(widget.tasklist[i].name, remainingDays(widget.tasklist[i]), widget.tasklist[i].progress)
-        )
+        for (int i = 0; i < widget.tasklist.length; i++)
+          GestureDetector(
+            onTap: () => toggleTask(i),
+            child: isOpenedList[i]
+                ? openedTab(
+                    widget.tasklist[i].name,
+                    remainingDays(widget.tasklist[i]),
+                    widget.tasklist[i].dateend,
+                    widget.tasklist[i].progress,
+                    i,
+                  )
+                : closedTab(
+                    widget.tasklist[i].name,
+                    remainingDays(widget.tasklist[i]),
+                    widget.tasklist[i].progress,
+                  ),
+          ),
       ],
     );
   }
