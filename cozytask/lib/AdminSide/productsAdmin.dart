@@ -5,6 +5,7 @@ import 'package:cozytask/AdminSide/addProducts.dart';
 import 'package:cozytask/AdminSide/modifyProduct.dart';
 import 'package:cozytask/database/dbHelper.dart';
 import 'package:cozytask/database/models/productModel.dart';
+import 'package:cozytask/components/backButtonLogin.dart';
 
 class ProductsAdminPage extends StatelessWidget {
   const ProductsAdminPage({super.key});
@@ -61,9 +62,9 @@ class _ShoppingPageState extends State<ShoppingPage> {
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: const EdgeInsets.only(left: 15, top: 10),
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back, size: 30),
-                  onPressed: () => Navigator.pop(context),
+                child: const Padding(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: ReturnLoginButton(),
                 ),
               ),
             ),
