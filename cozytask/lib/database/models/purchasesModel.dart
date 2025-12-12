@@ -1,18 +1,20 @@
+import 'dart:typed_data';
+
 class Purchases {
   int? id, userid, prodid;
-  String date;
+  Uint8List? photo;
 
   Purchases({
     this.id,
     this.userid,
     this.prodid,
-    required this.date
+    required this.photo
   });
 
   Map<String, dynamic> toMap() {
     return {
       'PUR_ID': id,
-      'PUR_PurchasedAt': date,
+      'PUR_Photo': photo,
       'USER_ID': userid,
       'PROD_ID': prodid
     };
@@ -21,7 +23,7 @@ class Purchases {
   static Purchases fromMap(Map<String, dynamic> map) {
     return Purchases(
       id: map['PUR_ID'],
-      date: map['PUR_PurchasedAt'],
+      photo: map['PUR_Photo'],
       userid: map['USER_ID'],
       prodid: map['PROD_ID'],
     );

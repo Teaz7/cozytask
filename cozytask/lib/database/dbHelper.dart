@@ -1,3 +1,4 @@
+import 'package:cozytask/database/models/purchasesModel.dart';
 import 'package:cozytask/database/models/subtaskModel.dart';
 import 'package:cozytask/database/models/taskModel.dart';
 import 'package:sqflite/sqflite.dart';
@@ -131,11 +132,9 @@ class DBHelper {
     await db.execute('''
     CREATE TABLE purchases(
       PUR_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-      PUR_PurchasedAt TEXT NOT NULL,
+      PUR_Photo BLOB,
       USER_ID INTEGER,
-      PROD_ID INTEGER,
-      FOREIGN KEY (USER_ID) REFERENCES user (USER_ID) ON DELETE CASCADE,
-      FOREIGN KEY (PROD_ID) REFERENCES product (PROD_ID) ON DELETE CASCADE
+      PROD_ID INTEGER
     )
     ''');
   }
@@ -253,7 +252,7 @@ class DBHelper {
     );
   }
 
-  Future<int> deleteProduct(int id) async {
+  Future<int> deleteProduct(int? id) async {
     final db = await instance.database;
     return await db.delete("product", where: "PROD_ID = ?", whereArgs: [id]);
   }
@@ -277,6 +276,12 @@ class DBHelper {
     } else {
       return null;
     }
+  }
+
+  /*          -- PURCHASES CRUD --         */
+  Future<int> createPurchases(Purchases purchases) async {
+    final db = await instance.database;
+    return await db.insert("product", purchases.toMap());
   }
 
   /*          -- TASK CRUD --         */

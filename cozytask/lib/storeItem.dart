@@ -1,6 +1,7 @@
 import 'package:cozytask/components/storeBackButton.dart';
 import 'package:cozytask/database/dbHelper.dart';
 import 'package:cozytask/database/models/productModel.dart';
+import 'package:cozytask/database/models/purchasesModel.dart';
 import 'package:cozytask/database/models/userModel.dart';
 import 'package:cozytask/shopPage.dart';
 
@@ -230,6 +231,12 @@ class _ShoppingPageItemState extends State<ShoppingPageItem> {
     // Update user points in database
     // You'll need to add this method to your DBHelper if it doesn't exist
     await DBHelper.instance.updateUserPoints(widget.userid, updatedPoints);
+    await DBHelper.instance.createPurchases(Purchases(
+      photo: widget.product.photo,
+      userid: widget.userid,
+      prodid: widget.product.id
+    ));
+    await DBHelper.instance.deleteProduct(widget.product.id);
     
     // Show success dialog
     await _showPurchaseSuccessDialog(context);
