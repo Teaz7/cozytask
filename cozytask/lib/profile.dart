@@ -1,5 +1,6 @@
 import 'package:cozytask/components/backButton.dart';
 import 'package:cozytask/database/dbHelper.dart';
+import 'package:cozytask/taskhistory.dart';
 import 'package:flutter/material.dart';
 import 'LeaderBoard.dart';
 
@@ -160,7 +161,12 @@ class _ProfileState extends State<Profile> {
           const SizedBox(height: 5),
 
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => TaskHistoryPage(userid: widget.userid,)),
+              );
+            },
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(320, 40),
               backgroundColor: const Color(0XFF68A3BC),

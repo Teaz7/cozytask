@@ -1,4 +1,3 @@
-import 'package:cozytask/AdminSide/dashboardAdmin';
 import 'package:cozytask/chooseaccount.dart';
 import 'package:cozytask/components/popupDialog.dart';
 import 'package:cozytask/dashboard.dart';
@@ -24,7 +23,7 @@ class MainPage extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GillSansMT',
       ),
-      home: Scaffold(body: Center(child: const AdminDashboardPage())),
+      home: Scaffold(body: Center(child: Login())),
       debugShowCheckedModeBanner: false,
     );
   }

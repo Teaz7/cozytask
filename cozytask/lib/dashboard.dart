@@ -37,6 +37,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   List<Task> tasklist = [];
+  TextEditingController searchController = TextEditingController();
   
   @override
   void initState() {
@@ -107,6 +108,7 @@ class _DashboardState extends State<Dashboard> {
                   SizedBox(
                     width: 200,
                     child: TextField(
+                      controller: searchController,
                       maxLines: 1,
                       decoration: InputDecoration(
                         isDense: true,
@@ -133,7 +135,7 @@ class _DashboardState extends State<Dashboard> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SearchResultPage(userid: widget.userid,)),
+                  MaterialPageRoute(builder: (context) => SearchResultPage(userid: widget.userid, search: searchController.text,)),
                 );
               },
               style: ElevatedButton.styleFrom(
@@ -161,6 +163,8 @@ class _DashboardState extends State<Dashboard> {
         TaskWidget(
           tasklist: tasklist,
           userid: widget.userid,
+          dashboard: true,
+          loadTask: loadTasks,
         ),
 
         Padding(
@@ -171,7 +175,7 @@ class _DashboardState extends State<Dashboard> {
           onPressed: () async {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AddTaskPage(userid: widget.userid,)),
+              MaterialPageRoute(builder: (context) => AddTaskPage(userid: widget.userid, loadTask: loadTasks,)),
             );
             await loadTasks();
           },

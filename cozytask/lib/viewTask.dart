@@ -108,7 +108,7 @@ class _ViewTaskState extends State<ViewTask> {
                   style: TextStyle(fontSize: 16, color: Colors.black),
                 ),
                 Text(
-                  task.priority.toString(),
+                  (task.priority + 1).toString(),
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,

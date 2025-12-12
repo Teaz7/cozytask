@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cozytask/AdminSide/viewUsers';
 import 'package:cozytask/AdminSide/productsAdmin.dart';
 
-
-void main() => runApp(const MaterialApp(home: AdminDashboardPage()));
-
 class AdminDashboardPage extends StatelessWidget {
   const AdminDashboardPage({super.key});
 

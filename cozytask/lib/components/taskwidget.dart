@@ -8,12 +8,16 @@ import 'package:flutter/material.dart';
 class TaskWidget extends StatefulWidget {
   final List<Task> tasklist;
   final int? userid;
+  final bool dashboard;
+  final VoidCallback? loadTask;
 
   const TaskWidget({
     super.key,
     required this.tasklist,
     required this.userid,
-  }) : super(key: key);
+    required this.dashboard,
+    this.loadTask
+  });
 
   @override
   State<TaskWidget> createState() => _TaskWidgetState();
@@ -223,6 +227,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                         GestureDetector(
                           onTap: () async{
                             await DBHelper.instance.taskMarkAsDone(widget.tasklist[i].id!);
+                            widget.loadTask?.call();
                           },
                           child: Container(
                             width: 150,
@@ -293,7 +298,14 @@ class _TaskWidgetState extends State<TaskWidget> {
 
     return Column(
       children: <Widget>[
-        for (int i = 0; i < widget.tasklist.length; i++) GestureDetector(
+        if (widget.dashboard) for (int i = 0; i < widget.tasklist.length; i++) if (widget.tasklist[i].progress != 100) GestureDetector(
+          onTap: () => toggleTask(i),
+          child: isOpenedList[i]
+              ? openedTab(widget.tasklist[i].name, remainingDays(widget.tasklist[i]), widget.tasklist[i].dateend, widget.tasklist[i].progress, i)
+              : closedTab(widget.tasklist[i].name, remainingDays(widget.tasklist[i]), widget.tasklist[i].progress)
+        ),
+        
+        if (!widget.dashboard) for (int i = 0; i < widget.tasklist.length; i++) if (widget.tasklist[i].progress == 100) GestureDetector(
           onTap: () => toggleTask(i),
           child: isOpenedList[i]
               ? openedTab(widget.tasklist[i].name, remainingDays(widget.tasklist[i]), widget.tasklist[i].dateend, widget.tasklist[i].progress, i)
