@@ -24,7 +24,13 @@ class StoreItem extends StatelessWidget {
       ),
       home: Scaffold(
         body: Center(
-          child: Stack(children: [Positioned.fill(child: ShoppingPageItem(userid: userid, product: product,))]),
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: ShoppingPageItem(userid: userid, product: product),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -34,7 +40,11 @@ class StoreItem extends StatelessWidget {
 class ShoppingPageItem extends StatefulWidget {
   final int? userid;
   final Product product;
-  const ShoppingPageItem({super.key, required this.userid, required this.product});
+  const ShoppingPageItem({
+    super.key,
+    required this.userid,
+    required this.product,
+  });
 
   @override
   State<ShoppingPageItem> createState() => _ShoppingPageItemState();
@@ -43,11 +53,13 @@ class ShoppingPageItem extends StatefulWidget {
 class _ShoppingPageItemState extends State<ShoppingPageItem> {
   User? user;
   bool isLoading = true;
+  bool isPurchased = false; // Track purchase status
 
   @override
   void initState() {
     super.initState();
     loadUser();
+    checkPurchaseStatus(); // Check if already purchased on load
   }
 
   Future<void> loadUser() async {
@@ -56,6 +68,22 @@ class _ShoppingPageItemState extends State<ShoppingPageItem> {
       user = data;
       isLoading = false;
     });
+  }
+
+  // Check if user has already purchased this product
+  Future<void> checkPurchaseStatus() async {
+    if (widget.userid == null || widget.product.id == null) return;
+
+    final hasPurchased = await DBHelper.instance.hasUserPurchasedProduct(
+      widget.userid!,
+      widget.product.id!,
+    );
+
+    if (mounted) {
+      setState(() {
+        isPurchased = hasPurchased;
+      });
+    }
   }
 
   Future<bool> _showPurchaseConfirmation(BuildContext context) async {
@@ -218,7 +246,9 @@ class _ShoppingPageItemState extends State<ShoppingPageItem> {
     if (user!.points < widget.product.amount) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Insufficient points! You need ${widget.product.amount} points.'),
+          content: Text(
+            'Insufficient points! You need ${widget.product.amount} points.',
+          ),
           backgroundColor: Colors.red,
         ),
       );
@@ -227,25 +257,32 @@ class _ShoppingPageItemState extends State<ShoppingPageItem> {
 
     // Deduct points from user
     final updatedPoints = user!.points - widget.product.amount;
-    
+
     // Update user points in database
-    // You'll need to add this method to your DBHelper if it doesn't exist
     await DBHelper.instance.updateUserPoints(widget.userid, updatedPoints);
-    await DBHelper.instance.createPurchases(Purchases(
-      photo: widget.product.photo,
-      userid: widget.userid,
-      prodid: widget.product.id
-    ));
-    await DBHelper.instance.deleteProduct(widget.product.id);
-    
+    await DBHelper.instance.createPurchases(
+      Purchases(
+        photo: widget.product.photo,
+        userid: widget.userid,
+        prodid: widget.product.id,
+      ),
+    );
+
     // Show success dialog
     await _showPurchaseSuccessDialog(context);
+
+    // Update local state to reflect purchase
+    if (mounted) {
+      setState(() {
+        isPurchased = true;
+      });
+    }
 
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ShopPage(userid: widget.userid)),
     );
-    
+
     // Reload user data
     await loadUser();
   }
@@ -254,13 +291,14 @@ class _ShoppingPageItemState extends State<ShoppingPageItem> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Storebackbutton(userid: widget.userid,),
+        Storebackbutton(userid: widget.userid),
         const SizedBox(height: 100),
         Container(
           width: 360,
           height: 400,
           decoration: BoxDecoration(
-            color: const Color(0xFFacd1fc),
+            // Change background color to green if already purchased
+            color: isPurchased ? Colors.green : const Color(0xFFacd1fc),
             borderRadius: BorderRadius.circular(15),
             border: Border.all(
               color: Color(0xFF004562),
@@ -301,26 +339,28 @@ class _ShoppingPageItemState extends State<ShoppingPageItem> {
         ),
         SizedBox(height: 20),
         ElevatedButton(
-          onPressed: () async {
-            bool confirmed = await _showPurchaseConfirmation(context);
+          onPressed: isPurchased
+              ? null
+              : () async {
+                  // Disable button if purchased
+                  bool confirmed = await _showPurchaseConfirmation(context);
 
-            if (confirmed) {
-              // Show the new success dialog
-              await _handlePurchase();
-
-              // Add your purchase logic here
-              // e.g., deduct points, update inventory, etc.
-            }
-          },
+                  if (confirmed) {
+                    await _handlePurchase();
+                  }
+                },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF004562),
+            // Change button color if purchased
+            backgroundColor: isPurchased ? Colors.grey : Color(0xFF004562),
             padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
           ),
           child: Text(
-            'Purchase',
+            isPurchased
+                ? 'Already Owned'
+                : 'Purchase', // Change text if purchased
             style: TextStyle(fontSize: 18, color: Colors.white),
           ),
         ),
