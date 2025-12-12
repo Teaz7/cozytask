@@ -9,8 +9,7 @@ class TaskWidget extends StatefulWidget {
   final List<Task> tasklist;
   final int? userid;
 
-  const TaskWidget({super.key, required this.tasklist, required this.userid})
-    : super(key: key);
+  const TaskWidget({super.key, required this.tasklist, required this.userid});
 
   @override
   State<TaskWidget> createState() => _TaskWidgetState();
