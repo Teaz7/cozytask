@@ -31,9 +31,10 @@ class CustomDialog extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
+                  SizedBox(
                     height: 110,
-                    child: image ??
+                    child:
+                        image ??
                         Image.asset(
                           "assets/img/COZY_TASK_LOGO.png",
                           fit: BoxFit.contain,
@@ -53,10 +54,7 @@ class CustomDialog extends StatelessWidget {
                   Text(
                     message,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.black54,
-                    ),
+                    style: const TextStyle(fontSize: 14, color: Colors.black54),
                   ),
                   const SizedBox(height: 10),
                 ],

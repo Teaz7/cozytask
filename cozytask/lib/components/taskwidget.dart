@@ -10,7 +10,7 @@ class TaskWidget extends StatefulWidget {
   final int? userid;
 
   const TaskWidget({
-    Key? key, 
+    super.key,
     required this.tasklist,
     required this.userid,
   }) : super(key: key);
@@ -54,10 +54,7 @@ class _TaskWidgetState extends State<TaskWidget> {
           decoration: BoxDecoration(
             color: Color(0XFFD8E8F4),
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: Color(0XFF68A3BC),
-              width: 3
-            )
+            border: Border.all(color: Color(0XFF68A3BC), width: 3),
           ),
           child: Container(
             padding: EdgeInsets.all(10),
@@ -84,31 +81,24 @@ class _TaskWidgetState extends State<TaskWidget> {
                         Text(
                           task,
                           textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold
-                          ),
-                        )
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ],
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          remaining.toString(),
-                          textAlign: TextAlign.left,
-                        )
+                        Text(remaining.toString(), textAlign: TextAlign.left),
                       ],
-                    )
+                    ),
                   ],
-                )
+                ),
               ],
             ),
-          )
+          ),
         ),
-        
-        Padding(
-          padding: EdgeInsetsGeometry.all(5),
-        )
+
+        Padding(padding: EdgeInsetsGeometry.all(5)),
       ],
     );
 
@@ -120,10 +110,7 @@ class _TaskWidgetState extends State<TaskWidget> {
           decoration: BoxDecoration(
             color: Color(0XFFD8E8F4),
             borderRadius: BorderRadius.circular(15),
-            border: Border.all(
-              color: Color(0XFF68A3BC),
-              width: 3
-            )
+            border: Border.all(color: Color(0XFF68A3BC), width: 3),
           ),
           child: Container(
             padding: EdgeInsets.all(8),
@@ -154,7 +141,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 18
+                                fontSize: 18,
                               ),
                             ),
                           ],
@@ -168,7 +155,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color(0XFF004463),
-                                fontSize: 12
+                                fontSize: 12,
                               ),
                             ),
                           ],
@@ -183,9 +170,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                             Text(
                               duedate,
                               textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold
-                              ),
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
@@ -193,9 +178,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                     ),
                   ],
                 ),
-                Padding(
-                  padding: EdgeInsetsGeometry.all(5),
-                ),
+                Padding(padding: EdgeInsetsGeometry.all(5)),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -225,18 +208,16 @@ class _TaskWidgetState extends State<TaskWidget> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
-                                    fontSize: 18
+                                    fontSize: 18,
                                   ),
                                 ),
                               ],
-                            )
+                            ),
                           ),
-                        )
+                        ),
                       ],
                     ),
-                    Padding(
-                      padding: EdgeInsetsGeometry.all(5),
-                    ),
+                    Padding(padding: EdgeInsetsGeometry.all(5)),
                     Column(
                       children: <Widget>[
                         GestureDetector(
@@ -269,45 +250,43 @@ class _TaskWidgetState extends State<TaskWidget> {
                       ],
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),
         ),
 
-        Padding(
-          padding: EdgeInsetsGeometry.all(5),
-        )
-      ]
+        Padding(padding: EdgeInsetsGeometry.all(5)),
+      ],
     );
 
     String remainingDays(Task task) {
       DateTime start;
       DateTime end;
-      
+
       // Check if it's in MM/DD/YYYY format
       if (task.datestart.contains('/')) {
         List<String> startParts = task.datestart.split('/');
         start = DateTime(
           int.parse(startParts[1]), // year
           int.parse(startParts[2]), // month
-          int.parse(startParts[0])  // day
+          int.parse(startParts[0]), // day
         );
       } else {
         start = DateTime.parse(task.datestart);
       }
-      
+
       if (task.dateend.contains('/')) {
         List<String> endParts = task.dateend.split('/');
         end = DateTime(
           int.parse(endParts[1]), // year
           int.parse(endParts[2]), // month
-          int.parse(endParts[0])  // day
+          int.parse(endParts[0]), // day
         );
       } else {
         end = DateTime.parse(task.dateend);
       }
-      
+
       Duration difference = end.difference(start);
       return "${difference.inDays} days remaining";
     }
