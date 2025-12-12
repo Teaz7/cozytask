@@ -31,6 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   table_calendar: ^3.2.0 
+  image_picker: ^1.0.7
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -67,6 +68,8 @@ flutter:
     - assets/img/COZY_TASK_TEXT_BLUE_LOGO.png
     - assets/img/COZY_TASK_FULL_LOGO.png
     - assets/img/COZY_TASK_LOGO_WHITE.png
+    - assets/img/User.png
+    - assets/img/Products.png
 
     - assets/icon/Filter.png
     - assets/icon/Remove.png
